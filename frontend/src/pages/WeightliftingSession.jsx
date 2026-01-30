@@ -408,21 +408,19 @@ export default function WeightliftingSession() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label className="text-gray-400 text-sm">Exercise Name</Label>
-                    <Select
+                    <select
                       value={exercise.name}
-                      onValueChange={(value) => updateExercise(index, "name", value)}
+                      onChange={(e) => updateExercise(index, "name", e.target.value)}
+                      className="w-full h-10 px-3 py-2 bg-[#12121a] border border-[#2a2a3a] rounded-md text-white focus:outline-none focus:border-[#ffd700] cursor-pointer"
+                      data-testid={`exercise-select-${index}`}
                     >
-                      <SelectTrigger className="bg-[#12121a] border-[#2a2a3a] text-white">
-                        <SelectValue placeholder="Select exercise" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-[#12121a] border-[#2a2a3a]">
-                        {COMMON_EXERCISES.map((ex) => (
-                          <SelectItem key={ex} value={ex} className="text-white hover:bg-[#2a2a3a]">
-                            {ex}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      <option value="" className="bg-[#12121a]">Select exercise</option>
+                      {COMMON_EXERCISES.map((ex) => (
+                        <option key={ex} value={ex} className="bg-[#12121a]">
+                          {ex}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   
                   <div>
