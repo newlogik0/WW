@@ -1,34 +1,68 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
-}
-
-.App-header {
-    background-color: #0f0f10;
+/* App-specific styles */
+.App {
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
 }
 
-.App-link {
-    color: #61dafb;
+/* Navigation */
+.nav-link {
+    @apply px-4 py-2 text-gray-400 hover:text-[#ffd700] transition-colors duration-200;
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
+.nav-link.active {
+    @apply text-[#ffd700] border-b-2 border-[#ffd700];
+}
+
+/* Form styles */
+.rpg-input {
+    @apply w-full px-4 py-3 bg-[#12121a] border border-[#2a2a3a] rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-[#ffd700] transition-colors;
+}
+
+.rpg-label {
+    @apply block text-sm font-medium text-gray-400 mb-2;
+}
+
+/* Cards */
+.workout-card {
+    @apply rpg-card p-6 cursor-pointer hover:border-[#ffd700] transition-all duration-300;
+}
+
+.workout-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.15);
+}
+
+/* Stat displays */
+.stat-display {
+    @apply flex items-center gap-3 p-4 rounded-lg border;
+}
+
+/* Level badge */
+.level-badge {
+    @apply inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-[#ffd700] to-[#b8860b] text-[#0a0a0f] font-bold text-lg;
+}
+
+/* Achievement grid */
+.achievement-grid {
+    @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4;
+}
+
+/* Quest item */
+.quest-item {
+    @apply rpg-card p-4 hover:border-[#a855f7] transition-all duration-300;
+}
+
+/* Tempo tracker circles */
+.tempo-circle {
+    @apply w-24 h-24 rounded-full flex items-center justify-center text-2xl font-bold border-4 transition-all duration-300;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .level-badge {
+        @apply w-10 h-10 text-base;
     }
-    to {
-        transform: rotate(360deg);
+    
+    .tempo-circle {
+        @apply w-20 h-20 text-xl;
     }
 }

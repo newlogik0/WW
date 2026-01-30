@@ -1,53 +1,165 @@
-import { useEffect } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner";
+
+// Pages
+import Login from "@/pages/Login";
+import Register from "@/pages/Register";
+import Dashboard from "@/pages/Dashboard";
+import WorkoutSelect from "@/pages/WorkoutSelect";
+import WeightliftingSession from "@/pages/WeightliftingSession";
+import CardioSession from "@/pages/CardioSession";
+import Achievements from "@/pages/Achievements";
+import Quests from "@/pages/Quests";
+import Profile from "@/pages/Profile";
+import History from "@/pages/History";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-const Home = () => {
-  const helloWorldApi = async () => {
+// Auth Context
+const AuthContext = createContext(null);
+
+export const useAuth = () => useContext(AuthContext);
+
+export const api = axios.create({
+  baseURL: API,
+});
+
+// Add token to requests
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// Handle 401 errors
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
+
+const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const savedUser = localStorage.getItem("user");
+    
+    if (token && savedUser) {
+      setUser(JSON.parse(savedUser));
+      // Refresh user data
+      api.get("/auth/me")
+        .then(res => {
+          setUser(res.data);
+          localStorage.setItem("user", JSON.stringify(res.data));
+        })
+        .catch(() => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          setUser(null);
+        })
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  const login = async (email, password) => {
+    const res = await api.post("/auth/login", { email, password });
+    localStorage.setItem("token", res.data.access_token);
+    localStorage.setItem("user", JSON.stringify(res.data.user));
+    setUser(res.data.user);
+    return res.data;
+  };
+
+  const register = async (email, password, username) => {
+    const res = await api.post("/auth/register", { email, password, username });
+    localStorage.setItem("token", res.data.access_token);
+    localStorage.setItem("user", JSON.stringify(res.data.user));
+    setUser(res.data.user);
+    return res.data;
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+  };
+
+  const refreshUser = async () => {
     try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
+      const res = await api.get("/auth/me");
+      setUser(res.data);
+      localStorage.setItem("user", JSON.stringify(res.data));
     } catch (e) {
-      console.error(e, `errored out requesting / api`);
+      console.error("Failed to refresh user", e);
     }
   };
 
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
-
   return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
+    <AuthContext.Provider value={{ user, login, register, logout, loading, refreshUser }}>
+      {children}
+    </AuthContext.Provider>
   );
+};
+
+const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  const location = useLocation();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0a0a0f]">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-[#ffd700] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-[#ffd700] font-cinzel text-xl">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return children;
 };
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <AuthProvider>
+        <div className="App min-h-screen bg-[#0a0a0f]">
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/workout" element={<ProtectedRoute><WorkoutSelect /></ProtectedRoute>} />
+            <Route path="/workout/weightlifting" element={<ProtectedRoute><WeightliftingSession /></ProtectedRoute>} />
+            <Route path="/workout/cardio" element={<ProtectedRoute><CardioSession /></ProtectedRoute>} />
+            <Route path="/achievements" element={<ProtectedRoute><Achievements /></ProtectedRoute>} />
+            <Route path="/quests" element={<ProtectedRoute><Quests /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
+          </Routes>
+          <Toaster richColors position="top-center" />
+        </div>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 

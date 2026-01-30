@@ -1,75 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --rpg-gold: #ffd700;
+    --rpg-gold-dark: #b8860b;
+    --rpg-crimson: #dc2626;
+    --rpg-cyan: #22d3d3;
+    --rpg-green: #22c55e;
+    --rpg-purple: #a855f7;
+    --rpg-bg-dark: #0a0a0f;
+    --rpg-bg-card: #12121a;
+    --rpg-bg-hover: #1a1a25;
+    --rpg-border: #2a2a3a;
+}
+
 body {
     margin: 0;
-    font-family:
-        -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-        sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: var(--rpg-bg-dark);
+    color: #e5e5e5;
+}
+
+.font-cinzel {
+    font-family: 'Cinzel', serif;
 }
 
 code {
-    font-family:
-        source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 @layer base {
     :root {
-        --background: 0 0% 100%;
-        --foreground: 0 0% 3.9%;
-        --card: 0 0% 100%;
-        --card-foreground: 0 0% 3.9%;
-        --popover: 0 0% 100%;
-        --popover-foreground: 0 0% 3.9%;
-        --primary: 0 0% 9%;
-        --primary-foreground: 0 0% 98%;
-        --secondary: 0 0% 96.1%;
-        --secondary-foreground: 0 0% 9%;
-        --muted: 0 0% 96.1%;
-        --muted-foreground: 0 0% 45.1%;
-        --accent: 0 0% 96.1%;
-        --accent-foreground: 0 0% 9%;
-        --destructive: 0 84.2% 60.2%;
+        --background: 240 10% 4%;
+        --foreground: 0 0% 95%;
+        --card: 240 10% 7%;
+        --card-foreground: 0 0% 95%;
+        --popover: 240 10% 7%;
+        --popover-foreground: 0 0% 95%;
+        --primary: 45 100% 50%;
+        --primary-foreground: 0 0% 5%;
+        --secondary: 240 10% 15%;
+        --secondary-foreground: 0 0% 95%;
+        --muted: 240 10% 15%;
+        --muted-foreground: 0 0% 60%;
+        --accent: 45 100% 50%;
+        --accent-foreground: 0 0% 5%;
+        --destructive: 0 84% 60%;
         --destructive-foreground: 0 0% 98%;
-        --border: 0 0% 89.8%;
-        --input: 0 0% 89.8%;
-        --ring: 0 0% 3.9%;
-        --chart-1: 12 76% 61%;
-        --chart-2: 173 58% 39%;
-        --chart-3: 197 37% 24%;
-        --chart-4: 43 74% 66%;
-        --chart-5: 27 87% 67%;
+        --border: 240 10% 20%;
+        --input: 240 10% 20%;
+        --ring: 45 100% 50%;
+        --chart-1: 45 100% 50%;
+        --chart-2: 180 70% 50%;
+        --chart-3: 0 70% 50%;
+        --chart-4: 280 70% 60%;
+        --chart-5: 120 60% 50%;
         --radius: 0.5rem;
-    }
-    .dark {
-        --background: 0 0% 3.9%;
-        --foreground: 0 0% 98%;
-        --card: 0 0% 3.9%;
-        --card-foreground: 0 0% 98%;
-        --popover: 0 0% 3.9%;
-        --popover-foreground: 0 0% 98%;
-        --primary: 0 0% 98%;
-        --primary-foreground: 0 0% 9%;
-        --secondary: 0 0% 14.9%;
-        --secondary-foreground: 0 0% 98%;
-        --muted: 0 0% 14.9%;
-        --muted-foreground: 0 0% 63.9%;
-        --accent: 0 0% 14.9%;
-        --accent-foreground: 0 0% 98%;
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 0 0% 14.9%;
-        --input: 0 0% 14.9%;
-        --ring: 0 0% 83.1%;
-        --chart-1: 220 70% 50%;
-        --chart-2: 160 60% 45%;
-        --chart-3: 30 80% 55%;
-        --chart-4: 280 65% 60%;
-        --chart-5: 340 75% 55%;
     }
 }
 
@@ -82,34 +73,185 @@ code {
     }
 }
 
+/* RPG Theme Styles */
+.rpg-card {
+    background: linear-gradient(145deg, rgba(18, 18, 26, 0.95), rgba(10, 10, 15, 0.98));
+    border: 1px solid var(--rpg-border);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.rpg-card-gold {
+    background: linear-gradient(145deg, rgba(18, 18, 26, 0.95), rgba(10, 10, 15, 0.98));
+    border: 1px solid var(--rpg-gold-dark);
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+}
+
+.rpg-button {
+    background: linear-gradient(145deg, var(--rpg-gold), var(--rpg-gold-dark));
+    color: #0a0a0f;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.rpg-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+}
+
+.rpg-button-secondary {
+    background: transparent;
+    border: 2px solid var(--rpg-gold);
+    color: var(--rpg-gold);
+}
+
+.rpg-button-secondary:hover {
+    background: rgba(255, 215, 0, 0.1);
+}
+
+/* XP Bar */
+.xp-bar-container {
+    background: rgba(42, 42, 58, 0.5);
+    border-radius: 10px;
+    height: 24px;
+    overflow: hidden;
+    position: relative;
+}
+
+.xp-bar-fill {
+    background: linear-gradient(90deg, var(--rpg-gold-dark), var(--rpg-gold));
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s ease;
+    position: relative;
+}
+
+.xp-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Stat Colors */
+.stat-strength { color: var(--rpg-crimson); }
+.stat-endurance { color: var(--rpg-cyan); }
+.stat-agility { color: var(--rpg-green); }
+
+.stat-bg-strength { background: rgba(220, 38, 38, 0.2); border-color: var(--rpg-crimson); }
+.stat-bg-endurance { background: rgba(34, 211, 211, 0.2); border-color: var(--rpg-cyan); }
+.stat-bg-agility { background: rgba(34, 197, 94, 0.2); border-color: var(--rpg-green); }
+
+/* Tempo Tracker */
+.tempo-phase {
+    transition: all 0.3s ease;
+}
+
+.tempo-phase.active {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px currentColor;
+}
+
+.tempo-eccentric { color: var(--rpg-crimson); }
+.tempo-hold { color: var(--rpg-gold); }
+.tempo-concentric { color: var(--rpg-cyan); }
+
+/* Animations */
+@keyframes pulse-gold {
+    0%, 100% { box-shadow: 0 0 5px var(--rpg-gold); }
+    50% { box-shadow: 0 0 20px var(--rpg-gold); }
+}
+
+@keyframes level-up {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-pulse-gold {
+    animation: pulse-gold 2s infinite;
+}
+
+.animate-level-up {
+    animation: level-up 0.5s ease;
+}
+
+/* Achievement Badge */
+.achievement-locked {
+    filter: grayscale(100%);
+    opacity: 0.5;
+}
+
+.achievement-unlocked {
+    animation: pulse-gold 2s infinite;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--rpg-bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--rpg-border);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--rpg-gold-dark);
+}
+
+/* Quest Progress */
+.quest-progress-bar {
+    background: rgba(42, 42, 58, 0.5);
+    border-radius: 4px;
+    height: 8px;
+    overflow: hidden;
+}
+
+.quest-progress-fill {
+    background: linear-gradient(90deg, var(--rpg-purple), var(--rpg-gold));
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+/* Glow effects */
+.glow-gold {
+    text-shadow: 0 0 10px var(--rpg-gold);
+}
+
+.glow-strength {
+    text-shadow: 0 0 10px var(--rpg-crimson);
+}
+
+.glow-endurance {
+    text-shadow: 0 0 10px var(--rpg-cyan);
+}
+
+.glow-agility {
+    text-shadow: 0 0 10px var(--rpg-green);
+}
+
 @layer base {
     [data-debug-wrapper="true"] {
         display: contents !important;
-    }
-
-    [data-debug-wrapper="true"] > * {
-        margin-left: inherit;
-        margin-right: inherit;
-        margin-top: inherit;
-        margin-bottom: inherit;
-        padding-left: inherit;
-        padding-right: inherit;
-        padding-top: inherit;
-        padding-bottom: inherit;
-        column-gap: inherit;
-        row-gap: inherit;
-        gap: inherit;
-        border-left-width: inherit;
-        border-right-width: inherit;
-        border-top-width: inherit;
-        border-bottom-width: inherit;
-        border-left-style: inherit;
-        border-right-style: inherit;
-        border-top-style: inherit;
-        border-bottom-style: inherit;
-        border-left-color: inherit;
-        border-right-color: inherit;
-        border-top-color: inherit;
-        border-bottom-color: inherit;
     }
 }
