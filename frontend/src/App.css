@@ -23,7 +23,11 @@
 
 /* Cards */
 .workout-card {
-    @apply rpg-card p-6 cursor-pointer hover:border-[#ffd700] transition-all duration-300;
+    background: linear-gradient(145deg, rgba(18, 18, 26, 0.95), rgba(10, 10, 15, 0.98));
+    border: 1px solid #2a2a3a;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    @apply p-6 cursor-pointer hover:border-[#ffd700] transition-all duration-300;
 }
 
 .workout-card:hover {
