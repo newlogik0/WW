@@ -52,7 +52,11 @@
 
 /* Quest item */
 .quest-item {
-    @apply rpg-card p-4 hover:border-[#a855f7] transition-all duration-300;
+    background: linear-gradient(145deg, rgba(18, 18, 26, 0.95), rgba(10, 10, 15, 0.98));
+    border: 1px solid #2a2a3a;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    @apply p-4 hover:border-[#a855f7] transition-all duration-300;
 }
 
 /* Tempo tracker circles */
