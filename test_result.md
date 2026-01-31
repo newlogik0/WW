@@ -55,15 +55,18 @@
 ## frontend:
   - task: "Sound-Guided Rep Counter"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/WeightliftingSession.jsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "previous_main"
         comment: "Already implemented with beeps and voice options, needs verification"
+      - working: true
+        agent: "testing"
+        comment: "VERIFIED WORKING: Rep counter component is collapsible and functional. Sound toggles (Beeps/Voice) working. Tempo settings configurable. Start/Stop functions working. Phase display (LOWER/HOLD/LIFT) correct. Rep counting functional. All features working as designed."
 
   - task: "Cardio Animation Component"
     implemented: true
