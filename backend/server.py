@@ -75,7 +75,7 @@ class WorkoutType(BaseModel):
 class Exercise(BaseModel):
     name: str
     sets: int
-    reps: int
+    reps: str  # String to support ranges like "8-12"
     weight: float
     tempo: Optional[str] = None  # e.g., "3-1-2" (eccentric-hold-concentric)
 
@@ -608,7 +608,7 @@ async def get_leaderboard(limit: int = 10):
 class PlanExercise(BaseModel):
     name: str
     sets: int = 3
-    reps: int = 10
+    reps: str = "10"  # String to support ranges like "8-12"
     weight: Optional[float] = 0
     notes: Optional[str] = None
 
