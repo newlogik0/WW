@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Sparkles, Loader2 } from "lucide-react";
+import { Swords, Loader2 } from "lucide-react";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -33,7 +33,7 @@ export default function Register() {
     
     try {
       await register(email, password, username);
-      toast.success("Your hero has been created!");
+      toast.success("Your warrior has been created!");
       navigate("/");
     } catch (error) {
       toast.error(error.response?.data?.detail || "Failed to create account");
@@ -43,29 +43,29 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-[#09090b]" data-testid="register-page">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-[#050507]" data-testid="register-page">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-[#d4af37]/5 rounded-full blur-[120px]"></div>
+        <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-[#7c3aed]/8 rounded-full blur-[120px]"></div>
         <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-[#10b981]/5 rounded-full blur-[120px]"></div>
       </div>
       
-      <Card className="w-full max-w-sm bg-[#1c1c21]/90 border-[#2e2e33] backdrop-blur-xl relative z-10">
+      <Card className="w-full max-w-sm bg-[#111116]/90 border-[#252530] backdrop-blur-xl relative z-10">
         <CardHeader className="text-center space-y-3 pb-4">
           <div className="flex justify-center">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#d4af37] to-[#c9a227] flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-[#09090b]" />
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7c3aed] to-[#5b21b6] flex items-center justify-center shadow-lg shadow-[#7c3aed]/25">
+              <Swords className="w-7 h-7 text-white" />
             </div>
           </div>
-          <CardTitle className="text-2xl font-display font-bold text-white">Create Your Hero</CardTitle>
+          <CardTitle className="text-2xl font-display font-bold text-white">Create Your Warrior</CardTitle>
           <CardDescription className="text-[#71717a]">
-            Begin your fitness quest today
+            Begin your fitness conquest today
           </CardDescription>
         </CardHeader>
         
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <Label htmlFor="username" className="text-[#a1a1aa] text-sm">Hero Name</Label>
+              <Label htmlFor="username" className="text-[#a1a1aa] text-sm">Warrior Name</Label>
               <Input
                 id="username"
                 type="text"
@@ -73,7 +73,7 @@ export default function Register() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                className="bg-[#18181b] border-[#2e2e33] text-white placeholder:text-[#71717a] focus:border-[#d4af37] h-10"
+                className="bg-[#0c0c10] border-[#252530] text-white placeholder:text-[#71717a] focus:border-[#7c3aed] h-10"
                 data-testid="register-username-input"
               />
             </div>
@@ -83,11 +83,11 @@ export default function Register() {
               <Input
                 id="email"
                 type="email"
-                placeholder="hero@example.com"
+                placeholder="warrior@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="bg-[#18181b] border-[#2e2e33] text-white placeholder:text-[#71717a] focus:border-[#d4af37] h-10"
+                className="bg-[#0c0c10] border-[#252530] text-white placeholder:text-[#71717a] focus:border-[#7c3aed] h-10"
                 data-testid="register-email-input"
               />
             </div>
@@ -101,7 +101,7 @@ export default function Register() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="bg-[#18181b] border-[#2e2e33] text-white placeholder:text-[#71717a] focus:border-[#d4af37] h-10"
+                className="bg-[#0c0c10] border-[#252530] text-white placeholder:text-[#71717a] focus:border-[#7c3aed] h-10"
                 data-testid="register-password-input"
               />
               <p className="text-xs text-[#71717a]">Minimum 6 characters</p>
@@ -109,7 +109,7 @@ export default function Register() {
             
             <Button 
               type="submit" 
-              className="w-full bg-gradient-to-r from-[#d4af37] to-[#c9a227] text-[#09090b] hover:from-[#f0d77c] hover:to-[#d4af37] font-semibold h-10"
+              className="w-full bg-gradient-to-r from-[#7c3aed] to-[#5b21b6] text-white hover:from-[#8b5cf6] hover:to-[#7c3aed] font-semibold h-10"
               disabled={loading}
               data-testid="register-submit-btn"
             >
@@ -119,14 +119,14 @@ export default function Register() {
                   Creating...
                 </>
               ) : (
-                "Begin Your Journey"
+                "Begin Your Conquest"
               )}
             </Button>
           </form>
           
           <p className="text-center mt-5 text-[#71717a] text-sm">
-            Already a hero?{" "}
-            <Link to="/login" className="text-[#d4af37] hover:underline" data-testid="login-link">
+            Already a warrior?{" "}
+            <Link to="/login" className="text-[#a78bfa] hover:text-[#c4b5fd] hover:underline" data-testid="login-link">
               Return to the arena
             </Link>
           </p>

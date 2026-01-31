@@ -5,18 +5,20 @@
 @tailwind utilities;
 
 :root {
-    --accent-gold: #d4af37;
-    --accent-gold-light: #f0d77c;
+    --accent-purple: #7c3aed;
+    --accent-purple-light: #a78bfa;
+    --accent-purple-dark: #5b21b6;
+    --accent-violet: #8b5cf6;
     --accent-red: #ef4444;
     --accent-cyan: #06b6d4;
     --accent-green: #10b981;
-    --accent-purple: #8b5cf6;
-    --bg-primary: #09090b;
-    --bg-secondary: #18181b;
-    --bg-card: #1c1c21;
-    --bg-elevated: #27272a;
-    --border-subtle: #2e2e33;
-    --text-primary: #fafafa;
+    --accent-amber: #f59e0b;
+    --bg-primary: #050507;
+    --bg-secondary: #0c0c10;
+    --bg-card: #111116;
+    --bg-elevated: #1a1a22;
+    --border-subtle: #252530;
+    --text-primary: #f5f5f7;
     --text-secondary: #a1a1aa;
     --text-muted: #71717a;
 }
@@ -36,29 +38,29 @@ body {
 
 @layer base {
     :root {
-        --background: 240 10% 4%;
-        --foreground: 0 0% 98%;
-        --card: 240 6% 10%;
-        --card-foreground: 0 0% 98%;
-        --popover: 240 6% 10%;
-        --popover-foreground: 0 0% 98%;
-        --primary: 43 74% 52%;
-        --primary-foreground: 0 0% 5%;
-        --secondary: 240 5% 17%;
-        --secondary-foreground: 0 0% 98%;
-        --muted: 240 5% 17%;
+        --background: 260 20% 2%;
+        --foreground: 0 0% 96%;
+        --card: 260 15% 6%;
+        --card-foreground: 0 0% 96%;
+        --popover: 260 15% 6%;
+        --popover-foreground: 0 0% 96%;
+        --primary: 263 70% 58%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 260 15% 12%;
+        --secondary-foreground: 0 0% 96%;
+        --muted: 260 15% 12%;
         --muted-foreground: 240 5% 65%;
-        --accent: 43 74% 52%;
-        --accent-foreground: 0 0% 5%;
+        --accent: 263 70% 58%;
+        --accent-foreground: 0 0% 100%;
         --destructive: 0 84% 60%;
         --destructive-foreground: 0 0% 98%;
-        --border: 240 5% 20%;
-        --input: 240 5% 20%;
-        --ring: 43 74% 52%;
-        --chart-1: 43 74% 52%;
+        --border: 260 15% 16%;
+        --input: 260 15% 16%;
+        --ring: 263 70% 58%;
+        --chart-1: 263 70% 58%;
         --chart-2: 187 85% 43%;
         --chart-3: 0 84% 60%;
-        --chart-4: 263 70% 58%;
+        --chart-4: 45 93% 47%;
         --chart-5: 160 84% 39%;
         --radius: 0.75rem;
     }
@@ -75,7 +77,7 @@ body {
 
 /* Modern Card Styles */
 .card-glass {
-    background: linear-gradient(135deg, rgba(28, 28, 33, 0.8) 0%, rgba(24, 24, 27, 0.9) 100%);
+    background: linear-gradient(135deg, rgba(17, 17, 22, 0.9) 0%, rgba(12, 12, 16, 0.95) 100%);
     backdrop-filter: blur(20px);
     border: 1px solid var(--border-subtle);
     border-radius: 16px;
@@ -89,9 +91,9 @@ body {
 }
 
 .card-elevated:hover {
-    border-color: var(--accent-gold);
+    border-color: var(--accent-purple);
     transform: translateY(-2px);
-    box-shadow: 0 20px 40px -12px rgba(212, 175, 55, 0.15);
+    box-shadow: 0 20px 40px -12px rgba(124, 58, 237, 0.2);
 }
 
 /* XP Bar Modern */
@@ -104,7 +106,7 @@ body {
 }
 
 .xp-bar-fill {
-    background: linear-gradient(90deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%);
+    background: linear-gradient(90deg, var(--accent-purple-dark) 0%, var(--accent-purple) 50%, var(--accent-purple-light) 100%);
     height: 100%;
     border-radius: 12px;
     transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -149,13 +151,13 @@ body {
 
 /* Tempo Tracker Modern */
 .tempo-ring {
-    width: 80px;
-    height: 80px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 600;
     transition: all 0.3s ease;
     position: relative;
@@ -186,7 +188,7 @@ body {
 }
 
 .tempo-eccentric { color: var(--accent-red); background: rgba(239, 68, 68, 0.15); }
-.tempo-hold { color: var(--accent-gold); background: rgba(212, 175, 55, 0.15); }
+.tempo-hold { color: var(--accent-amber); background: rgba(245, 158, 11, 0.15); }
 .tempo-concentric { color: var(--accent-cyan); background: rgba(6, 182, 212, 0.15); }
 
 /* Quest Progress */
@@ -200,14 +202,14 @@ body {
 .quest-progress-fill {
     height: 100%;
     border-radius: 6px;
-    background: linear-gradient(90deg, var(--accent-purple), var(--accent-gold));
+    background: linear-gradient(90deg, var(--accent-purple-dark), var(--accent-purple-light));
     transition: width 0.4s ease;
 }
 
 /* Button Styles */
 .btn-primary {
-    background: linear-gradient(135deg, var(--accent-gold) 0%, #c9a227 100%);
-    color: var(--bg-primary);
+    background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-purple-dark) 100%);
+    color: white;
     font-weight: 600;
     padding: 12px 24px;
     border-radius: 12px;
@@ -217,20 +219,20 @@ body {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 24px -6px rgba(212, 175, 55, 0.4);
+    box-shadow: 0 12px 24px -6px rgba(124, 58, 237, 0.5);
 }
 
 .btn-secondary {
     background: transparent;
-    border: 1px solid var(--accent-gold);
-    color: var(--accent-gold);
+    border: 1px solid var(--accent-purple);
+    color: var(--accent-purple);
     padding: 12px 24px;
     border-radius: 12px;
     transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-    background: rgba(212, 175, 55, 0.1);
+    background: rgba(124, 58, 237, 0.1);
 }
 
 /* Achievement Badge */
@@ -243,7 +245,7 @@ body {
     position: absolute;
     inset: -2px;
     border-radius: inherit;
-    background: linear-gradient(135deg, var(--accent-gold), transparent);
+    background: linear-gradient(135deg, var(--accent-purple), transparent);
     opacity: 0.3;
     z-index: -1;
 }
@@ -264,13 +266,13 @@ body {
 }
 
 .import-zone:hover {
-    border-color: var(--accent-gold);
-    background: rgba(212, 175, 55, 0.05);
+    border-color: var(--accent-purple);
+    background: rgba(124, 58, 237, 0.05);
 }
 
 .import-zone.dragging {
-    border-color: var(--accent-gold);
-    background: rgba(212, 175, 55, 0.1);
+    border-color: var(--accent-purple);
+    background: rgba(124, 58, 237, 0.1);
     transform: scale(1.02);
 }
 
@@ -289,7 +291,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-gold);
+    background: var(--accent-purple);
 }
 
 /* Animations */
@@ -304,8 +306,8 @@ body {
 
 /* Level Badge */
 .level-badge {
-    background: linear-gradient(135deg, var(--accent-gold), #c9a227);
-    color: var(--bg-primary);
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-purple-dark));
+    color: white;
     font-weight: 700;
     border-radius: 50%;
     display: flex;
@@ -314,10 +316,21 @@ body {
 }
 
 /* Glow Effects */
-.glow-gold { text-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
+.glow-purple { text-shadow: 0 0 20px rgba(124, 58, 237, 0.5); }
 .glow-red { text-shadow: 0 0 20px rgba(239, 68, 68, 0.5); }
 .glow-cyan { text-shadow: 0 0 20px rgba(6, 182, 212, 0.5); }
 .glow-green { text-shadow: 0 0 20px rgba(16, 185, 129, 0.5); }
+
+/* Custom number input for decimals */
+input[type="number"].tempo-input {
+    -moz-appearance: textfield;
+}
+
+input[type="number"].tempo-input::-webkit-outer-spin-button,
+input[type="number"].tempo-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 
 @layer base {
     [data-debug-wrapper="true"] {
