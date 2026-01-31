@@ -133,6 +133,15 @@ body {
     100% { left: 100%; }
 }
 
+@keyframes animate-shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+    animation: animate-shimmer 2s infinite;
+}
+
 /* Stat Colors - Keep distinct for clarity */
 .stat-strength { color: var(--accent-red); }
 .stat-endurance { color: var(--accent-cyan); }
