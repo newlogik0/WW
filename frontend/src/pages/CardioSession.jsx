@@ -239,22 +239,22 @@ export default function CardioSession() {
         </div>
 
         {/* Activity Selection */}
-        <Card className="bg-[#12121a] border-[#2a2a3a] mb-6">
-          <CardHeader>
-            <CardTitle className="text-lg font-cinzel text-white">Activity</CardTitle>
+        <Card className="bg-[#0a0a10] border-[#1a1a28] mb-4">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-display text-white">Activity</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {CARDIO_ACTIVITIES.map((act) => {
                 const Icon = act.icon;
                 return (
                   <button
                     key={act.value}
                     onClick={() => setActivity(act.value)}
-                    className={`p-4 rounded-lg border transition-all ${
+                    className={`p-3 rounded-lg border transition-all ${
                       activity === act.value
-                        ? "bg-[#22d3d3]/20 border-[#22d3d3] text-[#22d3d3]"
-                        : "bg-[#1a1a25] border-[#2a2a3a] text-gray-400 hover:border-[#22d3d3]/50"
+                        ? "bg-[#06b6d4]/20 border-[#06b6d4] text-[#06b6d4]"
+                        : "bg-[#06060a] border-[#1a1a28] text-[#a8a8b8] hover:border-[#06b6d4]/50"
                     }`}
                     data-testid={`activity-${act.value}`}
                   >
@@ -268,23 +268,23 @@ export default function CardioSession() {
         </Card>
 
         {/* Duration & Distance */}
-        <Card className="bg-[#12121a] border-[#2a2a3a] mb-6">
-          <CardHeader>
-            <CardTitle className="text-lg font-cinzel text-white">Details</CardTitle>
+        <Card className="bg-[#0a0a10] border-[#1a1a28] mb-4">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-display text-white">Details</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-4">
             <div>
-              <Label className="text-gray-400 flex items-center gap-2 mb-2">
-                <Timer className="w-4 h-4" />
+              <Label className="text-[#68687a] text-xs flex items-center gap-2 mb-2">
+                <Timer className="w-3 h-3" />
                 Duration (minutes)
               </Label>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <Input
                   type="number"
                   min="1"
                   value={duration}
                   onChange={(e) => setDuration(Number(e.target.value))}
-                  className="bg-[#1a1a25] border-[#2a2a3a] text-white text-center text-2xl w-32"
+                  className="bg-[#06060a] border-[#1a1a28] text-white text-center text-xl w-24 h-9"
                   data-testid="cardio-duration"
                 />
                 <div className="flex gap-2">
@@ -294,10 +294,10 @@ export default function CardioSession() {
                       variant="outline"
                       size="sm"
                       onClick={() => setDuration(mins)}
-                      className={`${
+                      className={`h-8 ${
                         duration === mins 
-                          ? "bg-[#22d3d3]/20 border-[#22d3d3] text-[#22d3d3]" 
-                          : "border-[#2a2a3a] text-gray-400"
+                          ? "bg-[#06b6d4]/20 border-[#06b6d4] text-[#06b6d4]" 
+                          : "border-[#1a1a28] text-[#68687a] hover:border-[#06b6d4]/50"
                       }`}
                     >
                       {mins}m
@@ -308,8 +308,8 @@ export default function CardioSession() {
             </div>
             
             <div>
-              <Label className="text-gray-400 flex items-center gap-2 mb-2">
-                <MapPin className="w-4 h-4" />
+              <Label className="text-[#68687a] text-xs flex items-center gap-2 mb-2">
+                <MapPin className="w-3 h-3" />
                 Distance (km) - optional
               </Label>
               <Input
@@ -319,22 +319,36 @@ export default function CardioSession() {
                 value={distance}
                 onChange={(e) => setDistance(e.target.value)}
                 placeholder="e.g., 5.0"
-                className="bg-[#1a1a25] border-[#2a2a3a] text-white max-w-xs"
+                className="bg-[#06060a] border-[#1a1a28] text-white max-w-xs h-9"
                 data-testid="cardio-distance"
               />
+            </div>
+
+            {/* Start/Stop Training Button */}
+            <div className="pt-2">
+              <Button
+                variant={isTraining ? "outline" : "default"}
+                className={isTraining 
+                  ? "w-full border-[#ef4444] text-[#ef4444] hover:bg-[#ef4444]/10 h-10" 
+                  : "w-full bg-[#06b6d4]/20 text-[#06b6d4] border border-[#06b6d4] hover:bg-[#06b6d4]/30 h-10"
+                }
+                onClick={() => setIsTraining(!isTraining)}
+              >
+                {isTraining ? "Stop Training" : "Start Training"}
+              </Button>
             </div>
           </CardContent>
         </Card>
 
         {/* Notes */}
-        <Card className="bg-[#12121a] border-[#2a2a3a] mb-6">
-          <CardContent className="pt-6">
-            <Label className="text-gray-400">Notes (optional)</Label>
+        <Card className="bg-[#0a0a10] border-[#1a1a28] mb-4">
+          <CardContent className="pt-4">
+            <Label className="text-[#68687a] text-xs">Notes (optional)</Label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="How did the workout feel?"
-              className="w-full mt-2 p-3 bg-[#1a1a25] border border-[#2a2a3a] rounded-lg text-white placeholder:text-gray-500 focus:outline-none focus:border-[#22d3d3] min-h-[100px]"
+              className="w-full mt-1.5 p-3 bg-[#06060a] border border-[#1a1a28] rounded-lg text-white placeholder:text-[#68687a] text-sm focus:outline-none focus:border-[#06b6d4] min-h-[80px] resize-none"
               data-testid="cardio-notes"
             />
           </CardContent>
@@ -344,17 +358,17 @@ export default function CardioSession() {
         <Button
           onClick={handleSubmit}
           disabled={loading || !activity}
-          className="w-full bg-gradient-to-r from-[#22d3d3] to-[#0891b2] hover:from-[#5eead4] hover:to-[#22d3d3] text-[#0a0a0f] font-semibold py-6 text-lg"
+          className="w-full bg-gradient-to-r from-[#06b6d4] to-[#0891b2] hover:from-[#22d3ee] hover:to-[#06b6d4] text-white font-semibold h-12"
           data-testid="complete-cardio-btn"
         >
           {loading ? (
             <>
-              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               Saving...
             </>
           ) : (
             <>
-              <Flame className="w-5 h-5 mr-2" />
+              <Flame className="w-4 h-4 mr-2" />
               Complete Cardio
             </>
           )}
