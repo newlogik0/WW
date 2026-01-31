@@ -675,16 +675,19 @@ async def import_training_plan(
             {
                 "plan_name": "Name of the training plan or 'Imported Plan'",
                 "exercises": [
-                    {"name": "Exercise Name", "sets": 3, "reps": 10, "weight": 0, "notes": "any notes"},
+                    {"name": "Exercise Name", "sets": 3, "reps": "8-12", "weight": 0, "notes": "any notes"},
                     ...
                 ]
             }
             
-            Rules:
+            IMPORTANT RULES:
             - Extract all exercises you can find
-            - Use standard exercise names (e.g., "Bench Press", "Squat", "Deadlift")
-            - If sets/reps are not specified, use reasonable defaults (3 sets, 10 reps)
+            - Use standard exercise names (e.g., "Bench Press", "Incline Bench Press", "Squat", "Deadlift")
+            - PRESERVE REP RANGES: If the plan shows "8-12" or "10-15" reps, keep the FULL range as a string like "8-12", do NOT simplify to just one number
+            - For sets, use the exact number shown (e.g., 4 sets = 4)
+            - Format examples: "4x8-12" means sets: 4, reps: "8-12" | "3x10" means sets: 3, reps: "10"
             - Weight should be in kg, use 0 if not specified
+            - If sets/reps are not specified at all, use reasonable defaults (3 sets, "10" reps)
             - Return ONLY the JSON, no other text"""
         ).with_model("gemini", "gemini-2.5-flash")
         
