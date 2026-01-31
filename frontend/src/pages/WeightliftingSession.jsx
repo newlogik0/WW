@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
 import { 
   Dumbbell, 
   Plus, 
@@ -20,25 +21,60 @@ import {
   Check,
   Loader2,
   Upload,
-  FileText
+  FileText,
+  Volume2,
+  VolumeX
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 
 const COMMON_EXERCISES = [
   "Bench Press", "Squat", "Deadlift", "Overhead Press", "Barbell Row",
   "Bicep Curl", "Tricep Extension", "Lat Pulldown", "Leg Press", "Lunges",
-  "Pull Up", "Push Up", "Dumbbell Fly", "Shoulder Press", "Romanian Deadlift"
+  "Pull Up", "Push Up", "Dumbbell Fly", "Shoulder Press", "Romanian Deadlift",
+  "Incline Bench Press", "Cable Fly", "Leg Curl", "Leg Extension", "Calf Raise"
 ];
 
-// Tempo Tracker Component - Fully customizable with decimal support
+// Speech synthesis for voice guidance
+const speak = (text, rate = 1.2) => {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = rate;
+    utterance.pitch = 0.9;
+    utterance.volume = 0.8;
+    window.speechSynthesis.speak(utterance);
+  }
+};
+
+// Audio beep generator
+const playTone = (frequency = 800, duration = 100, volume = 0.3) => {
+  try {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    oscillator.frequency.value = frequency;
+    gainNode.gain.value = volume;
+    oscillator.start();
+    setTimeout(() => {
+      oscillator.stop();
+      audioContext.close();
+    }, duration);
+  } catch (e) {}
+};
+
+// Sound-Guided Tempo Tracker Component
 const TempoTracker = ({ onComplete }) => {
   const [isRunning, setIsRunning] = useState(false);
   const [phase, setPhase] = useState("ready");
   const [timer, setTimer] = useState(0);
   const [repCount, setRepCount] = useState(0);
   const [expanded, setExpanded] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [voiceEnabled, setVoiceEnabled] = useState(true);
   
-  // Default: 1s lower, 2s hold, 1s lift - fully customizable with decimals
+  // Default: 1s lower, 2s hold, 1s lift
   const [eccentricTime, setEccentricTime] = useState(1);
   const [holdTime, setHoldTime] = useState(2);
   const [concentricTime, setConcentricTime] = useState(1);
@@ -47,28 +83,26 @@ const TempoTracker = ({ onComplete }) => {
   const phaseRef = useRef(phase);
   const timerRef = useRef(timer);
 
-  // Keep refs in sync
   useEffect(() => {
     phaseRef.current = phase;
     timerRef.current = timer;
   }, [phase, timer]);
 
-  const playBeep = useCallback(() => {
-    try {
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-      oscillator.frequency.value = 880;
-      gainNode.gain.value = 0.2;
-      oscillator.start();
-      setTimeout(() => {
-        oscillator.stop();
-        audioContext.close();
-      }, 80);
-    } catch (e) {}
-  }, []);
+  const announcePhase = useCallback((phaseName, isRepComplete = false) => {
+    if (soundEnabled) {
+      if (phaseName === "lower") playTone(600, 150, 0.3);
+      else if (phaseName === "hold") playTone(800, 150, 0.3);
+      else if (phaseName === "lift") playTone(1000, 150, 0.3);
+    }
+    
+    if (voiceEnabled) {
+      if (isRepComplete) {
+        speak(`${repCount + 1}`, 1.5);
+      } else {
+        speak(phaseName, 1.3);
+      }
+    }
+  }, [soundEnabled, voiceEnabled, repCount]);
 
   const stopTimer = useCallback(() => {
     if (intervalRef.current) {
@@ -92,19 +126,20 @@ const TempoTracker = ({ onComplete }) => {
         else return prev;
         
         if (newTime >= targetTime) {
-          // Transition to next phase
           if (currentPhase === "eccentric") {
             setPhase("hold");
-            playBeep();
+            announcePhase("hold");
             return 0;
           } else if (currentPhase === "hold") {
             setPhase("concentric");
-            playBeep();
+            announcePhase("lift");
             return 0;
           } else if (currentPhase === "concentric") {
             setPhase("eccentric");
-            setRepCount(r => r + 1);
-            playBeep();
+            setRepCount(r => {
+              announcePhase("lower", true);
+              return r + 1;
+            });
             return 0;
           }
         }
@@ -112,20 +147,21 @@ const TempoTracker = ({ onComplete }) => {
         return newTime;
       });
     }, 50);
-  }, [eccentricTime, holdTime, concentricTime, playBeep, stopTimer]);
+  }, [eccentricTime, holdTime, concentricTime, announcePhase, stopTimer]);
 
   const startTimer = useCallback(() => {
     setIsRunning(true);
     setPhase("eccentric");
     setTimer(0);
-    playBeep();
+    announcePhase("lower");
     setTimeout(() => runTimer(), 50);
-  }, [playBeep, runTimer]);
+  }, [announcePhase, runTimer]);
 
   const pauseTimer = useCallback(() => {
     setIsRunning(false);
     stopTimer();
-  }, [stopTimer]);
+    if (voiceEnabled) speak("paused", 1.2);
+  }, [stopTimer, voiceEnabled]);
 
   const resetTimer = useCallback(() => {
     setIsRunning(false);
@@ -137,16 +173,17 @@ const TempoTracker = ({ onComplete }) => {
 
   const finishSet = useCallback(() => {
     pauseTimer();
+    if (voiceEnabled && repCount > 0) speak(`Set complete. ${repCount} reps.`, 1.0);
     if (onComplete && repCount > 0) onComplete(repCount);
     resetTimer();
-  }, [pauseTimer, onComplete, repCount, resetTimer]);
+  }, [pauseTimer, onComplete, repCount, resetTimer, voiceEnabled]);
 
   const resumeTimer = useCallback(() => {
     setIsRunning(true);
+    if (voiceEnabled) speak("resume", 1.2);
     runTimer();
-  }, [runTimer]);
+  }, [runTimer, voiceEnabled]);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => stopTimer();
   }, [stopTimer]);
@@ -156,8 +193,8 @@ const TempoTracker = ({ onComplete }) => {
     if (phase === "eccentric") target = eccentricTime;
     else if (phase === "hold") target = holdTime;
     else if (phase === "concentric") target = concentricTime;
-    else return "0.00";
-    return Math.max(0, target - timer).toFixed(2);
+    else return "0.0";
+    return Math.max(0, target - timer).toFixed(1);
   };
 
   const handleTimeChange = (setter) => (e) => {
@@ -168,12 +205,13 @@ const TempoTracker = ({ onComplete }) => {
   };
 
   return (
-    <Card className="bg-[#0c0c12] border-[#1e1e2e]" data-testid="tempo-tracker">
+    <Card className="bg-[#0a0a10] border-[#1a1a28]" data-testid="tempo-tracker">
       <CardHeader className="pb-2 cursor-pointer" onClick={() => setExpanded(!expanded)}>
         <CardTitle className="text-sm font-display text-white flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Timer className="w-4 h-4 text-[#8b5cf6]" />
-            Rep Counter
+            <Timer className="w-4 h-4 text-[#a78bfa]" />
+            Sound-Guided Rep Counter
+            {soundEnabled && <Volume2 className="w-3 h-3 text-[#7c3aed]" />}
           </div>
           {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
         </CardTitle>
@@ -181,41 +219,68 @@ const TempoTracker = ({ onComplete }) => {
       
       {expanded && (
         <CardContent className="space-y-5">
-          {/* Tempo Settings - Fully customizable */}
+          {/* Sound Controls */}
+          <div className="flex items-center justify-between p-3 bg-[#06060a] rounded-lg">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={soundEnabled}
+                  onCheckedChange={setSoundEnabled}
+                  className="data-[state=checked]:bg-[#7c3aed]"
+                />
+                <Label className="text-xs text-[#a8a8b8]">Beeps</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={voiceEnabled}
+                  onCheckedChange={setVoiceEnabled}
+                  className="data-[state=checked]:bg-[#7c3aed]"
+                />
+                <Label className="text-xs text-[#a8a8b8]">Voice</Label>
+              </div>
+            </div>
+            {(soundEnabled || voiceEnabled) && (
+              <div className="sound-wave">
+                <span></span><span></span><span></span><span></span>
+              </div>
+            )}
+          </div>
+
+          {/* Tempo Settings */}
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <Label className="text-xs text-[#71717a] mb-1 block">Lower (s)</Label>
+              <Label className="text-xs text-[#68687a] mb-1 block">Lower (s)</Label>
               <Input
                 type="number"
                 min="0"
-                step="0.001"
+                step="0.1"
                 value={eccentricTime}
                 onChange={handleTimeChange(setEccentricTime)}
-                className="bg-[#08080c] border-[#ef4444]/30 text-white text-center h-9 tempo-input"
+                className="bg-[#06060a] border-[#7c3aed]/30 text-white text-center h-9 tempo-input"
                 disabled={isRunning}
               />
             </div>
             <div>
-              <Label className="text-xs text-[#71717a] mb-1 block">Hold (s)</Label>
+              <Label className="text-xs text-[#68687a] mb-1 block">Hold (s)</Label>
               <Input
                 type="number"
                 min="0"
-                step="0.001"
+                step="0.1"
                 value={holdTime}
                 onChange={handleTimeChange(setHoldTime)}
-                className="bg-[#08080c] border-[#f59e0b]/30 text-white text-center h-9 tempo-input"
+                className="bg-[#06060a] border-[#8b5cf6]/30 text-white text-center h-9 tempo-input"
                 disabled={isRunning}
               />
             </div>
             <div>
-              <Label className="text-xs text-[#71717a] mb-1 block">Lift (s)</Label>
+              <Label className="text-xs text-[#68687a] mb-1 block">Lift (s)</Label>
               <Input
                 type="number"
                 min="0"
-                step="0.001"
+                step="0.1"
                 value={concentricTime}
                 onChange={handleTimeChange(setConcentricTime)}
-                className="bg-[#08080c] border-[#06b6d4]/30 text-white text-center h-9 tempo-input"
+                className="bg-[#06060a] border-[#a78bfa]/30 text-white text-center h-9 tempo-input"
                 disabled={isRunning}
               />
             </div>
@@ -223,13 +288,13 @@ const TempoTracker = ({ onComplete }) => {
 
           {/* Visual Rings */}
           <div className="flex justify-center items-center gap-4">
-            <div className={`tempo-ring tempo-eccentric ${phase === 'eccentric' ? 'active' : ''}`}>
+            <div className={`tempo-ring ${phase === 'eccentric' ? 'active tempo-lower' : ''}`}>
               {phase === 'eccentric' ? getTimeRemaining() : eccentricTime}
             </div>
-            <div className={`tempo-ring tempo-hold ${phase === 'hold' ? 'active' : ''}`}>
+            <div className={`tempo-ring ${phase === 'hold' ? 'active tempo-hold' : ''}`}>
               {phase === 'hold' ? getTimeRemaining() : holdTime}
             </div>
-            <div className={`tempo-ring tempo-concentric ${phase === 'concentric' ? 'active' : ''}`}>
+            <div className={`tempo-ring ${phase === 'concentric' ? 'active tempo-lift' : ''}`}>
               {phase === 'concentric' ? getTimeRemaining() : concentricTime}
             </div>
           </div>
@@ -237,14 +302,12 @@ const TempoTracker = ({ onComplete }) => {
           {/* Phase & Reps */}
           <div className="text-center">
             <p className={`text-2xl font-display font-bold ${
-              phase === 'eccentric' ? 'text-[#ef4444]' : 
-              phase === 'hold' ? 'text-[#f59e0b]' : 
-              phase === 'concentric' ? 'text-[#06b6d4]' : 'text-[#71717a]'
+              phase === 'ready' ? 'text-[#68687a]' : 'text-[#a78bfa]'
             }`}>
               {phase === 'ready' ? 'READY' : phase === 'eccentric' ? 'LOWER' : phase === 'hold' ? 'HOLD' : 'LIFT'}
             </p>
-            <p className="text-[#a1a1aa] mt-1">
-              Reps: <span className="text-[#a78bfa] font-bold text-xl">{repCount}</span>
+            <p className="text-[#a8a8b8] mt-1">
+              Reps: <span className="text-[#c4b5fd] font-bold text-2xl">{repCount}</span>
             </p>
           </div>
 
@@ -253,7 +316,7 @@ const TempoTracker = ({ onComplete }) => {
             {!isRunning && phase === "ready" && (
               <Button
                 onClick={startTimer}
-                className="bg-[#10b981] hover:bg-[#059669] text-white"
+                className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white"
                 data-testid="tempo-start-btn"
               >
                 <Play className="w-4 h-4 mr-2" />
@@ -261,20 +324,20 @@ const TempoTracker = ({ onComplete }) => {
               </Button>
             )}
             {isRunning && (
-              <Button onClick={pauseTimer} className="bg-[#f59e0b] hover:bg-[#d97706] text-black">
+              <Button onClick={pauseTimer} className="bg-[#5b21b6] hover:bg-[#4c1d95] text-white">
                 <Pause className="w-4 h-4 mr-2" />
                 Pause
               </Button>
             )}
             {!isRunning && phase !== "ready" && (
-              <Button onClick={resumeTimer} className="bg-[#10b981] hover:bg-[#059669] text-white">
+              <Button onClick={resumeTimer} className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white">
                 <Play className="w-4 h-4 mr-2" />
                 Resume
               </Button>
             )}
             {phase !== "ready" && (
               <>
-                <Button onClick={resetTimer} variant="outline" className="border-[#1e1e2e] text-[#a1a1aa]">
+                <Button onClick={resetTimer} variant="outline" className="border-[#1a1a28] text-[#a8a8b8] hover:bg-[#1a1a28]">
                   <RotateCcw className="w-4 h-4 mr-2" />
                   Reset
                 </Button>
@@ -301,7 +364,6 @@ export default function WeightliftingSession() {
   const [loading, setLoading] = useState(false);
   const [activePlan, setActivePlan] = useState(null);
 
-  // Load active plan on mount
   useEffect(() => {
     const loadPlan = async () => {
       try {
@@ -377,13 +439,13 @@ export default function WeightliftingSession() {
   };
 
   return (
-    <div className="min-h-screen bg-[#030304]" data-testid="weightlifting-session-page">
+    <div className="min-h-screen bg-[#020204]" data-testid="weightlifting-session-page">
       <Navbar />
       
       <main className="max-w-3xl mx-auto px-4 py-6">
         <Button 
           variant="ghost" 
-          className="text-[#a1a1aa] hover:text-white mb-4 h-8 px-2"
+          className="text-[#a8a8b8] hover:text-white mb-4 h-8 px-2"
           onClick={() => navigate("/")}
         >
           <ArrowLeft className="w-4 h-4 mr-1" />
@@ -391,53 +453,50 @@ export default function WeightliftingSession() {
         </Button>
         
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-11 h-11 rounded-xl bg-[#ef4444]/15 flex items-center justify-center">
-            <Dumbbell className="w-5 h-5 text-[#ef4444]" />
+          <div className="w-11 h-11 rounded-xl bg-[#7c3aed]/20 flex items-center justify-center">
+            <Dumbbell className="w-5 h-5 text-[#a78bfa]" />
           </div>
           <div>
             <h1 className="text-xl font-display font-bold text-white">Weightlifting</h1>
-            <p className="text-[#71717a] text-sm">Build strength and earn XP</p>
+            <p className="text-[#68687a] text-sm">Build strength and earn XP</p>
           </div>
           
           <Button
             variant="outline"
             size="sm"
-            className="ml-auto border-[#6d28d9] text-[#a78bfa] hover:bg-[#6d28d9]/10"
+            className="ml-auto border-[#7c3aed]/50 text-[#a78bfa] hover:bg-[#7c3aed]/10"
             onClick={() => navigate("/plans")}
           >
             <Upload className="w-4 h-4 mr-1" />
-            Import Plan
+            Import
           </Button>
         </div>
 
-        {/* Active Plan Notice */}
         {activePlan && (
-          <div className="flex items-center gap-2 mb-4 p-3 bg-[#6d28d9]/10 border border-[#6d28d9]/30 rounded-lg">
+          <div className="flex items-center gap-2 mb-4 p-3 bg-[#7c3aed]/10 border border-[#7c3aed]/30 rounded-lg">
             <FileText className="w-4 h-4 text-[#a78bfa]" />
-            <span className="text-sm text-[#a78bfa]">Using plan: {activePlan.name}</span>
+            <span className="text-sm text-[#a78bfa]">Using: {activePlan.name}</span>
           </div>
         )}
 
-        {/* Tempo Tracker */}
         <div className="mb-4">
           <TempoTracker onComplete={handleTempoComplete} />
         </div>
 
-        {/* Exercises */}
-        <Card className="bg-[#0c0c12] border-[#1e1e2e] mb-4">
+        <Card className="bg-[#0a0a10] border-[#1a1a28] mb-4">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-display text-white">Exercises</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {exercises.map((exercise, index) => (
-              <div key={index} className="p-3 bg-[#08080c] rounded-lg space-y-3" data-testid={`exercise-${index}`}>
+              <div key={index} className="p-3 bg-[#06060a] rounded-lg space-y-3" data-testid={`exercise-${index}`}>
                 <div className="flex items-center justify-between">
-                  <span className="text-[#71717a] text-xs">Exercise {index + 1}</span>
+                  <span className="text-[#68687a] text-xs">Exercise {index + 1}</span>
                   {exercises.length > 1 && (
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-6 w-6 p-0 text-[#ef4444] hover:bg-[#ef4444]/10"
+                      className="h-6 w-6 p-0 text-[#f87171] hover:bg-[#f87171]/10"
                       onClick={() => removeExercise(index)}
                     >
                       <Trash2 className="w-3 h-3" />
@@ -447,11 +506,11 @@ export default function WeightliftingSession() {
                 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <Label className="text-xs text-[#71717a]">Exercise</Label>
+                    <Label className="text-xs text-[#68687a]">Exercise</Label>
                     <select
                       value={exercise.name}
                       onChange={(e) => updateExercise(index, "name", e.target.value)}
-                      className="w-full h-9 px-3 bg-[#030304] border border-[#1e1e2e] rounded-md text-white text-sm focus:outline-none focus:border-[#6d28d9]"
+                      className="w-full h-9 px-3 bg-[#020204] border border-[#1a1a28] rounded-md text-white text-sm focus:outline-none focus:border-[#7c3aed]"
                       data-testid={`exercise-select-${index}`}
                     >
                       <option value="">Select</option>
@@ -461,13 +520,13 @@ export default function WeightliftingSession() {
                     </select>
                   </div>
                   <div>
-                    <Label className="text-xs text-[#71717a]">Weight (kg)</Label>
+                    <Label className="text-xs text-[#68687a]">Weight (kg)</Label>
                     <Input
                       type="number"
                       min="0"
                       value={exercise.weight}
                       onChange={(e) => updateExercise(index, "weight", Number(e.target.value))}
-                      className="bg-[#030304] border-[#1e1e2e] text-white h-9"
+                      className="bg-[#020204] border-[#1a1a28] text-white h-9"
                       data-testid={`exercise-weight-${index}`}
                     />
                   </div>
@@ -475,24 +534,24 @@ export default function WeightliftingSession() {
                 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <Label className="text-xs text-[#71717a]">Sets</Label>
+                    <Label className="text-xs text-[#68687a]">Sets</Label>
                     <Input
                       type="number"
                       min="1"
                       value={exercise.sets}
                       onChange={(e) => updateExercise(index, "sets", Number(e.target.value))}
-                      className="bg-[#030304] border-[#1e1e2e] text-white h-9"
+                      className="bg-[#020204] border-[#1a1a28] text-white h-9"
                       data-testid={`exercise-sets-${index}`}
                     />
                   </div>
                   <div>
-                    <Label className="text-xs text-[#71717a]">Reps</Label>
+                    <Label className="text-xs text-[#68687a]">Reps</Label>
                     <Input
                       type="text"
                       value={exercise.reps}
                       onChange={(e) => updateExercise(index, "reps", e.target.value)}
                       placeholder="10 or 8-12"
-                      className="bg-[#030304] border-[#1e1e2e] text-white h-9"
+                      className="bg-[#020204] border-[#1a1a28] text-white h-9"
                       data-testid={`exercise-reps-${index}`}
                     />
                   </div>
@@ -502,7 +561,7 @@ export default function WeightliftingSession() {
             
             <Button
               variant="outline"
-              className="w-full border-dashed border-[#1e1e2e] text-[#71717a] hover:text-white hover:border-[#6d28d9] h-9"
+              className="w-full border-dashed border-[#1a1a28] text-[#68687a] hover:text-white hover:border-[#7c3aed] h-9"
               onClick={addExercise}
               data-testid="add-exercise-btn"
             >
@@ -512,25 +571,23 @@ export default function WeightliftingSession() {
           </CardContent>
         </Card>
 
-        {/* Notes */}
-        <Card className="bg-[#0c0c12] border-[#1e1e2e] mb-4">
+        <Card className="bg-[#0a0a10] border-[#1a1a28] mb-4">
           <CardContent className="pt-4">
-            <Label className="text-xs text-[#71717a]">Notes (optional)</Label>
+            <Label className="text-xs text-[#68687a]">Notes (optional)</Label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="How did the workout feel?"
-              className="w-full mt-1.5 p-3 bg-[#08080c] border border-[#1e1e2e] rounded-lg text-white placeholder:text-[#71717a] text-sm focus:outline-none focus:border-[#6d28d9] min-h-[80px] resize-none"
+              className="w-full mt-1.5 p-3 bg-[#06060a] border border-[#1a1a28] rounded-lg text-white placeholder:text-[#68687a] text-sm focus:outline-none focus:border-[#7c3aed] min-h-[80px] resize-none"
               data-testid="workout-notes"
             />
           </CardContent>
         </Card>
 
-        {/* Submit */}
         <Button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full bg-gradient-to-r from-[#ef4444] to-[#dc2626] hover:from-[#f87171] hover:to-[#ef4444] text-white font-semibold h-12"
+          className="w-full bg-gradient-to-r from-[#7c3aed] to-[#5b21b6] hover:from-[#8b5cf6] hover:to-[#6d28d9] text-white font-semibold h-12"
           data-testid="complete-workout-btn"
         >
           {loading ? (
