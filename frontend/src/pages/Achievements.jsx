@@ -58,23 +58,23 @@ export default function Achievements() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f]">
+      <div className="min-h-screen bg-[#030304]">
         <Navbar />
         <div className="flex items-center justify-center h-[80vh]">
-          <div className="w-12 h-12 border-4 border-[#ffd700] border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-12 h-12 border-4 border-[#8b5cf6] border-t-transparent rounded-full animate-spin"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f]" data-testid="achievements-page">
+    <div className="min-h-screen bg-[#030304]" data-testid="achievements-page">
       <Navbar />
       
       <main className="max-w-6xl mx-auto px-4 py-8">
         <Button 
           variant="ghost" 
-          className="text-gray-400 hover:text-white mb-6"
+          className="text-[#a1a1aa] hover:text-white mb-6"
           onClick={() => navigate("/")}
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
@@ -83,19 +83,19 @@ export default function Achievements() {
         
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-xl bg-[#ffd700]/20 flex items-center justify-center">
-              <Trophy className="w-7 h-7 text-[#ffd700]" />
+            <div className="w-14 h-14 rounded-xl bg-[#8b5cf6]/20 flex items-center justify-center">
+              <Trophy className="w-7 h-7 text-[#8b5cf6]" />
             </div>
             <div>
-              <h1 className="text-2xl font-cinzel text-[#ffd700]">Achievements</h1>
-              <p className="text-gray-400">Your legendary accomplishments</p>
+              <h1 className="text-2xl font-display text-[#a78bfa]">Achievements</h1>
+              <p className="text-[#a1a1aa]">Your legendary accomplishments</p>
             </div>
           </div>
           <div className="text-right">
-            <p className="text-3xl font-bold text-[#ffd700]" data-testid="achievement-count">
+            <p className="text-3xl font-bold text-[#a78bfa]" data-testid="achievement-count">
               {unlockedCount}/{achievements.length}
             </p>
-            <p className="text-gray-400 text-sm">Unlocked</p>
+            <p className="text-[#a1a1aa] text-sm">Unlocked</p>
           </div>
         </div>
 
@@ -108,8 +108,8 @@ export default function Achievements() {
                 key={achievement.id}
                 className={`transition-all ${
                   achievement.unlocked 
-                    ? "bg-gradient-to-br from-[#12121a] to-[#1a1a25] border-[#ffd700]/50 hover:border-[#ffd700]" 
-                    : "bg-[#12121a]/50 border-[#2a2a3a] opacity-60"
+                    ? "bg-gradient-to-br from-[#0c0c12] to-[#14141e] border-[#8b5cf6]/50 hover:border-[#a78bfa]" 
+                    : "bg-[#0c0c12]/50 border-[#1e1e2e] opacity-60"
                 }`}
                 data-testid={`achievement-${achievement.id}`}
               >
@@ -117,16 +117,16 @@ export default function Achievements() {
                   <div className="flex items-start gap-4">
                     <div className={`w-16 h-16 rounded-xl flex items-center justify-center relative ${
                       achievement.unlocked 
-                        ? "bg-[#ffd700]/20" 
-                        : "bg-[#2a2a3a]/50"
+                        ? "bg-[#8b5cf6]/20" 
+                        : "bg-[#1e1e2e]/50"
                     }`}>
                       {achievement.unlocked ? (
-                        <Icon className="w-8 h-8 text-[#ffd700]" />
+                        <Icon className="w-8 h-8 text-[#a78bfa]" />
                       ) : (
-                        <Lock className="w-8 h-8 text-gray-600" />
+                        <Lock className="w-8 h-8 text-[#52525b]" />
                       )}
                       {achievement.unlocked && (
-                        <div className="absolute -top-1 -right-1 w-6 h-6 bg-[#22c55e] rounded-full flex items-center justify-center">
+                        <div className="absolute -top-1 -right-1 w-6 h-6 bg-[#4ade80] rounded-full flex items-center justify-center">
                           <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                           </svg>
@@ -134,27 +134,27 @@ export default function Achievements() {
                       )}
                     </div>
                     <div className="flex-1">
-                      <h3 className={`font-cinzel text-lg mb-1 ${
-                        achievement.unlocked ? "text-white" : "text-gray-500"
+                      <h3 className={`font-display text-lg mb-1 ${
+                        achievement.unlocked ? "text-white" : "text-[#71717a]"
                       }`}>
                         {achievement.name}
                       </h3>
                       <p className={`text-sm mb-2 ${
-                        achievement.unlocked ? "text-gray-400" : "text-gray-600"
+                        achievement.unlocked ? "text-[#a1a1aa]" : "text-[#52525b]"
                       }`}>
                         {achievement.description}
                       </p>
                       <div className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs ${
                         achievement.unlocked 
-                          ? "bg-[#ffd700]/20 text-[#ffd700]" 
-                          : "bg-[#2a2a3a]/50 text-gray-500"
+                          ? "bg-[#8b5cf6]/20 text-[#a78bfa]" 
+                          : "bg-[#1e1e2e]/50 text-[#71717a]"
                       }`}>
                         +{achievement.xp_reward} XP
                       </div>
                     </div>
                   </div>
                   {achievement.unlocked && achievement.unlocked_at && (
-                    <p className="text-xs text-gray-500 mt-4 text-right">
+                    <p className="text-xs text-[#71717a] mt-4 text-right">
                       Unlocked {new Date(achievement.unlocked_at).toLocaleDateString()}
                     </p>
                   )}
