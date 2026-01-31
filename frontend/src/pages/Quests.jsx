@@ -95,20 +95,20 @@ export default function Quests() {
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
                 {quest.completed && (
-                  <div className="w-5 h-5 bg-[#22c55e] rounded-full flex items-center justify-center">
+                  <div className="w-5 h-5 bg-[#4ade80] rounded-full flex items-center justify-center">
                     <Check className="w-3 h-3 text-white" />
                   </div>
                 )}
-                <h3 className={`font-cinzel text-lg ${
-                  quest.completed ? "text-[#22c55e]" : "text-white"
+                <h3 className={`font-display text-lg ${
+                  quest.completed ? "text-[#4ade80]" : "text-white"
                 }`}>
                   {quest.name}
                 </h3>
               </div>
-              <p className="text-gray-400 text-sm">{quest.description}</p>
+              <p className="text-[#a1a1aa] text-sm">{quest.description}</p>
             </div>
             <div className="text-right">
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-[#a855f7]/20 text-[#a855f7] text-sm font-medium">
+              <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-[#8b5cf6]/20 text-[#a78bfa] text-sm font-medium">
                 +{quest.xp_reward} XP
               </span>
             </div>
@@ -116,8 +116,8 @@ export default function Quests() {
           
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-gray-400">Progress</span>
-              <span className={quest.completed ? "text-[#22c55e]" : "text-white"}>
+              <span className="text-[#a1a1aa]\">Progress</span>
+              <span className={quest.completed ? "text-[#4ade80]" : "text-white"}>
                 {quest.progress}/{quest.target}
               </span>
             </div>
@@ -125,8 +125,8 @@ export default function Quests() {
               <div 
                 className={`h-full rounded transition-all ${
                   quest.completed 
-                    ? "bg-gradient-to-r from-[#22c55e] to-[#16a34a]" 
-                    : "bg-gradient-to-r from-[#a855f7] to-[#ffd700]"
+                    ? "bg-gradient-to-r from-[#4ade80] to-[#22c55e]" 
+                    : "bg-gradient-to-r from-[#8b5cf6] to-[#6d28d9]"
                 }`}
                 style={{ width: `${Math.min(progress, 100)}%` }}
               ></div>
