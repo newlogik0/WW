@@ -202,6 +202,129 @@ def calculate_workout_xp(workout_type: str, details: dict) -> tuple:
 
 # ==================== AUTH ROUTES ====================
 
+# Google OAuth session exchange
+@api_router.post("/auth/google/session")
+async def google_oauth_session(request: Request, response: Response):
+    """Exchange Emergent OAuth session_id for user data and create session"""
+    body = await request.json()
+    session_id = body.get("session_id")
+    
+    if not session_id:
+        raise HTTPException(status_code=400, detail="session_id required")
+    
+    # Call Emergent Auth to get user data
+    async with httpx.AsyncClient() as client_http:
+        auth_response = await client_http.get(
+            EMERGENT_AUTH_URL,
+            headers={"X-Session-ID": session_id}
+        )
+        
+        if auth_response.status_code != 200:
+            raise HTTPException(status_code=401, detail="Invalid session")
+        
+        google_data = auth_response.json()
+    
+    email = google_data.get("email")
+    name = google_data.get("name", "Warrior")
+    picture = google_data.get("picture")
+    session_token = google_data.get("session_token")
+    
+    # Check if user exists
+    existing_user = await db.users.find_one({"email": email}, {"_id": 0})
+    
+    if existing_user:
+        user_id = existing_user['id']
+        # Update picture if changed
+        if picture and picture != existing_user.get('picture'):
+            await db.users.update_one({"id": user_id}, {"$set": {"picture": picture}})
+    else:
+        # Create new user
+        user_id = str(uuid.uuid4())
+        now = datetime.now(timezone.utc).isoformat()
+        
+        user_doc = {
+            "id": user_id,
+            "email": email,
+            "username": name.replace(" ", ""),
+            "password_hash": None,  # Google users don't have password
+            "auth_provider": "google",
+            "picture": picture,
+            "level": 1,
+            "xp": 0,
+            "xp_to_next_level": 100,
+            "strength": 10,
+            "endurance": 10,
+            "agility": 10,
+            "total_workouts": 0,
+            "created_at": now
+        }
+        
+        await db.users.insert_one(user_doc)
+        await initialize_achievements(user_id)
+        await initialize_quests(user_id)
+        existing_user = user_doc
+    
+    # Store session
+    expires_at = datetime.now(timezone.utc) + timedelta(days=7)
+    await db.user_sessions.update_one(
+        {"user_id": user_id},
+        {"$set": {
+            "user_id": user_id,
+            "session_token": session_token,
+            "expires_at": expires_at,
+            "created_at": datetime.now(timezone.utc)
+        }},
+        upsert=True
+    )
+    
+    # Set cookie
+    response.set_cookie(
+        key="session_token",
+        value=session_token,
+        httponly=True,
+        secure=True,
+        samesite="none",
+        path="/",
+        max_age=7 * 24 * 60 * 60
+    )
+    
+    user = await db.users.find_one({"id": user_id}, {"_id": 0, "password_hash": 0})
+    return {"user": user, "session_token": session_token}
+
+# Helper to get current user from cookie or header
+async def get_current_user_flexible(request: Request, credentials: HTTPAuthorizationCredentials = Depends(security)):
+    """Get user from session cookie or JWT token"""
+    
+    # Try cookie first (Google OAuth)
+    session_token = request.cookies.get("session_token")
+    if session_token:
+        session = await db.user_sessions.find_one({"session_token": session_token}, {"_id": 0})
+        if session:
+            expires_at = session.get("expires_at")
+            if isinstance(expires_at, str):
+                expires_at = datetime.fromisoformat(expires_at)
+            if expires_at.tzinfo is None:
+                expires_at = expires_at.replace(tzinfo=timezone.utc)
+            
+            if expires_at > datetime.now(timezone.utc):
+                user = await db.users.find_one({"id": session["user_id"]}, {"_id": 0, "password_hash": 0})
+                if user:
+                    return user
+    
+    # Fall back to JWT (email/password auth)
+    if credentials:
+        try:
+            payload = jwt.decode(credentials.credentials, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+            user_id = payload.get("sub")
+            if user_id:
+                user = await db.users.find_one({"id": user_id}, {"_id": 0, "password_hash": 0})
+                if user:
+                    return user
+        except:
+            pass
+    
+    raise HTTPException(status_code=401, detail="Not authenticated")
+
 @api_router.post("/auth/register", response_model=TokenResponse)
 async def register(user_data: UserCreate):
     # Check if email exists
