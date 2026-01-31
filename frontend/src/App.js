@@ -16,6 +16,7 @@ import Achievements from "@/pages/Achievements";
 import Quests from "@/pages/Quests";
 import Profile from "@/pages/Profile";
 import History from "@/pages/History";
+import TrainingPlans from "@/pages/TrainingPlans";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -155,6 +156,7 @@ function App() {
             <Route path="/quests" element={<ProtectedRoute><Quests /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
+            <Route path="/plans" element={<ProtectedRoute><TrainingPlans /></ProtectedRoute>} />
           </Routes>
           <Toaster richColors position="top-center" />
         </div>
