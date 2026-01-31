@@ -295,7 +295,7 @@ export default function WeightliftingSession() {
   const { refreshUser } = useAuth();
   const navigate = useNavigate();
   const [exercises, setExercises] = useState([
-    { name: "", sets: 3, reps: 10, weight: 0, tempo: "" }
+    { name: "", sets: 3, reps: "10", weight: 0, tempo: "" }
   ]);
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
@@ -311,7 +311,7 @@ export default function WeightliftingSession() {
           setExercises(res.data.exercises.map(e => ({
             name: e.name || "",
             sets: e.sets || 3,
-            reps: e.reps || 10,
+            reps: String(e.reps || "10"),
             weight: e.weight || 0,
             tempo: e.tempo || ""
           })));
@@ -324,7 +324,7 @@ export default function WeightliftingSession() {
   }, []);
 
   const addExercise = () => {
-    setExercises([...exercises, { name: "", sets: 3, reps: 10, weight: 0, tempo: "" }]);
+    setExercises([...exercises, { name: "", sets: 3, reps: "10", weight: 0, tempo: "" }]);
   };
 
   const removeExercise = (index) => {
@@ -344,7 +344,7 @@ export default function WeightliftingSession() {
   };
 
   const handleSubmit = async () => {
-    const validExercises = exercises.filter(e => e.name && e.sets > 0 && e.reps > 0);
+    const validExercises = exercises.filter(e => e.name && e.sets > 0 && e.reps);
     
     if (validExercises.length === 0) {
       toast.error("Add at least one exercise");
@@ -488,10 +488,10 @@ export default function WeightliftingSession() {
                   <div>
                     <Label className="text-xs text-[#71717a]">Reps</Label>
                     <Input
-                      type="number"
-                      min="1"
+                      type="text"
                       value={exercise.reps}
-                      onChange={(e) => updateExercise(index, "reps", Number(e.target.value))}
+                      onChange={(e) => updateExercise(index, "reps", e.target.value)}
+                      placeholder="10 or 8-12"
                       className="bg-[#030304] border-[#1e1e2e] text-white h-9"
                       data-testid={`exercise-reps-${index}`}
                     />
