@@ -210,27 +210,32 @@ export default function CardioSession() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f]" data-testid="cardio-session-page">
+    <div className="min-h-screen bg-[#020204]" data-testid="cardio-session-page">
       <Navbar />
       
-      <main className="max-w-4xl mx-auto px-4 py-8">
+      <main className="max-w-3xl mx-auto px-4 py-6">
         <Button 
           variant="ghost" 
-          className="text-gray-400 hover:text-white mb-6"
-          onClick={() => navigate("/workout")}
+          className="text-[#a8a8b8] hover:text-white mb-4 h-8 px-2"
+          onClick={() => navigate("/")}
         >
-          <ArrowLeft className="w-4 h-4 mr-2" />
+          <ArrowLeft className="w-4 h-4 mr-1" />
           Back
         </Button>
         
-        <div className="flex items-center gap-4 mb-8">
-          <div className="w-14 h-14 rounded-xl bg-[#22d3d3]/20 flex items-center justify-center">
-            <Flame className="w-7 h-7 text-[#22d3d3]" />
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-11 h-11 rounded-xl bg-[#06b6d4]/20 flex items-center justify-center">
+            <Flame className="w-5 h-5 text-[#06b6d4]" />
           </div>
           <div>
-            <h1 className="text-2xl font-cinzel text-[#ffd700]">Cardio Session</h1>
-            <p className="text-gray-400">Build endurance and earn XP</p>
+            <h1 className="text-xl font-display font-bold text-white">Cardio Session</h1>
+            <p className="text-[#68687a] text-sm">Build endurance and earn XP</p>
           </div>
+        </div>
+
+        {/* Cardio Animation */}
+        <div className="mb-4">
+          <CardioAnimation activity={activity} duration={duration} isActive={isTraining} />
         </div>
 
         {/* Activity Selection */}
