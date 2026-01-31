@@ -71,10 +71,14 @@ export default function TrainingPlans() {
   };
 
   const uploadFile = async (file) => {
-    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg', 'image/webp', 'text/plain'];
     
-    if (!allowedTypes.includes(file.type)) {
-      toast.error("Please upload a PDF or image file (JPG, PNG)");
+    // Check file extension for txt files
+    const fileName = file.name.toLowerCase();
+    const isTextFile = fileName.endsWith('.txt');
+    
+    if (!allowedTypes.includes(file.type) && !isTextFile) {
+      toast.error("Please upload a PDF, image, or text file");
       return;
     }
 
@@ -217,29 +221,32 @@ export default function TrainingPlans() {
           <input
             ref={fileInputRef}
             type="file"
-            accept=".pdf,.jpg,.jpeg,.png,.webp"
+            accept=".pdf,.jpg,.jpeg,.png,.webp,.txt"
             onChange={handleFileSelect}
             className="hidden"
           />
           
           {uploading ? (
             <div className="flex flex-col items-center">
-              <Loader2 className="w-10 h-10 text-[#d4af37] animate-spin mb-3" />
+              <Loader2 className="w-10 h-10 text-[#6d28d9] animate-spin mb-3" />
               <p className="text-white font-medium">Analyzing your plan...</p>
               <p className="text-[#71717a] text-sm">AI is extracting exercises</p>
             </div>
           ) : (
             <>
               <div className="flex justify-center gap-4 mb-4">
-                <div className="w-14 h-14 rounded-xl bg-[#8b5cf6]/15 flex items-center justify-center">
+                <div className="w-14 h-14 rounded-xl bg-[#6d28d9]/15 flex items-center justify-center">
                   <Upload className="w-7 h-7 text-[#8b5cf6]" />
                 </div>
-                <div className="w-14 h-14 rounded-xl bg-[#d4af37]/15 flex items-center justify-center">
-                  <Image className="w-7 h-7 text-[#d4af37]" />
+                <div className="w-14 h-14 rounded-xl bg-[#6d28d9]/15 flex items-center justify-center">
+                  <Image className="w-7 h-7 text-[#8b5cf6]" />
+                </div>
+                <div className="w-14 h-14 rounded-xl bg-[#6d28d9]/15 flex items-center justify-center">
+                  <FileText className="w-7 h-7 text-[#8b5cf6]" />
                 </div>
               </div>
               <p className="text-white font-medium mb-1">Drop your training plan here</p>
-              <p className="text-[#71717a] text-sm">or click to browse • PDF, JPG, PNG supported</p>
+              <p className="text-[#71717a] text-sm">PDF, Images, or Text files supported</p>
             </>
           )}
         </div>
