@@ -150,7 +150,7 @@ export default function Dashboard() {
         )}
 
         {/* Quick Actions */}
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
+        <div className="grid md:grid-cols-3 gap-4 mb-6">
           <div 
             className="card-elevated p-5 cursor-pointer group"
             onClick={() => navigate("/workout/weightlifting")}
@@ -182,6 +182,23 @@ export default function Dashboard() {
                 <p className="text-[#71717a] text-sm">Boost endurance & stamina</p>
               </div>
               <ChevronRight className="w-5 h-5 text-[#71717a] group-hover:text-[#06b6d4] transition-colors" />
+            </div>
+          </div>
+
+          <div 
+            className="card-elevated p-5 cursor-pointer group"
+            onClick={() => navigate("/calendar")}
+            data-testid="calendar-card"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-[#8b5cf6]/15 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Timer className="w-6 h-6 text-[#8b5cf6]" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-display font-semibold text-white">Calendar</h3>
+                <p className="text-[#71717a] text-sm">Track gym attendance</p>
+              </div>
+              <ChevronRight className="w-5 h-5 text-[#71717a] group-hover:text-[#8b5cf6] transition-colors" />
             </div>
           </div>
         </div>
