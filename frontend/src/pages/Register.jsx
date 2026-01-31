@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Sword, Shield, Loader2, Sparkles } from "lucide-react";
+import { Sparkles, Loader2 } from "lucide-react";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -33,7 +33,7 @@ export default function Register() {
     
     try {
       await register(email, password, username);
-      toast.success("Your hero has been created! Welcome to the arena!");
+      toast.success("Your hero has been created!");
       navigate("/");
     } catch (error) {
       toast.error(error.response?.data?.detail || "Failed to create account");
@@ -43,27 +43,29 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-[#0a0a0f]" data-testid="register-page">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#ffd700]/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#22c55e]/5 rounded-full blur-3xl"></div>
+    <div className="min-h-screen flex items-center justify-center p-4 bg-[#09090b]" data-testid="register-page">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-[#d4af37]/5 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-[#10b981]/5 rounded-full blur-[120px]"></div>
       </div>
       
-      <Card className="w-full max-w-md bg-[#12121a]/90 border-[#2a2a3a] backdrop-blur-sm relative z-10">
-        <CardHeader className="text-center space-y-4">
-          <div className="flex justify-center gap-2">
-            <Sparkles className="w-8 h-8 text-[#ffd700]" />
+      <Card className="w-full max-w-sm bg-[#1c1c21]/90 border-[#2e2e33] backdrop-blur-xl relative z-10">
+        <CardHeader className="text-center space-y-3 pb-4">
+          <div className="flex justify-center">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#d4af37] to-[#c9a227] flex items-center justify-center">
+              <Sparkles className="w-6 h-6 text-[#09090b]" />
+            </div>
           </div>
-          <CardTitle className="text-3xl font-cinzel text-[#ffd700]">Create Your Hero</CardTitle>
-          <CardDescription className="text-gray-400">
+          <CardTitle className="text-2xl font-display font-bold text-white">Create Your Hero</CardTitle>
+          <CardDescription className="text-[#71717a]">
             Begin your fitness quest today
           </CardDescription>
         </CardHeader>
         
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="username" className="text-gray-300">Hero Name</Label>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="username" className="text-[#a1a1aa] text-sm">Hero Name</Label>
               <Input
                 id="username"
                 type="text"
@@ -71,13 +73,13 @@ export default function Register() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                className="bg-[#1a1a25] border-[#2a2a3a] text-white placeholder:text-gray-500 focus:border-[#ffd700]"
+                className="bg-[#18181b] border-[#2e2e33] text-white placeholder:text-[#71717a] focus:border-[#d4af37] h-10"
                 data-testid="register-username-input"
               />
             </div>
             
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-gray-300">Email</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="email" className="text-[#a1a1aa] text-sm">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -85,13 +87,13 @@ export default function Register() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="bg-[#1a1a25] border-[#2a2a3a] text-white placeholder:text-gray-500 focus:border-[#ffd700]"
+                className="bg-[#18181b] border-[#2e2e33] text-white placeholder:text-[#71717a] focus:border-[#d4af37] h-10"
                 data-testid="register-email-input"
               />
             </div>
             
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-gray-300">Password</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="password" className="text-[#a1a1aa] text-sm">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -99,15 +101,15 @@ export default function Register() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="bg-[#1a1a25] border-[#2a2a3a] text-white placeholder:text-gray-500 focus:border-[#ffd700]"
+                className="bg-[#18181b] border-[#2e2e33] text-white placeholder:text-[#71717a] focus:border-[#d4af37] h-10"
                 data-testid="register-password-input"
               />
-              <p className="text-xs text-gray-500">Minimum 6 characters</p>
+              <p className="text-xs text-[#71717a]">Minimum 6 characters</p>
             </div>
             
             <Button 
               type="submit" 
-              className="w-full bg-gradient-to-r from-[#ffd700] to-[#b8860b] text-[#0a0a0f] hover:from-[#ffed4a] hover:to-[#ffd700] font-semibold"
+              className="w-full bg-gradient-to-r from-[#d4af37] to-[#c9a227] text-[#09090b] hover:from-[#f0d77c] hover:to-[#d4af37] font-semibold h-10"
               disabled={loading}
               data-testid="register-submit-btn"
             >
@@ -122,9 +124,9 @@ export default function Register() {
             </Button>
           </form>
           
-          <p className="text-center mt-6 text-gray-400">
+          <p className="text-center mt-5 text-[#71717a] text-sm">
             Already a hero?{" "}
-            <Link to="/login" className="text-[#ffd700] hover:underline" data-testid="login-link">
+            <Link to="/login" className="text-[#d4af37] hover:underline" data-testid="login-link">
               Return to the arena
             </Link>
           </p>
