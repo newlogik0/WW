@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { 
   Sword, 
-  Shield, 
   Home, 
   Dumbbell, 
   Trophy, 
@@ -18,7 +17,8 @@ import {
   User, 
   History,
   Menu,
-  LogOut
+  LogOut,
+  FileText
 } from "lucide-react";
 
 export default function Navbar() {
@@ -28,6 +28,7 @@ export default function Navbar() {
   const navItems = [
     { path: "/", icon: Home, label: "Dashboard" },
     { path: "/workout", icon: Dumbbell, label: "Workout" },
+    { path: "/plans", icon: FileText, label: "Plans" },
     { path: "/achievements", icon: Trophy, label: "Achievements" },
     { path: "/quests", icon: Target, label: "Quests" },
     { path: "/history", icon: History, label: "History" },
@@ -39,43 +40,42 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-[#0a0a0f]/95 backdrop-blur-sm border-b border-[#2a2a3a] sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+    <nav className="bg-[#09090b]/95 backdrop-blur-md border-b border-[#2e2e33] sticky top-0 z-50">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="flex items-center justify-between h-14">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2" data-testid="nav-logo">
-            <Sword className="w-6 h-6 text-[#ffd700]" />
-            <span className="font-cinzel text-[#ffd700] text-lg hidden sm:inline">Training Hero</span>
+            <Sword className="w-5 h-5 text-[#d4af37]" />
+            <span className="font-display font-semibold text-[#d4af37] hidden sm:inline">Training Hero</span>
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-0.5">
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all text-sm ${
                     isActive(item.path)
-                      ? "text-[#ffd700] bg-[#ffd700]/10"
-                      : "text-gray-400 hover:text-white hover:bg-white/5"
+                      ? "text-[#d4af37] bg-[#d4af37]/10"
+                      : "text-[#a1a1aa] hover:text-white hover:bg-white/5"
                   }`}
                   data-testid={`nav-${item.label.toLowerCase()}`}
                 >
                   <Icon className="w-4 h-4" />
-                  <span className="text-sm">{item.label}</span>
+                  <span>{item.label}</span>
                 </Link>
               );
             })}
           </div>
 
           {/* User Menu */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             {/* Level Badge */}
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1 bg-[#ffd700]/10 rounded-full">
-              <Shield className="w-4 h-4 text-[#ffd700]" />
-              <span className="text-[#ffd700] text-sm font-medium">Lv.{user?.level}</span>
+            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-[#d4af37]/10 rounded-full">
+              <span className="text-[#d4af37] text-xs font-semibold">Lv.{user?.level}</span>
             </div>
 
             {/* Profile Dropdown */}
@@ -83,28 +83,28 @@ export default function Navbar() {
               <DropdownMenuTrigger asChild>
                 <Button 
                   variant="ghost" 
-                  className="flex items-center gap-2 text-gray-400 hover:text-white"
+                  className="flex items-center gap-2 text-[#a1a1aa] hover:text-white h-8 px-2"
                   data-testid="nav-profile-menu"
                 >
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#ffd700] to-[#b8860b] flex items-center justify-center">
-                    <User className="w-4 h-4 text-[#0a0a0f]" />
+                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#d4af37] to-[#c9a227] flex items-center justify-center">
+                    <User className="w-4 h-4 text-[#09090b]" />
                   </div>
                   <span className="hidden sm:inline text-sm">{user?.username}</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
                 align="end" 
-                className="w-56 bg-[#12121a] border-[#2a2a3a]"
+                className="w-48 bg-[#1c1c21] border-[#2e2e33]"
               >
                 <div className="px-3 py-2">
-                  <p className="text-white font-medium">{user?.username}</p>
-                  <p className="text-gray-400 text-sm">{user?.email}</p>
+                  <p className="text-white font-medium text-sm">{user?.username}</p>
+                  <p className="text-[#71717a] text-xs truncate">{user?.email}</p>
                 </div>
-                <DropdownMenuSeparator className="bg-[#2a2a3a]" />
+                <DropdownMenuSeparator className="bg-[#2e2e33]" />
                 <DropdownMenuItem asChild>
                   <Link 
                     to="/profile" 
-                    className="flex items-center gap-2 text-gray-300 hover:text-white cursor-pointer"
+                    className="flex items-center gap-2 text-[#a1a1aa] hover:text-white cursor-pointer text-sm"
                     data-testid="nav-profile-link"
                   >
                     <User className="w-4 h-4" />
@@ -113,16 +113,16 @@ export default function Navbar() {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link 
-                    to="/achievements" 
-                    className="flex items-center gap-2 text-gray-300 hover:text-white cursor-pointer"
+                    to="/plans" 
+                    className="flex items-center gap-2 text-[#a1a1aa] hover:text-white cursor-pointer text-sm"
                   >
-                    <Trophy className="w-4 h-4" />
-                    Achievements
+                    <FileText className="w-4 h-4" />
+                    Training Plans
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator className="bg-[#2a2a3a]" />
+                <DropdownMenuSeparator className="bg-[#2e2e33]" />
                 <DropdownMenuItem 
-                  className="flex items-center gap-2 text-red-400 hover:text-red-300 cursor-pointer"
+                  className="flex items-center gap-2 text-[#ef4444] hover:text-[#f87171] cursor-pointer text-sm"
                   onClick={() => {
                     logout();
                     window.location.href = "/login";
@@ -138,13 +138,13 @@ export default function Navbar() {
             {/* Mobile Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild className="md:hidden">
-                <Button variant="ghost" size="icon" className="text-gray-400">
+                <Button variant="ghost" size="icon" className="text-[#a1a1aa] h-8 w-8">
                   <Menu className="w-5 h-5" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
                 align="end" 
-                className="w-56 bg-[#12121a] border-[#2a2a3a] md:hidden"
+                className="w-48 bg-[#1c1c21] border-[#2e2e33] md:hidden"
               >
                 {navItems.map((item) => {
                   const Icon = item.icon;
@@ -152,8 +152,8 @@ export default function Navbar() {
                     <DropdownMenuItem key={item.path} asChild>
                       <Link 
                         to={item.path} 
-                        className={`flex items-center gap-2 cursor-pointer ${
-                          isActive(item.path) ? "text-[#ffd700]" : "text-gray-300"
+                        className={`flex items-center gap-2 cursor-pointer text-sm ${
+                          isActive(item.path) ? "text-[#d4af37]" : "text-[#a1a1aa]"
                         }`}
                       >
                         <Icon className="w-4 h-4" />
