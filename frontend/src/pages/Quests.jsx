@@ -134,7 +134,7 @@ export default function Quests() {
           </div>
           
           {!quest.completed && (
-            <div className="flex items-center gap-2 mt-4 text-xs text-gray-500">
+            <div className="flex items-center gap-2 mt-4 text-xs text-[#71717a]">
               <Clock className="w-3 h-3" />
               <span>Expires in {getTimeRemaining(quest.expires_at)}</span>
             </div>
