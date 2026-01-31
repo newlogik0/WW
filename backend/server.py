@@ -408,26 +408,37 @@ async def login(credentials: UserLogin):
     
     return TokenResponse(access_token=token, token_type="bearer", user=user_response)
 
-@api_router.get("/auth/me", response_model=UserResponse)
-async def get_me(current_user: dict = Depends(get_current_user)):
-    return UserResponse(
-        id=current_user['id'],
-        email=current_user['email'],
-        username=current_user['username'],
-        level=current_user['level'],
-        xp=current_user['xp'],
-        xp_to_next_level=current_user['xp_to_next_level'],
-        strength=current_user['strength'],
-        endurance=current_user['endurance'],
-        agility=current_user['agility'],
-        total_workouts=current_user['total_workouts'],
-        created_at=current_user['created_at']
-    )
+@api_router.get("/auth/me")
+async def get_me(request: Request, credentials: HTTPAuthorizationCredentials = Depends(security)):
+    current_user = await get_current_user_flexible(request, credentials)
+    return {
+        "id": current_user['id'],
+        "email": current_user['email'],
+        "username": current_user['username'],
+        "level": current_user['level'],
+        "xp": current_user['xp'],
+        "xp_to_next_level": current_user['xp_to_next_level'],
+        "strength": current_user['strength'],
+        "endurance": current_user['endurance'],
+        "agility": current_user['agility'],
+        "total_workouts": current_user['total_workouts'],
+        "created_at": current_user['created_at'],
+        "picture": current_user.get('picture')
+    }
+
+@api_router.post("/auth/logout")
+async def logout(request: Request, response: Response):
+    session_token = request.cookies.get("session_token")
+    if session_token:
+        await db.user_sessions.delete_one({"session_token": session_token})
+    response.delete_cookie("session_token", path="/")
+    return {"message": "Logged out"}
 
 # ==================== WORKOUT ROUTES ====================
 
 @api_router.post("/workouts/weightlifting", response_model=WorkoutResponse)
-async def log_weightlifting(session: WeightliftingSession, current_user: dict = Depends(get_current_user)):
+async def log_weightlifting(session: WeightliftingSession, request: Request, credentials: HTTPAuthorizationCredentials = Depends(security)):
+    current_user = await get_current_user_flexible(request, credentials)
     workout_id = str(uuid.uuid4())
     now = datetime.now(timezone.utc).isoformat()
     
