@@ -161,7 +161,7 @@ export default function TrainingPlans() {
     if (!editingPlan) return;
     setEditingPlan({
       ...editingPlan,
-      exercises: [...editingPlan.exercises, { name: "", sets: 3, reps: 10, weight: 0 }]
+      exercises: [...editingPlan.exercises, { name: "", sets: 3, reps: "10", weight: 0 }]
     });
   };
 
@@ -296,27 +296,27 @@ export default function TrainingPlans() {
                             value={ex.name}
                             onChange={(e) => updateExercise(i, 'name', e.target.value)}
                             placeholder="Exercise name"
-                            className="bg-[#09090b] border-[#2e2e33] text-white flex-1 h-8 text-sm"
+                            className="bg-[#030304] border-[#1e1e2e] text-white flex-1 h-8 text-sm"
                           />
                           <Input
                             type="number"
                             value={ex.sets}
                             onChange={(e) => updateExercise(i, 'sets', Number(e.target.value))}
-                            className="bg-[#09090b] border-[#2e2e33] text-white w-16 h-8 text-sm"
+                            className="bg-[#030304] border-[#1e1e2e] text-white w-16 h-8 text-sm"
                             placeholder="Sets"
                           />
                           <Input
-                            type="number"
+                            type="text"
                             value={ex.reps}
-                            onChange={(e) => updateExercise(i, 'reps', Number(e.target.value))}
-                            className="bg-[#09090b] border-[#2e2e33] text-white w-16 h-8 text-sm"
-                            placeholder="Reps"
+                            onChange={(e) => updateExercise(i, 'reps', e.target.value)}
+                            className="bg-[#030304] border-[#1e1e2e] text-white w-20 h-8 text-sm"
+                            placeholder="8-12"
                           />
                           <Input
                             type="number"
                             value={ex.weight || 0}
                             onChange={(e) => updateExercise(i, 'weight', Number(e.target.value))}
-                            className="bg-[#09090b] border-[#2e2e33] text-white w-20 h-8 text-sm"
+                            className="bg-[#030304] border-[#1e1e2e] text-white w-20 h-8 text-sm"
                             placeholder="kg"
                           />
                           <Button
