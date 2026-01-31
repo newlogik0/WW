@@ -456,8 +456,7 @@ async def logout(request: Request, response: Response):
 # ==================== WORKOUT ROUTES ====================
 
 @api_router.post("/workouts/weightlifting", response_model=WorkoutResponse)
-async def log_weightlifting(session: WeightliftingSession, request: Request, credentials: HTTPAuthorizationCredentials = Depends(security)):
-    current_user = await get_current_user_flexible(request, credentials)
+async def log_weightlifting(session: WeightliftingSession, current_user: dict = Depends(get_current_user)):
     workout_id = str(uuid.uuid4())
     now = datetime.now(timezone.utc).isoformat()
     
