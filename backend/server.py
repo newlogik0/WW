@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, status, UploadFile, File
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, status, UploadFile, File, Request, Response
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -14,6 +14,7 @@ import bcrypt
 import jwt
 import base64
 import tempfile
+import httpx
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -31,13 +32,16 @@ JWT_EXPIRATION_HOURS = 24
 # LLM Key for AI features
 EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY')
 
+# Emergent Auth URL
+EMERGENT_AUTH_URL = "https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data"
+
 # Create the main app
-app = FastAPI(title="Training Hero API")
+app = FastAPI(title="Warrior's Way API")
 
 # Create router with /api prefix
 api_router = APIRouter(prefix="/api")
 
-security = HTTPBearer()
+security = HTTPBearer(auto_error=False)
 
 # ==================== MODELS ====================
 
