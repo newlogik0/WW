@@ -59,17 +59,17 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#09090b]">
+      <div className="min-h-screen bg-[#030304]">
         <Navbar />
         <div className="flex items-center justify-center h-[80vh]">
-          <div className="w-10 h-10 border-2 border-[#d4af37] border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-10 h-10 border-2 border-[#6d28d9] border-t-transparent rounded-full animate-spin"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#09090b]" data-testid="dashboard-page">
+    <div className="min-h-screen bg-[#030304]" data-testid="dashboard-page">
       <Navbar />
       
       <main className="max-w-6xl mx-auto px-4 py-6">
@@ -78,8 +78,8 @@ export default function Dashboard() {
           <div className="flex flex-col lg:flex-row items-center gap-6">
             {/* Avatar */}
             <div className="relative">
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#d4af37] to-[#c9a227] flex items-center justify-center">
-                <User className="w-10 h-10 text-[#09090b]" />
+              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#6d28d9] to-[#4c1d95] flex items-center justify-center shadow-lg shadow-[#6d28d9]/20">
+                <User className="w-10 h-10 text-white" />
               </div>
               <div className="absolute -bottom-2 -right-2 level-badge w-8 h-8 text-sm">
                 {user?.level}
@@ -128,19 +128,19 @@ export default function Dashboard() {
 
         {/* Active Plan Banner */}
         {activePlan && (
-          <Card className="bg-gradient-to-r from-[#d4af37]/10 to-transparent border-[#d4af37]/30 mb-6">
+          <Card className="bg-gradient-to-r from-[#6d28d9]/15 to-transparent border-[#6d28d9]/30 mb-6">
             <CardContent className="p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <FileText className="w-5 h-5 text-[#d4af37]" />
+                <FileText className="w-5 h-5 text-[#a78bfa]" />
                 <div>
-                  <p className="text-sm text-[#d4af37] font-medium">Active Plan</p>
+                  <p className="text-sm text-[#a78bfa] font-medium">Active Plan</p>
                   <p className="text-white">{activePlan.name} • {activePlan.exercises?.length || 0} exercises</p>
                 </div>
               </div>
               <Button 
                 variant="outline" 
                 size="sm"
-                className="border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37]/10"
+                className="border-[#6d28d9] text-[#a78bfa] hover:bg-[#6d28d9]/10"
                 onClick={() => navigate("/plans")}
               >
                 Manage
@@ -193,12 +193,12 @@ export default function Dashboard() {
           data-testid="import-plan-card"
         >
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-[#8b5cf6]/15 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <div className="w-12 h-12 rounded-xl bg-[#6d28d9]/15 flex items-center justify-center group-hover:scale-110 transition-transform">
               <Upload className="w-6 h-6 text-[#8b5cf6]" />
             </div>
             <div className="flex-1">
               <h3 className="text-lg font-display font-semibold text-white">Import Training Plan</h3>
-              <p className="text-[#71717a] text-sm">Upload PDF or photo of your workout plan</p>
+              <p className="text-[#71717a] text-sm">Upload PDF, photo, or text file of your workout plan</p>
             </div>
             <ChevronRight className="w-5 h-5 text-[#71717a] group-hover:text-[#8b5cf6] transition-colors" />
           </div>
@@ -207,17 +207,17 @@ export default function Dashboard() {
         {/* Stats & Quests Row */}
         <div className="grid lg:grid-cols-3 gap-4 mb-6">
           {/* Stats */}
-          <Card className="bg-[#1c1c21] border-[#2e2e33]">
+          <Card className="bg-[#0c0c12] border-[#1e1e2e]">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-display text-white flex items-center gap-2">
-                <Timer className="w-4 h-4 text-[#d4af37]" />
+                <Timer className="w-4 h-4 text-[#8b5cf6]" />
                 Statistics
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between items-center text-sm">
                 <span className="text-[#a1a1aa]">Total Workouts</span>
-                <span className="text-[#d4af37] font-semibold" data-testid="total-workouts">{stats?.total_workouts || 0}</span>
+                <span className="text-[#a78bfa] font-semibold" data-testid="total-workouts">{stats?.total_workouts || 0}</span>
               </div>
               <div className="flex justify-between items-center text-sm">
                 <span className="text-[#a1a1aa]">Weightlifting</span>
@@ -227,15 +227,15 @@ export default function Dashboard() {
                 <span className="text-[#a1a1aa]">Cardio</span>
                 <span className="text-[#06b6d4] font-semibold">{stats?.cardio_count || 0}</span>
               </div>
-              <div className="flex justify-between items-center text-sm pt-2 border-t border-[#2e2e33]">
+              <div className="flex justify-between items-center text-sm pt-2 border-t border-[#1e1e2e]">
                 <span className="text-[#a1a1aa]">Total XP</span>
-                <span className="text-[#d4af37] font-semibold">{stats?.total_xp_earned || 0}</span>
+                <span className="text-[#a78bfa] font-semibold">{stats?.total_xp_earned || 0}</span>
               </div>
             </CardContent>
           </Card>
           
           {/* Quests */}
-          <Card className="bg-[#1c1c21] border-[#2e2e33] lg:col-span-2">
+          <Card className="bg-[#0c0c12] border-[#1e1e2e] lg:col-span-2">
             <CardHeader className="pb-2 flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-display text-white flex items-center gap-2">
                 <Target className="w-4 h-4 text-[#8b5cf6]" />
@@ -256,10 +256,10 @@ export default function Dashboard() {
               ) : (
                 <div className="space-y-3">
                   {quests.map((quest) => (
-                    <div key={quest.id} className="p-3 bg-[#18181b] rounded-lg">
+                    <div key={quest.id} className="p-3 bg-[#08080c] rounded-lg">
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-white text-sm font-medium">{quest.name}</span>
-                        <span className="text-xs px-2 py-0.5 rounded bg-[#8b5cf6]/20 text-[#8b5cf6]">
+                        <span className="text-xs px-2 py-0.5 rounded bg-[#6d28d9]/20 text-[#a78bfa]">
                           +{quest.xp_reward} XP
                         </span>
                       </div>
@@ -281,16 +281,16 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Activity */}
-        <Card className="bg-[#1c1c21] border-[#2e2e33]">
+        <Card className="bg-[#0c0c12] border-[#1e1e2e]">
           <CardHeader className="pb-2 flex flex-row items-center justify-between">
             <CardTitle className="text-sm font-display text-white flex items-center gap-2">
-              <History className="w-4 h-4 text-[#d4af37]" />
+              <History className="w-4 h-4 text-[#8b5cf6]" />
               Recent Activity
             </CardTitle>
             <Button 
               variant="ghost" 
               size="sm" 
-              className="text-[#d4af37] hover:text-[#f0d77c] text-xs h-7"
+              className="text-[#8b5cf6] hover:text-[#a78bfa] text-xs h-7"
               onClick={() => navigate("/history")}
             >
               View All
@@ -302,7 +302,7 @@ export default function Dashboard() {
             ) : (
               <div className="space-y-2">
                 {recentWorkouts.map((workout) => (
-                  <div key={workout.id} className="p-3 bg-[#18181b] rounded-lg flex items-center gap-3">
+                  <div key={workout.id} className="p-3 bg-[#08080c] rounded-lg flex items-center gap-3">
                     <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
                       workout.workout_type === 'weightlifting' 
                         ? 'bg-[#ef4444]/15' 
@@ -321,7 +321,7 @@ export default function Dashboard() {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-[#d4af37] text-sm font-semibold">+{workout.xp_earned} XP</p>
+                      <p className="text-[#a78bfa] text-sm font-semibold">+{workout.xp_earned} XP</p>
                       <div className="flex gap-2 text-xs">
                         {workout.stats_gained?.strength > 0 && (
                           <span className="text-[#ef4444]">+{workout.stats_gained.strength}</span>

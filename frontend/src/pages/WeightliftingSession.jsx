@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth, api } from "@/App";
 import { toast } from "sonner";
@@ -30,7 +30,7 @@ const COMMON_EXERCISES = [
   "Pull Up", "Push Up", "Dumbbell Fly", "Shoulder Press", "Romanian Deadlift"
 ];
 
-// Tempo Tracker Component - Improved with shorter defaults
+// Tempo Tracker Component - Fully customizable with decimal support
 const TempoTracker = ({ onComplete }) => {
   const [isRunning, setIsRunning] = useState(false);
   const [phase, setPhase] = useState("ready");
@@ -38,12 +38,20 @@ const TempoTracker = ({ onComplete }) => {
   const [repCount, setRepCount] = useState(0);
   const [expanded, setExpanded] = useState(false);
   
-  // Shorter tempo settings (in seconds) - more realistic
-  const [eccentricTime, setEccentricTime] = useState(2);
-  const [holdTime, setHoldTime] = useState(1);
+  // Default: 1s lower, 2s hold, 1s lift - fully customizable with decimals
+  const [eccentricTime, setEccentricTime] = useState(1);
+  const [holdTime, setHoldTime] = useState(2);
   const [concentricTime, setConcentricTime] = useState(1);
   
   const intervalRef = useRef(null);
+  const phaseRef = useRef(phase);
+  const timerRef = useRef(timer);
+
+  // Keep refs in sync
+  useEffect(() => {
+    phaseRef.current = phase;
+    timerRef.current = timer;
+  }, [phase, timer]);
 
   const playBeep = useCallback(() => {
     try {
@@ -52,121 +60,119 @@ const TempoTracker = ({ onComplete }) => {
       const gainNode = audioContext.createGain();
       oscillator.connect(gainNode);
       gainNode.connect(audioContext.destination);
-      oscillator.frequency.value = 800;
-      gainNode.gain.value = 0.3;
+      oscillator.frequency.value = 880;
+      gainNode.gain.value = 0.2;
       oscillator.start();
-      setTimeout(() => oscillator.stop(), 100);
+      setTimeout(() => {
+        oscillator.stop();
+        audioContext.close();
+      }, 80);
     } catch (e) {}
   }, []);
 
+  const stopTimer = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  }, []);
+
   const runTimer = useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
+    stopTimer();
     
     intervalRef.current = setInterval(() => {
       setTimer(prev => {
-        const newTime = prev + 0.1;
+        const newTime = prev + 0.05;
+        const currentPhase = phaseRef.current;
+        
+        let targetTime;
+        if (currentPhase === "eccentric") targetTime = eccentricTime;
+        else if (currentPhase === "hold") targetTime = holdTime;
+        else if (currentPhase === "concentric") targetTime = concentricTime;
+        else return prev;
+        
+        if (newTime >= targetTime) {
+          // Transition to next phase
+          if (currentPhase === "eccentric") {
+            setPhase("hold");
+            playBeep();
+            return 0;
+          } else if (currentPhase === "hold") {
+            setPhase("concentric");
+            playBeep();
+            return 0;
+          } else if (currentPhase === "concentric") {
+            setPhase("eccentric");
+            setRepCount(r => r + 1);
+            playBeep();
+            return 0;
+          }
+        }
+        
         return newTime;
       });
-    }, 100);
-  }, []);
+    }, 50);
+  }, [eccentricTime, holdTime, concentricTime, playBeep, stopTimer]);
 
-  // Check phase transitions
-  const checkPhaseTransition = useCallback(() => {
-    if (phase === "eccentric" && timer >= eccentricTime) {
-      setPhase("hold");
-      setTimer(0);
-      playBeep();
-    } else if (phase === "hold" && timer >= holdTime) {
-      setPhase("concentric");
-      setTimer(0);
-      playBeep();
-    } else if (phase === "concentric" && timer >= concentricTime) {
-      setPhase("eccentric");
-      setTimer(0);
-      setRepCount(prev => prev + 1);
-      playBeep();
-    }
-  }, [phase, timer, eccentricTime, holdTime, concentricTime, playBeep]);
-
-  // Effect for phase transitions
-  useState(() => {
-    if (isRunning && phase !== "ready") {
-      checkPhaseTransition();
-    }
-  });
-
-  // Timer effect
-  useState(() => {
-    if (isRunning && phase !== "ready") {
-      runTimer();
-    } else {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    }
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  });
-
-  const startTimer = () => {
+  const startTimer = useCallback(() => {
     setIsRunning(true);
     setPhase("eccentric");
     setTimer(0);
     playBeep();
-    runTimer();
-  };
+    setTimeout(() => runTimer(), 50);
+  }, [playBeep, runTimer]);
 
-  const pauseTimer = () => {
+  const pauseTimer = useCallback(() => {
     setIsRunning(false);
-    if (intervalRef.current) clearInterval(intervalRef.current);
-  };
+    stopTimer();
+  }, [stopTimer]);
 
-  const resetTimer = () => {
+  const resetTimer = useCallback(() => {
     setIsRunning(false);
+    stopTimer();
     setPhase("ready");
     setTimer(0);
     setRepCount(0);
-    if (intervalRef.current) clearInterval(intervalRef.current);
-  };
+  }, [stopTimer]);
 
-  const finishSet = () => {
+  const finishSet = useCallback(() => {
     pauseTimer();
     if (onComplete && repCount > 0) onComplete(repCount);
     resetTimer();
-  };
+  }, [pauseTimer, onComplete, repCount, resetTimer]);
 
-  // Manual phase check on timer update
-  if (isRunning && phase !== "ready") {
-    if (phase === "eccentric" && timer >= eccentricTime) {
-      setPhase("hold");
-      setTimer(0);
-      playBeep();
-    } else if (phase === "hold" && timer >= holdTime) {
-      setPhase("concentric");
-      setTimer(0);
-      playBeep();
-    } else if (phase === "concentric" && timer >= concentricTime) {
-      setPhase("eccentric");
-      setTimer(0);
-      setRepCount(prev => prev + 1);
-      playBeep();
-    }
-  }
+  const resumeTimer = useCallback(() => {
+    setIsRunning(true);
+    runTimer();
+  }, [runTimer]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => stopTimer();
+  }, [stopTimer]);
 
   const getTimeRemaining = () => {
-    switch (phase) {
-      case "eccentric": return Math.max(0, eccentricTime - timer).toFixed(1);
-      case "hold": return Math.max(0, holdTime - timer).toFixed(1);
-      case "concentric": return Math.max(0, concentricTime - timer).toFixed(1);
-      default: return "0.0";
+    let target;
+    if (phase === "eccentric") target = eccentricTime;
+    else if (phase === "hold") target = holdTime;
+    else if (phase === "concentric") target = concentricTime;
+    else return "0.00";
+    return Math.max(0, target - timer).toFixed(2);
+  };
+
+  const handleTimeChange = (setter) => (e) => {
+    const value = parseFloat(e.target.value);
+    if (!isNaN(value) && value >= 0) {
+      setter(value);
     }
   };
 
   return (
-    <Card className="bg-[#1c1c21] border-[#2e2e33]" data-testid="tempo-tracker">
+    <Card className="bg-[#0c0c12] border-[#1e1e2e]" data-testid="tempo-tracker">
       <CardHeader className="pb-2 cursor-pointer" onClick={() => setExpanded(!expanded)}>
         <CardTitle className="text-sm font-display text-white flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Timer className="w-4 h-4 text-[#d4af37]" />
+            <Timer className="w-4 h-4 text-[#8b5cf6]" />
             Rep Counter
           </div>
           {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -175,48 +181,48 @@ const TempoTracker = ({ onComplete }) => {
       
       {expanded && (
         <CardContent className="space-y-5">
-          {/* Tempo Settings */}
+          {/* Tempo Settings - Fully customizable */}
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <Label className="text-xs text-[#71717a]">Lower (s)</Label>
-              <Input
-                type="number"
-                min="1"
-                max="5"
-                value={eccentricTime}
-                onChange={(e) => setEccentricTime(Number(e.target.value))}
-                className="bg-[#18181b] border-[#ef4444]/30 text-white text-center h-9"
-                disabled={isRunning}
-              />
-            </div>
-            <div>
-              <Label className="text-xs text-[#71717a]">Hold (s)</Label>
+              <Label className="text-xs text-[#71717a] mb-1 block">Lower (s)</Label>
               <Input
                 type="number"
                 min="0"
-                max="5"
-                value={holdTime}
-                onChange={(e) => setHoldTime(Number(e.target.value))}
-                className="bg-[#18181b] border-[#d4af37]/30 text-white text-center h-9"
+                step="0.001"
+                value={eccentricTime}
+                onChange={handleTimeChange(setEccentricTime)}
+                className="bg-[#08080c] border-[#ef4444]/30 text-white text-center h-9 tempo-input"
                 disabled={isRunning}
               />
             </div>
             <div>
-              <Label className="text-xs text-[#71717a]">Lift (s)</Label>
+              <Label className="text-xs text-[#71717a] mb-1 block">Hold (s)</Label>
               <Input
                 type="number"
-                min="1"
-                max="5"
+                min="0"
+                step="0.001"
+                value={holdTime}
+                onChange={handleTimeChange(setHoldTime)}
+                className="bg-[#08080c] border-[#f59e0b]/30 text-white text-center h-9 tempo-input"
+                disabled={isRunning}
+              />
+            </div>
+            <div>
+              <Label className="text-xs text-[#71717a] mb-1 block">Lift (s)</Label>
+              <Input
+                type="number"
+                min="0"
+                step="0.001"
                 value={concentricTime}
-                onChange={(e) => setConcentricTime(Number(e.target.value))}
-                className="bg-[#18181b] border-[#06b6d4]/30 text-white text-center h-9"
+                onChange={handleTimeChange(setConcentricTime)}
+                className="bg-[#08080c] border-[#06b6d4]/30 text-white text-center h-9 tempo-input"
                 disabled={isRunning}
               />
             </div>
           </div>
 
           {/* Visual Rings */}
-          <div className="flex justify-center items-center gap-3">
+          <div className="flex justify-center items-center gap-4">
             <div className={`tempo-ring tempo-eccentric ${phase === 'eccentric' ? 'active' : ''}`}>
               {phase === 'eccentric' ? getTimeRemaining() : eccentricTime}
             </div>
@@ -232,13 +238,13 @@ const TempoTracker = ({ onComplete }) => {
           <div className="text-center">
             <p className={`text-2xl font-display font-bold ${
               phase === 'eccentric' ? 'text-[#ef4444]' : 
-              phase === 'hold' ? 'text-[#d4af37]' : 
+              phase === 'hold' ? 'text-[#f59e0b]' : 
               phase === 'concentric' ? 'text-[#06b6d4]' : 'text-[#71717a]'
             }`}>
               {phase === 'ready' ? 'READY' : phase === 'eccentric' ? 'LOWER' : phase === 'hold' ? 'HOLD' : 'LIFT'}
             </p>
             <p className="text-[#a1a1aa] mt-1">
-              Reps: <span className="text-[#d4af37] font-bold text-xl">{repCount}</span>
+              Reps: <span className="text-[#a78bfa] font-bold text-xl">{repCount}</span>
             </p>
           </div>
 
@@ -255,24 +261,24 @@ const TempoTracker = ({ onComplete }) => {
               </Button>
             )}
             {isRunning && (
-              <Button onClick={pauseTimer} className="bg-[#d4af37] hover:bg-[#c9a227] text-black">
+              <Button onClick={pauseTimer} className="bg-[#f59e0b] hover:bg-[#d97706] text-black">
                 <Pause className="w-4 h-4 mr-2" />
                 Pause
               </Button>
             )}
             {!isRunning && phase !== "ready" && (
-              <Button onClick={startTimer} className="bg-[#10b981] hover:bg-[#059669] text-white">
+              <Button onClick={resumeTimer} className="bg-[#10b981] hover:bg-[#059669] text-white">
                 <Play className="w-4 h-4 mr-2" />
                 Resume
               </Button>
             )}
             {phase !== "ready" && (
               <>
-                <Button onClick={resetTimer} variant="outline" className="border-[#2e2e33] text-[#a1a1aa]">
+                <Button onClick={resetTimer} variant="outline" className="border-[#1e1e2e] text-[#a1a1aa]">
                   <RotateCcw className="w-4 h-4 mr-2" />
                   Reset
                 </Button>
-                <Button onClick={finishSet} className="bg-[#8b5cf6] hover:bg-[#7c3aed] text-white" data-testid="tempo-finish-btn">
+                <Button onClick={finishSet} className="bg-[#6d28d9] hover:bg-[#5b21b6] text-white" data-testid="tempo-finish-btn">
                   <Check className="w-4 h-4 mr-2" />
                   Done ({repCount})
                 </Button>
@@ -294,10 +300,9 @@ export default function WeightliftingSession() {
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
   const [activePlan, setActivePlan] = useState(null);
-  const [loadingPlan, setLoadingPlan] = useState(true);
 
   // Load active plan on mount
-  useState(() => {
+  useEffect(() => {
     const loadPlan = async () => {
       try {
         const res = await api.get("/plans/active");
@@ -313,12 +318,10 @@ export default function WeightliftingSession() {
         }
       } catch (e) {
         console.log("No active plan");
-      } finally {
-        setLoadingPlan(false);
       }
     };
     loadPlan();
-  });
+  }, []);
 
   const addExercise = () => {
     setExercises([...exercises, { name: "", sets: 3, reps: 10, weight: 0, tempo: "" }]);
@@ -374,7 +377,7 @@ export default function WeightliftingSession() {
   };
 
   return (
-    <div className="min-h-screen bg-[#09090b]" data-testid="weightlifting-session-page">
+    <div className="min-h-screen bg-[#030304]" data-testid="weightlifting-session-page">
       <Navbar />
       
       <main className="max-w-3xl mx-auto px-4 py-6">
@@ -399,7 +402,7 @@ export default function WeightliftingSession() {
           <Button
             variant="outline"
             size="sm"
-            className="ml-auto border-[#8b5cf6] text-[#8b5cf6] hover:bg-[#8b5cf6]/10"
+            className="ml-auto border-[#6d28d9] text-[#a78bfa] hover:bg-[#6d28d9]/10"
             onClick={() => navigate("/plans")}
           >
             <Upload className="w-4 h-4 mr-1" />
@@ -409,9 +412,9 @@ export default function WeightliftingSession() {
 
         {/* Active Plan Notice */}
         {activePlan && (
-          <div className="flex items-center gap-2 mb-4 p-3 bg-[#d4af37]/10 border border-[#d4af37]/30 rounded-lg">
-            <FileText className="w-4 h-4 text-[#d4af37]" />
-            <span className="text-sm text-[#d4af37]">Using plan: {activePlan.name}</span>
+          <div className="flex items-center gap-2 mb-4 p-3 bg-[#6d28d9]/10 border border-[#6d28d9]/30 rounded-lg">
+            <FileText className="w-4 h-4 text-[#a78bfa]" />
+            <span className="text-sm text-[#a78bfa]">Using plan: {activePlan.name}</span>
           </div>
         )}
 
@@ -421,13 +424,13 @@ export default function WeightliftingSession() {
         </div>
 
         {/* Exercises */}
-        <Card className="bg-[#1c1c21] border-[#2e2e33] mb-4">
+        <Card className="bg-[#0c0c12] border-[#1e1e2e] mb-4">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-display text-white">Exercises</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {exercises.map((exercise, index) => (
-              <div key={index} className="p-3 bg-[#18181b] rounded-lg space-y-3" data-testid={`exercise-${index}`}>
+              <div key={index} className="p-3 bg-[#08080c] rounded-lg space-y-3" data-testid={`exercise-${index}`}>
                 <div className="flex items-center justify-between">
                   <span className="text-[#71717a] text-xs">Exercise {index + 1}</span>
                   {exercises.length > 1 && (
@@ -448,7 +451,7 @@ export default function WeightliftingSession() {
                     <select
                       value={exercise.name}
                       onChange={(e) => updateExercise(index, "name", e.target.value)}
-                      className="w-full h-9 px-3 bg-[#09090b] border border-[#2e2e33] rounded-md text-white text-sm focus:outline-none focus:border-[#d4af37]"
+                      className="w-full h-9 px-3 bg-[#030304] border border-[#1e1e2e] rounded-md text-white text-sm focus:outline-none focus:border-[#6d28d9]"
                       data-testid={`exercise-select-${index}`}
                     >
                       <option value="">Select</option>
@@ -464,7 +467,7 @@ export default function WeightliftingSession() {
                       min="0"
                       value={exercise.weight}
                       onChange={(e) => updateExercise(index, "weight", Number(e.target.value))}
-                      className="bg-[#09090b] border-[#2e2e33] text-white h-9"
+                      className="bg-[#030304] border-[#1e1e2e] text-white h-9"
                       data-testid={`exercise-weight-${index}`}
                     />
                   </div>
@@ -478,7 +481,7 @@ export default function WeightliftingSession() {
                       min="1"
                       value={exercise.sets}
                       onChange={(e) => updateExercise(index, "sets", Number(e.target.value))}
-                      className="bg-[#09090b] border-[#2e2e33] text-white h-9"
+                      className="bg-[#030304] border-[#1e1e2e] text-white h-9"
                       data-testid={`exercise-sets-${index}`}
                     />
                   </div>
@@ -489,7 +492,7 @@ export default function WeightliftingSession() {
                       min="1"
                       value={exercise.reps}
                       onChange={(e) => updateExercise(index, "reps", Number(e.target.value))}
-                      className="bg-[#09090b] border-[#2e2e33] text-white h-9"
+                      className="bg-[#030304] border-[#1e1e2e] text-white h-9"
                       data-testid={`exercise-reps-${index}`}
                     />
                   </div>
@@ -499,7 +502,7 @@ export default function WeightliftingSession() {
             
             <Button
               variant="outline"
-              className="w-full border-dashed border-[#2e2e33] text-[#71717a] hover:text-white hover:border-[#d4af37] h-9"
+              className="w-full border-dashed border-[#1e1e2e] text-[#71717a] hover:text-white hover:border-[#6d28d9] h-9"
               onClick={addExercise}
               data-testid="add-exercise-btn"
             >
@@ -510,14 +513,14 @@ export default function WeightliftingSession() {
         </Card>
 
         {/* Notes */}
-        <Card className="bg-[#1c1c21] border-[#2e2e33] mb-4">
+        <Card className="bg-[#0c0c12] border-[#1e1e2e] mb-4">
           <CardContent className="pt-4">
             <Label className="text-xs text-[#71717a]">Notes (optional)</Label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="How did the workout feel?"
-              className="w-full mt-1.5 p-3 bg-[#18181b] border border-[#2e2e33] rounded-lg text-white placeholder:text-[#71717a] text-sm focus:outline-none focus:border-[#d4af37] min-h-[80px] resize-none"
+              className="w-full mt-1.5 p-3 bg-[#08080c] border border-[#1e1e2e] rounded-lg text-white placeholder:text-[#71717a] text-sm focus:outline-none focus:border-[#6d28d9] min-h-[80px] resize-none"
               data-testid="workout-notes"
             />
           </CardContent>

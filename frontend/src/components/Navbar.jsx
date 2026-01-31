@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { 
-  Sword, 
+  Shield, 
   Home, 
   Dumbbell, 
   Trophy, 
@@ -40,13 +40,13 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-[#09090b]/95 backdrop-blur-md border-b border-[#2e2e33] sticky top-0 z-50">
+    <nav className="bg-[#030304]/95 backdrop-blur-md border-b border-[#1e1e2e] sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between h-14">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2" data-testid="nav-logo">
-            <Sword className="w-5 h-5 text-[#d4af37]" />
-            <span className="font-display font-semibold text-[#d4af37] hidden sm:inline">Training Hero</span>
+            <Shield className="w-5 h-5 text-[#8b5cf6]" />
+            <span className="font-display font-semibold text-[#8b5cf6] hidden sm:inline">Warrior's Way</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -59,7 +59,7 @@ export default function Navbar() {
                   to={item.path}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all text-sm ${
                     isActive(item.path)
-                      ? "text-[#d4af37] bg-[#d4af37]/10"
+                      ? "text-[#a78bfa] bg-[#6d28d9]/15"
                       : "text-[#a1a1aa] hover:text-white hover:bg-white/5"
                   }`}
                   data-testid={`nav-${item.label.toLowerCase()}`}
@@ -74,8 +74,8 @@ export default function Navbar() {
           {/* User Menu */}
           <div className="flex items-center gap-3">
             {/* Level Badge */}
-            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-[#d4af37]/10 rounded-full">
-              <span className="text-[#d4af37] text-xs font-semibold">Lv.{user?.level}</span>
+            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-[#6d28d9]/20 rounded-full">
+              <span className="text-[#a78bfa] text-xs font-semibold">Lv.{user?.level}</span>
             </div>
 
             {/* Profile Dropdown */}
@@ -86,21 +86,21 @@ export default function Navbar() {
                   className="flex items-center gap-2 text-[#a1a1aa] hover:text-white h-8 px-2"
                   data-testid="nav-profile-menu"
                 >
-                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#d4af37] to-[#c9a227] flex items-center justify-center">
-                    <User className="w-4 h-4 text-[#09090b]" />
+                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#6d28d9] to-[#4c1d95] flex items-center justify-center">
+                    <User className="w-4 h-4 text-white" />
                   </div>
                   <span className="hidden sm:inline text-sm">{user?.username}</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
                 align="end" 
-                className="w-48 bg-[#1c1c21] border-[#2e2e33]"
+                className="w-48 bg-[#0c0c12] border-[#1e1e2e]"
               >
                 <div className="px-3 py-2">
                   <p className="text-white font-medium text-sm">{user?.username}</p>
                   <p className="text-[#71717a] text-xs truncate">{user?.email}</p>
                 </div>
-                <DropdownMenuSeparator className="bg-[#2e2e33]" />
+                <DropdownMenuSeparator className="bg-[#1e1e2e]" />
                 <DropdownMenuItem asChild>
                   <Link 
                     to="/profile" 
@@ -120,7 +120,7 @@ export default function Navbar() {
                     Training Plans
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator className="bg-[#2e2e33]" />
+                <DropdownMenuSeparator className="bg-[#1e1e2e]" />
                 <DropdownMenuItem 
                   className="flex items-center gap-2 text-[#ef4444] hover:text-[#f87171] cursor-pointer text-sm"
                   onClick={() => {
@@ -144,7 +144,7 @@ export default function Navbar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent 
                 align="end" 
-                className="w-48 bg-[#1c1c21] border-[#2e2e33] md:hidden"
+                className="w-48 bg-[#0c0c12] border-[#1e1e2e] md:hidden"
               >
                 {navItems.map((item) => {
                   const Icon = item.icon;
@@ -153,7 +153,7 @@ export default function Navbar() {
                       <Link 
                         to={item.path} 
                         className={`flex items-center gap-2 cursor-pointer text-sm ${
-                          isActive(item.path) ? "text-[#d4af37]" : "text-[#a1a1aa]"
+                          isActive(item.path) ? "text-[#a78bfa]" : "text-[#a1a1aa]"
                         }`}
                       >
                         <Icon className="w-4 h-4" />
