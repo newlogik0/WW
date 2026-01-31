@@ -145,13 +145,13 @@ export default function Quests() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f]" data-testid="quests-page">
+    <div className="min-h-screen bg-[#030304]" data-testid="quests-page">
       <Navbar />
       
       <main className="max-w-6xl mx-auto px-4 py-8">
         <Button 
           variant="ghost" 
-          className="text-gray-400 hover:text-white mb-6"
+          className="text-[#a1a1aa] hover:text-white mb-6"
           onClick={() => navigate("/")}
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
@@ -160,17 +160,17 @@ export default function Quests() {
         
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-xl bg-[#a855f7]/20 flex items-center justify-center">
-              <Target className="w-7 h-7 text-[#a855f7]" />
+            <div className="w-14 h-14 rounded-xl bg-[#8b5cf6]/20 flex items-center justify-center">
+              <Target className="w-7 h-7 text-[#8b5cf6]" />
             </div>
             <div>
-              <h1 className="text-2xl font-cinzel text-[#ffd700]">Quests</h1>
-              <p className="text-gray-400">Complete challenges for bonus XP</p>
+              <h1 className="text-2xl font-display text-[#a78bfa]\">Quests</h1>
+              <p className="text-[#a1a1aa]\">Complete challenges for bonus XP</p>
             </div>
           </div>
           <Button
             variant="outline"
-            className="border-[#a855f7] text-[#a855f7] hover:bg-[#a855f7]/10"
+            className="border-[#8b5cf6] text-[#8b5cf6] hover:bg-[#8b5cf6]/10"
             onClick={refreshQuests}
             disabled={refreshing}
             data-testid="refresh-quests-btn"
@@ -187,12 +187,12 @@ export default function Quests() {
         {/* Daily Quests */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-4">
-            <Clock className="w-5 h-5 text-[#ffd700]" />
-            <h2 className="text-xl font-cinzel text-white">Daily Quests</h2>
+            <Clock className="w-5 h-5 text-[#8b5cf6]" />
+            <h2 className="text-xl font-display text-white">Daily Quests</h2>
           </div>
           {dailyQuests.length === 0 ? (
-            <Card className="bg-[#12121a] border-[#2a2a3a]">
-              <CardContent className="p-6 text-center text-gray-500">
+            <Card className="bg-[#0c0c12] border-[#1e1e2e]">
+              <CardContent className="p-6 text-center text-[#71717a]">
                 No daily quests available. Click refresh to get new quests!
               </CardContent>
             </Card>
@@ -208,12 +208,12 @@ export default function Quests() {
         {/* Weekly Quests */}
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <Calendar className="w-5 h-5 text-[#22d3d3]" />
-            <h2 className="text-xl font-cinzel text-white">Weekly Quests</h2>
+            <Calendar className="w-5 h-5 text-[#8b5cf6]" />
+            <h2 className="text-xl font-display text-white">Weekly Quests</h2>
           </div>
           {weeklyQuests.length === 0 ? (
-            <Card className="bg-[#12121a] border-[#2a2a3a]">
-              <CardContent className="p-6 text-center text-gray-500">
+            <Card className="bg-[#0c0c12] border-[#1e1e2e]">
+              <CardContent className="p-6 text-center text-[#71717a]">
                 No weekly quests available. Click refresh to get new quests!
               </CardContent>
             </Card>
