@@ -18,7 +18,8 @@ import {
   History,
   Menu,
   LogOut,
-  FileText
+  FileText,
+  Calendar
 } from "lucide-react";
 
 export default function Navbar() {
