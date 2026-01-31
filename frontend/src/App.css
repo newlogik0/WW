@@ -5,11 +5,11 @@
 
 /* Navigation */
 .nav-link {
-    @apply px-4 py-2 text-gray-400 hover:text-[#ffd700] transition-colors duration-200;
+    @apply px-4 py-2 text-gray-400 hover:text-[#a78bfa] transition-colors duration-200;
 }
 
 .nav-link.active {
-    @apply text-[#ffd700] border-b-2 border-[#ffd700];
+    @apply text-[#a78bfa] border-b-2 border-[#a78bfa];
 }
 
 /* Form styles */
