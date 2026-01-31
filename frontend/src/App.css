@@ -27,12 +27,12 @@
     border: 1px solid #2a2a3a;
     border-radius: 12px;
     backdrop-filter: blur(10px);
-    @apply p-6 cursor-pointer hover:border-[#ffd700] transition-all duration-300;
+    @apply p-6 cursor-pointer hover:border-[#a78bfa] transition-all duration-300;
 }
 
 .workout-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.15);
+    box-shadow: 0 10px 30px rgba(167, 139, 250, 0.15);
 }
 
 /* Stat displays */
