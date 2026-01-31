@@ -16,6 +16,7 @@ import Quests from "@/pages/Quests";
 import Profile from "@/pages/Profile";
 import History from "@/pages/History";
 import TrainingPlans from "@/pages/TrainingPlans";
+import GymCalendar from "@/pages/GymCalendar";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
