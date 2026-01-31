@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, status
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, status, UploadFile, File
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -12,6 +12,8 @@ import uuid
 from datetime import datetime, timezone, timedelta
 import bcrypt
 import jwt
+import base64
+import tempfile
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -25,6 +27,9 @@ db = client[os.environ['DB_NAME']]
 JWT_SECRET = os.environ.get('JWT_SECRET', 'training-hero-secret-key-2024')
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRATION_HOURS = 24
+
+# LLM Key for AI features
+EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY')
 
 # Create the main app
 app = FastAPI(title="Training Hero API")
