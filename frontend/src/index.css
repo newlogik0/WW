@@ -5,19 +5,19 @@
 @tailwind utilities;
 
 :root {
-    --accent-purple: #7c3aed;
-    --accent-purple-light: #a78bfa;
-    --accent-purple-dark: #5b21b6;
-    --accent-violet: #8b5cf6;
+    --accent-purple: #6d28d9;
+    --accent-purple-light: #8b5cf6;
+    --accent-purple-dark: #4c1d95;
+    --accent-violet: #7c3aed;
     --accent-red: #ef4444;
     --accent-cyan: #06b6d4;
     --accent-green: #10b981;
     --accent-amber: #f59e0b;
-    --bg-primary: #050507;
-    --bg-secondary: #0c0c10;
-    --bg-card: #111116;
-    --bg-elevated: #1a1a22;
-    --border-subtle: #252530;
+    --bg-primary: #030304;
+    --bg-secondary: #08080c;
+    --bg-card: #0c0c12;
+    --bg-elevated: #141420;
+    --border-subtle: #1e1e2e;
     --text-primary: #f5f5f7;
     --text-secondary: #a1a1aa;
     --text-muted: #71717a;

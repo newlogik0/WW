@@ -644,11 +644,16 @@ async def import_training_plan(
         raise HTTPException(status_code=500, detail="AI service not configured")
     
     # Validate file type
-    allowed_types = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg', 'image/webp']
+    allowed_types = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg', 'image/webp', 'text/plain']
     content_type = file.content_type
     
+    # Handle text files with different content types
+    filename_lower = file.filename.lower() if file.filename else ""
+    if filename_lower.endswith('.txt'):
+        content_type = 'text/plain'
+    
     if content_type not in allowed_types:
-        raise HTTPException(status_code=400, detail=f"File type {content_type} not supported. Use PDF or images (JPG, PNG)")
+        raise HTTPException(status_code=400, detail=f"File type {content_type} not supported. Use PDF, images (JPG, PNG), or text files")
     
     try:
         from emergentintegrations.llm.chat import LlmChat, UserMessage, FileContentWithMimeType
@@ -683,17 +688,21 @@ async def import_training_plan(
             - Return ONLY the JSON, no other text"""
         ).with_model("gemini", "gemini-2.5-flash")
         
-        # Create file attachment
-        file_attachment = FileContentWithMimeType(
-            file_path=tmp_path,
-            mime_type=content_type
-        )
-        
-        # Send to AI for analysis
-        user_message = UserMessage(
-            text="Please analyze this training plan document and extract all exercises with their sets, reps, and weights. Return the data as JSON.",
-            file_contents=[file_attachment]
-        )
+        # Create file attachment - for text files, read content directly
+        if content_type == 'text/plain':
+            text_content = file_content.decode('utf-8', errors='ignore')
+            user_message = UserMessage(
+                text=f"Please analyze this training plan text and extract all exercises with their sets, reps, and weights. Return the data as JSON.\n\nTraining Plan Content:\n{text_content}"
+            )
+        else:
+            file_attachment = FileContentWithMimeType(
+                file_path=tmp_path,
+                mime_type=content_type
+            )
+            user_message = UserMessage(
+                text="Please analyze this training plan document and extract all exercises with their sets, reps, and weights. Return the data as JSON.",
+                file_contents=[file_attachment]
+            )
         
         response = await chat.send_message(user_message)
         
