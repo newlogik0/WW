@@ -499,10 +499,12 @@ async def get_achievements(current_user: dict = Depends(get_current_user)):
 # ==================== QUESTS ====================
 
 QUEST_TEMPLATES = [
-    {"id": "daily_workout", "name": "Daily Grind", "description": "Complete 1 workout today", "quest_type": "daily", "target": 1, "xp_reward": 25},
-    {"id": "daily_double", "name": "Double Down", "description": "Complete 2 workouts today", "quest_type": "daily", "target": 2, "xp_reward": 50},
-    {"id": "weekly_warrior", "name": "Weekly Warrior", "description": "Complete 5 workouts this week", "quest_type": "weekly", "target": 5, "xp_reward": 150},
-    {"id": "weekly_champion", "name": "Weekly Champion", "description": "Complete 7 workouts this week", "quest_type": "weekly", "target": 7, "xp_reward": 250},
+    {"id": "daily_workout", "name": "Daily Warrior", "description": "Complete 1 workout today", "quest_type": "daily", "target": 1, "xp_reward": 30},
+    {"id": "daily_double", "name": "Double Strike", "description": "Complete 2 workouts today", "quest_type": "daily", "target": 2, "xp_reward": 75},
+    {"id": "daily_triple", "name": "Triple Threat", "description": "Complete 3 workouts today", "quest_type": "daily", "target": 3, "xp_reward": 150},
+    {"id": "weekly_warrior", "name": "Weekly Conquest", "description": "Complete 5 workouts this week", "quest_type": "weekly", "target": 5, "xp_reward": 200},
+    {"id": "weekly_champion", "name": "Champion's Path", "description": "Complete 10 workouts this week", "quest_type": "weekly", "target": 10, "xp_reward": 500},
+    {"id": "weekly_legend", "name": "Legendary Grind", "description": "Complete 14 workouts this week", "quest_type": "weekly", "target": 14, "xp_reward": 1000},
 ]
 
 async def initialize_quests(user_id: str):
