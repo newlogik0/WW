@@ -603,6 +603,244 @@ async def get_leaderboard(limit: int = 10):
     }).sort("level", -1).limit(limit).to_list(limit)
     return users
 
+# ==================== TRAINING PLAN MODELS ====================
+
+class PlanExercise(BaseModel):
+    name: str
+    sets: int = 3
+    reps: int = 10
+    weight: Optional[float] = 0
+    notes: Optional[str] = None
+
+class TrainingPlan(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str
+    user_id: str
+    name: str
+    exercises: List[dict]
+    is_active: bool = True
+    created_at: str
+    updated_at: str
+
+class TrainingPlanCreate(BaseModel):
+    name: str
+    exercises: List[PlanExercise]
+
+class TrainingPlanUpdate(BaseModel):
+    name: Optional[str] = None
+    exercises: Optional[List[PlanExercise]] = None
+    is_active: Optional[bool] = None
+
+# ==================== TRAINING PLAN ROUTES ====================
+
+@api_router.post("/plans/import")
+async def import_training_plan(
+    file: UploadFile = File(...),
+    current_user: dict = Depends(get_current_user)
+):
+    """Import a training plan from PDF or image using AI"""
+    
+    if not EMERGENT_LLM_KEY:
+        raise HTTPException(status_code=500, detail="AI service not configured")
+    
+    # Validate file type
+    allowed_types = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg', 'image/webp']
+    content_type = file.content_type
+    
+    if content_type not in allowed_types:
+        raise HTTPException(status_code=400, detail=f"File type {content_type} not supported. Use PDF or images (JPG, PNG)")
+    
+    try:
+        from emergentintegrations.llm.chat import LlmChat, UserMessage, FileContentWithMimeType
+        
+        # Save uploaded file temporarily
+        file_content = await file.read()
+        
+        with tempfile.NamedTemporaryFile(delete=False, suffix=Path(file.filename).suffix) as tmp:
+            tmp.write(file_content)
+            tmp_path = tmp.name
+        
+        # Initialize AI chat with Gemini (supports file attachments)
+        chat = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=f"plan-import-{current_user['id']}-{uuid.uuid4()}",
+            system_message="""You are a fitness training plan analyzer. Extract exercise information from uploaded documents.
+            
+            Return ONLY a valid JSON object in this exact format:
+            {
+                "plan_name": "Name of the training plan or 'Imported Plan'",
+                "exercises": [
+                    {"name": "Exercise Name", "sets": 3, "reps": 10, "weight": 0, "notes": "any notes"},
+                    ...
+                ]
+            }
+            
+            Rules:
+            - Extract all exercises you can find
+            - Use standard exercise names (e.g., "Bench Press", "Squat", "Deadlift")
+            - If sets/reps are not specified, use reasonable defaults (3 sets, 10 reps)
+            - Weight should be in kg, use 0 if not specified
+            - Return ONLY the JSON, no other text"""
+        ).with_model("gemini", "gemini-2.5-flash")
+        
+        # Create file attachment
+        file_attachment = FileContentWithMimeType(
+            file_path=tmp_path,
+            mime_type=content_type
+        )
+        
+        # Send to AI for analysis
+        user_message = UserMessage(
+            text="Please analyze this training plan document and extract all exercises with their sets, reps, and weights. Return the data as JSON.",
+            file_contents=[file_attachment]
+        )
+        
+        response = await chat.send_message(user_message)
+        
+        # Clean up temp file
+        os.unlink(tmp_path)
+        
+        # Parse AI response
+        import json
+        
+        # Try to extract JSON from response
+        response_text = response.strip()
+        if response_text.startswith("```json"):
+            response_text = response_text[7:]
+        if response_text.startswith("```"):
+            response_text = response_text[3:]
+        if response_text.endswith("```"):
+            response_text = response_text[:-3]
+        
+        try:
+            plan_data = json.loads(response_text.strip())
+        except json.JSONDecodeError:
+            # Try to find JSON in the response
+            import re
+            json_match = re.search(r'\{[\s\S]*\}', response_text)
+            if json_match:
+                plan_data = json.loads(json_match.group())
+            else:
+                raise HTTPException(status_code=500, detail="Failed to parse AI response")
+        
+        # Create the training plan
+        plan_id = str(uuid.uuid4())
+        now = datetime.now(timezone.utc).isoformat()
+        
+        # Deactivate existing active plans
+        await db.training_plans.update_many(
+            {"user_id": current_user['id'], "is_active": True},
+            {"$set": {"is_active": False}}
+        )
+        
+        plan_doc = {
+            "id": plan_id,
+            "user_id": current_user['id'],
+            "name": plan_data.get('plan_name', 'Imported Plan'),
+            "exercises": plan_data.get('exercises', []),
+            "is_active": True,
+            "created_at": now,
+            "updated_at": now
+        }
+        
+        await db.training_plans.insert_one(plan_doc)
+        
+        return {
+            "message": "Training plan imported successfully",
+            "plan": {
+                "id": plan_id,
+                "name": plan_doc['name'],
+                "exercises": plan_doc['exercises'],
+                "is_active": True
+            }
+        }
+        
+    except Exception as e:
+        logger.error(f"Failed to import training plan: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to process file: {str(e)}")
+
+@api_router.post("/plans", response_model=TrainingPlan)
+async def create_training_plan(plan: TrainingPlanCreate, current_user: dict = Depends(get_current_user)):
+    """Create a new training plan manually"""
+    plan_id = str(uuid.uuid4())
+    now = datetime.now(timezone.utc).isoformat()
+    
+    # Deactivate existing active plans
+    await db.training_plans.update_many(
+        {"user_id": current_user['id'], "is_active": True},
+        {"$set": {"is_active": False}}
+    )
+    
+    plan_doc = {
+        "id": plan_id,
+        "user_id": current_user['id'],
+        "name": plan.name,
+        "exercises": [e.model_dump() for e in plan.exercises],
+        "is_active": True,
+        "created_at": now,
+        "updated_at": now
+    }
+    
+    await db.training_plans.insert_one(plan_doc)
+    return TrainingPlan(**plan_doc)
+
+@api_router.get("/plans")
+async def get_training_plans(current_user: dict = Depends(get_current_user)):
+    """Get all training plans for the user"""
+    plans = await db.training_plans.find(
+        {"user_id": current_user['id']},
+        {"_id": 0}
+    ).sort("created_at", -1).to_list(100)
+    return plans
+
+@api_router.get("/plans/active")
+async def get_active_plan(current_user: dict = Depends(get_current_user)):
+    """Get the currently active training plan"""
+    plan = await db.training_plans.find_one(
+        {"user_id": current_user['id'], "is_active": True},
+        {"_id": 0}
+    )
+    return plan
+
+@api_router.put("/plans/{plan_id}")
+async def update_training_plan(
+    plan_id: str, 
+    update: TrainingPlanUpdate, 
+    current_user: dict = Depends(get_current_user)
+):
+    """Update a training plan"""
+    plan = await db.training_plans.find_one({"id": plan_id, "user_id": current_user['id']})
+    if not plan:
+        raise HTTPException(status_code=404, detail="Plan not found")
+    
+    update_data = {"updated_at": datetime.now(timezone.utc).isoformat()}
+    
+    if update.name is not None:
+        update_data["name"] = update.name
+    if update.exercises is not None:
+        update_data["exercises"] = [e.model_dump() for e in update.exercises]
+    if update.is_active is not None:
+        if update.is_active:
+            # Deactivate other plans first
+            await db.training_plans.update_many(
+                {"user_id": current_user['id'], "is_active": True},
+                {"$set": {"is_active": False}}
+            )
+        update_data["is_active"] = update.is_active
+    
+    await db.training_plans.update_one({"id": plan_id}, {"$set": update_data})
+    
+    updated_plan = await db.training_plans.find_one({"id": plan_id}, {"_id": 0})
+    return updated_plan
+
+@api_router.delete("/plans/{plan_id}")
+async def delete_training_plan(plan_id: str, current_user: dict = Depends(get_current_user)):
+    """Delete a training plan"""
+    result = await db.training_plans.delete_one({"id": plan_id, "user_id": current_user['id']})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Plan not found")
+    return {"message": "Plan deleted"}
+
 # ==================== ROOT ROUTE ====================
 
 @api_router.get("/")
