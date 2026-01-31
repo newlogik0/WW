@@ -162,7 +162,8 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         raise HTTPException(status_code=401, detail="Invalid token")
 
 def calculate_xp_to_level(level: int) -> int:
-    return 100 * level
+    # Harder progression: Level 1 = 100, Level 2 = 250, Level 3 = 450, etc.
+    return 100 + (level - 1) * 150
 
 def calculate_workout_xp(workout_type: str, details: dict) -> tuple:
     """Calculate XP and stat gains from workout"""
