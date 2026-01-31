@@ -29,6 +29,7 @@ export default function Navbar() {
     { path: "/", icon: Home, label: "Dashboard" },
     { path: "/workout", icon: Dumbbell, label: "Workout" },
     { path: "/plans", icon: FileText, label: "Plans" },
+    { path: "/calendar", icon: Calendar, label: "Calendar" },
     { path: "/achievements", icon: Trophy, label: "Achievements" },
     { path: "/quests", icon: Target, label: "Quests" },
     { path: "/history", icon: History, label: "History" },
