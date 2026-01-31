@@ -31,16 +31,16 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-[#050507]" data-testid="login-page">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-[#030304]" data-testid="login-page">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-[#7c3aed]/8 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-[#5b21b6]/8 rounded-full blur-[120px]"></div>
+        <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-[#6d28d9]/8 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-[#4c1d95]/8 rounded-full blur-[120px]"></div>
       </div>
       
-      <Card className="w-full max-w-sm bg-[#111116]/90 border-[#252530] backdrop-blur-xl relative z-10">
+      <Card className="w-full max-w-sm bg-[#0c0c12]/90 border-[#1e1e2e] backdrop-blur-xl relative z-10">
         <CardHeader className="text-center space-y-3 pb-4">
           <div className="flex justify-center">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7c3aed] to-[#5b21b6] flex items-center justify-center shadow-lg shadow-[#7c3aed]/25">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#6d28d9] to-[#4c1d95] flex items-center justify-center shadow-lg shadow-[#6d28d9]/25">
               <Shield className="w-7 h-7 text-white" />
             </div>
           </div>
@@ -61,7 +61,7 @@ export default function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="bg-[#0c0c10] border-[#252530] text-white placeholder:text-[#71717a] focus:border-[#7c3aed] h-10"
+                className="bg-[#08080c] border-[#1e1e2e] text-white placeholder:text-[#71717a] focus:border-[#6d28d9] h-10"
                 data-testid="login-email-input"
               />
             </div>
@@ -75,14 +75,14 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="bg-[#0c0c10] border-[#252530] text-white placeholder:text-[#71717a] focus:border-[#7c3aed] h-10"
+                className="bg-[#08080c] border-[#1e1e2e] text-white placeholder:text-[#71717a] focus:border-[#6d28d9] h-10"
                 data-testid="login-password-input"
               />
             </div>
             
             <Button 
               type="submit" 
-              className="w-full bg-gradient-to-r from-[#7c3aed] to-[#5b21b6] text-white hover:from-[#8b5cf6] hover:to-[#7c3aed] font-semibold h-10"
+              className="w-full bg-gradient-to-r from-[#6d28d9] to-[#4c1d95] text-white hover:from-[#7c3aed] hover:to-[#6d28d9] font-semibold h-10"
               disabled={loading}
               data-testid="login-submit-btn"
             >
