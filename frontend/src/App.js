@@ -172,6 +172,7 @@ function App() {
             <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
             <Route path="/plans" element={<ProtectedRoute><TrainingPlans /></ProtectedRoute>} />
+            <Route path="/calendar" element={<ProtectedRoute><GymCalendar /></ProtectedRoute>} />
           </Routes>
           <Toaster richColors position="top-center" />
         </div>
