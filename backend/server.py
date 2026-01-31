@@ -167,8 +167,21 @@ def calculate_workout_xp(workout_type: str, details: dict) -> tuple:
     
     if workout_type == "weightlifting":
         # XP based on total volume (sets * reps * weight)
-        total_volume = sum(e.get('sets', 0) * e.get('reps', 0) * e.get('weight', 0) 
-                         for e in details.get('exercises', []))
+        total_volume = 0
+        for e in details.get('exercises', []):
+            sets = e.get('sets', 0)
+            # Handle rep ranges like "8-12" - use the higher number for XP calc
+            reps_str = str(e.get('reps', '0'))
+            if '-' in reps_str:
+                reps = int(reps_str.split('-')[-1])  # Use higher end of range
+            else:
+                try:
+                    reps = int(reps_str)
+                except:
+                    reps = 10
+            weight = e.get('weight', 0)
+            total_volume += sets * reps * weight
+        
         xp = min(int(total_volume / 100) + len(details.get('exercises', [])) * 5, 50)
         stats["strength"] = min(len(details.get('exercises', [])), 3)
         stats["agility"] = 1 if len(details.get('exercises', [])) >= 3 else 0
