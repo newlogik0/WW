@@ -85,15 +85,18 @@
 
   - task: "Gym Attendance Calendar"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/GymCalendar.jsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Created new calendar page showing monthly view with workout indicators. Shows stats (total days, current streak, weightlifting count, cardio count). Calendar displays workout types with colored dots. Route added to App.js and Navbar."
+      - working: true
+        agent: "testing"
+        comment: "VERIFIED WORKING: Calendar page fully functional. Navigation link in navbar working. 4 stats cards displaying correctly (Total Days, Current Streak, Weightlifting, Cardio). Monthly calendar grid with proper 7-column layout. Month navigation buttons working. Legend with workout type indicators visible. Today highlighting with purple styling working correctly."
 
   - task: "Google Sign-In Flow"
     implemented: true
