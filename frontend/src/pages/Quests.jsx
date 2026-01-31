@@ -69,10 +69,10 @@ export default function Quests() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f]">
+      <div className="min-h-screen bg-[#030304]">
         <Navbar />
         <div className="flex items-center justify-center h-[80vh]">
-          <div className="w-12 h-12 border-4 border-[#a855f7] border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-12 h-12 border-4 border-[#8b5cf6] border-t-transparent rounded-full animate-spin"></div>
         </div>
       </div>
     );
@@ -85,8 +85,8 @@ export default function Quests() {
       <Card 
         className={`transition-all ${
           quest.completed 
-            ? "bg-gradient-to-br from-[#22c55e]/20 to-[#12121a] border-[#22c55e]/50" 
-            : "bg-[#12121a] border-[#2a2a3a] hover:border-[#a855f7]/50"
+            ? "bg-gradient-to-br from-[#4ade80]/20 to-[#0c0c12] border-[#4ade80]/50" 
+            : "bg-[#0c0c12] border-[#1e1e2e] hover:border-[#8b5cf6]/50"
         }`}
         data-testid={`quest-${quest.id}`}
       >
