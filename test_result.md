@@ -42,15 +42,18 @@
 
   - task: "Calendar data endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Using existing /workouts endpoint with limit=365 for calendar data"
+      - working: true
+        agent: "testing"
+        comment: "VERIFIED WORKING: Calendar data endpoint working correctly. Calendar page successfully loads workout data and displays stats. Backend integration functional."
 
 ## frontend:
   - task: "Sound-Guided Rep Counter"
