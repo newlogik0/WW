@@ -1,9 +1,8 @@
 import { useState, useEffect, createContext, useContext } from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Toaster } from "@/components/ui/sonner";
-import { toast } from "sonner";
 
 // Pages
 import Login from "@/pages/Login";
@@ -28,6 +27,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const api = axios.create({
   baseURL: API,
+  withCredentials: true, // For cookie-based auth
 });
 
 // Add token to requests
@@ -62,7 +62,6 @@ const AuthProvider = ({ children }) => {
     
     if (token && savedUser) {
       setUser(JSON.parse(savedUser));
-      // Refresh user data
       api.get("/auth/me")
         .then(res => {
           setUser(res.data);
@@ -87,6 +86,17 @@ const AuthProvider = ({ children }) => {
     return res.data;
   };
 
+  const loginWithGoogle = async (sessionId) => {
+    const res = await api.post("/auth/google/session", { session_id: sessionId });
+    localStorage.setItem("user", JSON.stringify(res.data.user));
+    // Store session token for future requests
+    if (res.data.session_token) {
+      localStorage.setItem("session_token", res.data.session_token);
+    }
+    setUser(res.data.user);
+    return res.data;
+  };
+
   const register = async (email, password, username) => {
     const res = await api.post("/auth/register", { email, password, username });
     localStorage.setItem("token", res.data.access_token);
@@ -95,9 +105,13 @@ const AuthProvider = ({ children }) => {
     return res.data;
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await api.post("/auth/logout");
+    } catch (e) {}
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("session_token");
     setUser(null);
   };
 
@@ -112,7 +126,7 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading, refreshUser }}>
+    <AuthContext.Provider value={{ user, login, loginWithGoogle, register, logout, loading, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );
@@ -124,10 +138,10 @@ const ProtectedRoute = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0a0a0f]">
+      <div className="min-h-screen flex items-center justify-center bg-[#020204]">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[#ffd700] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-[#ffd700] font-cinzel text-xl">Loading...</p>
+          <div className="w-12 h-12 border-2 border-[#7c3aed] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-[#a78bfa] font-display">Loading...</p>
         </div>
       </div>
     );
@@ -144,7 +158,7 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <div className="App min-h-screen bg-[#0a0a0f]">
+        <div className="App min-h-screen bg-[#020204]">
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
