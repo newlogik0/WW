@@ -88,6 +88,7 @@ class Exercise(BaseModel):
 class WeightliftingSession(BaseModel):
     exercises: List[Exercise]
     notes: Optional[str] = None
+    session_category: Optional[str] = "full"  # push, pull, legs, or full
 
 class CardioSession(BaseModel):
     activity: str  # running, cycling, swimming, etc.
