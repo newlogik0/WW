@@ -153,7 +153,36 @@ export default function TrainingPlans() {
   const updateExercise = (index, field, value) => {
     if (!editingPlan) return;
     const updated = { ...editingPlan };
-    updated.exercises[index][field] = value;
+    
+    if (field === "sets") {
+      updated.exercises[index][field] = value;
+      // Initialize weights array if needed
+      if (!updated.exercises[index].useSameWeight && value > 0) {
+        const currentWeights = updated.exercises[index].weights || [];
+        const newWeights = Array(value).fill(0).map((_, i) => currentWeights[i] || updated.exercises[index].weight || 0);
+        updated.exercises[index].weights = newWeights;
+      }
+    } else if (field === "useSameWeight") {
+      updated.exercises[index][field] = value;
+      if (!value) {
+        // Initialize weights array with current weight value
+        const sets = updated.exercises[index].sets || 3;
+        updated.exercises[index].weights = Array(sets).fill(updated.exercises[index].weight || 0);
+      }
+    } else {
+      updated.exercises[index][field] = value;
+    }
+    
+    setEditingPlan(updated);
+  };
+
+  const updateSetWeight = (exerciseIndex, setIndex, weight) => {
+    if (!editingPlan) return;
+    const updated = { ...editingPlan };
+    if (!updated.exercises[exerciseIndex].weights) {
+      updated.exercises[exerciseIndex].weights = [];
+    }
+    updated.exercises[exerciseIndex].weights[setIndex] = Number(weight);
     setEditingPlan(updated);
   };
 
@@ -161,7 +190,7 @@ export default function TrainingPlans() {
     if (!editingPlan) return;
     setEditingPlan({
       ...editingPlan,
-      exercises: [...editingPlan.exercises, { name: "", sets: 3, reps: "10", weight: 0 }]
+      exercises: [...editingPlan.exercises, { name: "", sets: 3, reps: "10", weight: 0, weights: [], useSameWeight: true }]
     });
   };
 
