@@ -363,6 +363,7 @@ export default function WeightliftingSession() {
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
   const [activePlan, setActivePlan] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("all"); // all, push, pull, legs
 
   useEffect(() => {
     const loadPlan = async () => {
@@ -370,13 +371,8 @@ export default function WeightliftingSession() {
         const res = await api.get("/plans/active");
         if (res.data && res.data.exercises?.length > 0) {
           setActivePlan(res.data);
-          setExercises(res.data.exercises.map(e => ({
-            name: e.name || "",
-            sets: e.sets || 3,
-            reps: String(e.reps || "10"),
-            weight: e.weight || 0,
-            tempo: e.tempo || ""
-          })));
+          // Load all exercises initially
+          loadExercisesByCategory("all", res.data.exercises);
         }
       } catch (e) {
         console.log("No active plan");
@@ -384,6 +380,57 @@ export default function WeightliftingSession() {
     };
     loadPlan();
   }, []);
+
+  const loadExercisesByCategory = (category, planExercises = null) => {
+    const source = planExercises || activePlan?.exercises || [];
+    
+    if (category === "all") {
+      setExercises(source.map(e => ({
+        name: e.name || "",
+        sets: e.sets || 3,
+        reps: String(e.reps || "10"),
+        weight: e.weight || 0,
+        tempo: e.tempo || "",
+        category: e.category || ""
+      })));
+    } else {
+      const filtered = source.filter(e => e.category === category);
+      if (filtered.length > 0) {
+        setExercises(filtered.map(e => ({
+          name: e.name || "",
+          sets: e.sets || 3,
+          reps: String(e.reps || "10"),
+          weight: e.weight || 0,
+          tempo: e.tempo || "",
+          category: e.category || ""
+        })));
+      } else {
+        // No exercises in this category, show empty state
+        setExercises([{ name: "", sets: 3, reps: "10", weight: 0, tempo: "" }]);
+        toast.info(`No ${category} exercises in your plan`);
+      }
+    }
+  };
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+    if (activePlan) {
+      loadExercisesByCategory(category);
+    }
+  };
+
+  // Count exercises by category
+  const getCategoryCounts = () => {
+    if (!activePlan) return { push: 0, pull: 0, legs: 0 };
+    
+    return {
+      push: activePlan.exercises.filter(e => e.category === "push").length,
+      pull: activePlan.exercises.filter(e => e.category === "pull").length,
+      legs: activePlan.exercises.filter(e => e.category === "legs").length
+    };
+  };
+
+  const categoryCounts = getCategoryCounts();
 
   const addExercise = () => {
     setExercises([...exercises, { name: "", sets: 3, reps: "10", weight: 0, tempo: "" }]);
