@@ -738,6 +738,70 @@ export default function WeightliftingSession() {
           </Button>
         </div>
 
+        {/* Session Category Selector */}
+        <Card className="bg-[#0a0a10] border-[#1a1a28] mb-4">
+          <CardContent className="p-4">
+            <Label className="text-xs text-[#68687a] mb-2 block">Workout Session Type</Label>
+            <div className="grid grid-cols-4 gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setSessionCategory("push")}
+                className={`h-10 ${
+                  sessionCategory === "push"
+                    ? "bg-[#ef4444]/20 border-[#ef4444] text-[#ef4444]"
+                    : "border-[#1a1a28] text-[#68687a] hover:border-[#ef4444]/50"
+                }`}
+              >
+                <Dumbbell className="w-4 h-4 mr-1" />
+                Push
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setSessionCategory("pull")}
+                className={`h-10 ${
+                  sessionCategory === "pull"
+                    ? "bg-[#06b6d4]/20 border-[#06b6d4] text-[#06b6d4]"
+                    : "border-[#1a1a28] text-[#68687a] hover:border-[#06b6d4]/50"
+                }`}
+              >
+                <ArrowUp className="w-4 h-4 mr-1" />
+                Pull
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setSessionCategory("legs")}
+                className={`h-10 ${
+                  sessionCategory === "legs"
+                    ? "bg-[#4ade80]/20 border-[#4ade80] text-[#4ade80]"
+                    : "border-[#1a1a28] text-[#68687a] hover:border-[#4ade80]/50"
+                }`}
+              >
+                <Activity className="w-4 h-4 mr-1" />
+                Legs
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setSessionCategory("full")}
+                className={`h-10 ${
+                  sessionCategory === "full"
+                    ? "bg-[#8b5cf6]/20 border-[#8b5cf6] text-[#a78bfa]"
+                    : "border-[#1a1a28] text-[#68687a] hover:border-[#8b5cf6]/50"
+                }`}
+              >
+                <Target className="w-4 h-4 mr-1" />
+                Full
+              </Button>
+            </div>
+            <p className="text-xs text-[#52525b] mt-2">
+              Track your push, pull, and leg days separately for better progress monitoring
+            </p>
+          </CardContent>
+        </Card>
+
         {activePlan && (
           <>
             <div className="flex items-center gap-2 mb-4 p-3 bg-[#7c3aed]/10 border border-[#7c3aed]/30 rounded-lg">
@@ -748,7 +812,7 @@ export default function WeightliftingSession() {
             {/* Category Filter */}
             <Card className="bg-[#0a0a10] border-[#1a1a28] mb-4">
               <CardContent className="p-4">
-                <Label className="text-xs text-[#68687a] mb-2 block">Filter by Muscle Group</Label>
+                <Label className="text-xs text-[#68687a] mb-2 block">Filter Exercises by Muscle Group</Label>
                 <div className="grid grid-cols-4 gap-2">
                   <Button
                     variant="outline"
