@@ -612,7 +612,7 @@ export default function WeightliftingSession() {
   const categoryCounts = getCategoryCounts();
 
   const addExercise = () => {
-    setExercises([...exercises, { name: "", sets: 3, reps: "10", weight: 0, tempo: "" }]);
+    setExercises([...exercises, { name: "", sets: 3, reps: "10", weight: 0, tempo: "", weights: [], useSameWeight: true }]);
   };
 
   const removeExercise = (index) => {
@@ -623,7 +623,35 @@ export default function WeightliftingSession() {
 
   const updateExercise = (index, field, value) => {
     const updated = [...exercises];
-    updated[index][field] = value;
+    
+    if (field === "sets") {
+      // When sets change, initialize weights array if needed
+      updated[index][field] = value;
+      if (!updated[index].useSameWeight && value > 0) {
+        const currentWeights = updated[index].weights || [];
+        const newWeights = Array(value).fill(0).map((_, i) => currentWeights[i] || updated[index].weight || 0);
+        updated[index].weights = newWeights;
+      }
+    } else if (field === "useSameWeight") {
+      updated[index][field] = value;
+      if (!value) {
+        // Initialize weights array with current weight value
+        const sets = updated[index].sets || 3;
+        updated[index].weights = Array(sets).fill(updated[index].weight || 0);
+      }
+    } else {
+      updated[index][field] = value;
+    }
+    
+    setExercises(updated);
+  };
+
+  const updateSetWeight = (exerciseIndex, setIndex, weight) => {
+    const updated = [...exercises];
+    if (!updated[exerciseIndex].weights) {
+      updated[exerciseIndex].weights = [];
+    }
+    updated[exerciseIndex].weights[setIndex] = Number(weight);
     setExercises(updated);
   };
 
