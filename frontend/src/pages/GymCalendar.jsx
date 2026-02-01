@@ -80,9 +80,19 @@ export default function GymCalendar() {
   const getWorkoutTypes = (day) => {
     const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
     const dayWorkouts = workoutDates[date.toDateString()] || [];
-    const types = { weightlifting: 0, cardio: 0 };
+    const types = { 
+      weightlifting: 0, 
+      cardio: 0,
+      push: 0,
+      pull: 0,
+      legs: 0,
+      full: 0
+    };
     dayWorkouts.forEach(w => {
       types[w.workout_type]++;
+      if (w.session_category) {
+        types[w.session_category]++;
+      }
     });
     return types;
   };
