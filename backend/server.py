@@ -842,13 +842,13 @@ async def import_training_plan(
         chat = LlmChat(
             api_key=EMERGENT_LLM_KEY,
             session_id=f"plan-import-{current_user['id']}-{uuid.uuid4()}",
-            system_message="""You are a fitness training plan analyzer. Extract exercise information from uploaded documents.
+            system_message="""You are a fitness training plan analyzer. Extract exercise information from uploaded documents and categorize them by muscle group.
             
             Return ONLY a valid JSON object in this exact format:
             {
                 "plan_name": "Name of the training plan or 'Imported Plan'",
                 "exercises": [
-                    {"name": "Exercise Name", "sets": 3, "reps": "8-12", "weight": 0, "notes": "any notes"},
+                    {"name": "Exercise Name", "sets": 3, "reps": "8-12", "weight": 0, "notes": "any notes", "category": "push"},
                     ...
                 ]
             }
@@ -861,7 +861,14 @@ async def import_training_plan(
             - Format examples: "4x8-12" means sets: 4, reps: "8-12" | "3x10" means sets: 3, reps: "10"
             - Weight should be in kg, use 0 if not specified
             - If sets/reps are not specified at all, use reasonable defaults (3 sets, "10" reps)
-            - Return ONLY the JSON, no other text"""
+            
+            CATEGORIZATION RULES:
+            - "push" category: Bench Press, Overhead Press, Incline Press, Decline Press, Dumbbell Press, Dips, Tricep Extensions, Chest Fly, Shoulder Raises, Push-ups, Cable Crossover
+            - "pull" category: Pull-ups, Chin-ups, Rows (Barbell Row, Dumbbell Row, Cable Row, T-Bar Row), Lat Pulldown, Face Pulls, Bicep Curls, Hammer Curls, Shrugs, Deadlift (conventional, sumo, Romanian)
+            - "legs" category: Squat, Front Squat, Leg Press, Lunges, Bulgarian Split Squat, Leg Curls, Leg Extensions, Calf Raises, Glute Bridges, Hip Thrusts, Leg Raise, Step-ups
+            - If unsure or mixed compound movement, use the primary muscle group (e.g., Deadlift = "pull" because of back emphasis)
+            
+            Return ONLY the JSON, no other text"""
         ).with_model("gemini", "gemini-2.5-flash")
         
         # Create file attachment - for text files, read content directly
