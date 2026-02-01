@@ -196,19 +196,29 @@ export default function GymCalendar() {
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-1">
                 <Dumbbell className="w-4 h-4 text-[#ef4444]" />
-                <p className="text-xs text-[#a1a1aa]">Weightlifting</p>
+                <p className="text-xs text-[#a1a1aa]">Push Days</p>
               </div>
-              <p className="text-2xl font-bold text-[#ef4444]">{stats?.weightlifting_count || 0}</p>
+              <p className="text-2xl font-bold text-[#ef4444]">{stats?.push_count || 0}</p>
             </CardContent>
           </Card>
 
           <Card className="bg-[#0c0c12] border-[#1e1e2e]">
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-1">
-                <Flame className="w-4 h-4 text-[#06b6d4]" />
-                <p className="text-xs text-[#a1a1aa]">Cardio</p>
+                <Trophy className="w-4 h-4 text-[#06b6d4]" />
+                <p className="text-xs text-[#a1a1aa]">Pull Days</p>
               </div>
-              <p className="text-2xl font-bold text-[#06b6d4]">{stats?.cardio_count || 0}</p>
+              <p className="text-2xl font-bold text-[#06b6d4]">{stats?.pull_count || 0}</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-[#0c0c12] border-[#1e1e2e]">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2 mb-1">
+                <Trophy className="w-4 h-4 text-[#4ade80]" />
+                <p className="text-xs text-[#a1a1aa]">Leg Days</p>
+              </div>
+              <p className="text-2xl font-bold text-[#4ade80]">{stats?.legs_count || 0}</p>
             </CardContent>
           </Card>
         </div>
