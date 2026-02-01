@@ -786,6 +786,8 @@ class PlanExercise(BaseModel):
     weight: Optional[float] = 0
     notes: Optional[str] = None
     category: Optional[str] = None  # push, pull, or legs
+    weights: Optional[List[float]] = None  # Per-set weights
+    useSameWeight: Optional[bool] = True  # Whether to use single weight or per-set weights
 
 class TrainingPlan(BaseModel):
     model_config = ConfigDict(extra="ignore")
