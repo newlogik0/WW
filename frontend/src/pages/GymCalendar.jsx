@@ -289,12 +289,21 @@ export default function GymCalendar() {
                       {day}
                     </span>
                     {hasWorkouts && (
-                      <div className="flex gap-1 mt-1">
-                        {workoutTypes.weightlifting > 0 && (
-                          <div className="w-1.5 h-1.5 rounded-full bg-[#ef4444]" title="Weightlifting"></div>
+                      <div className="flex gap-1 mt-1 flex-wrap justify-center">
+                        {workoutTypes.push > 0 && (
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#ef4444]" title="Push"></div>
+                        )}
+                        {workoutTypes.pull > 0 && (
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#06b6d4]" title="Pull"></div>
+                        )}
+                        {workoutTypes.legs > 0 && (
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#4ade80]" title="Legs"></div>
+                        )}
+                        {workoutTypes.full > 0 && (
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#8b5cf6]" title="Full Body"></div>
                         )}
                         {workoutTypes.cardio > 0 && (
-                          <div className="w-1.5 h-1.5 rounded-full bg-[#06b6d4]" title="Cardio"></div>
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#f59e0b]" title="Cardio"></div>
                         )}
                       </div>
                     )}
