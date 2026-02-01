@@ -695,11 +695,77 @@ export default function WeightliftingSession() {
         </div>
 
         {activePlan && (
-          <div className="flex items-center gap-2 mb-4 p-3 bg-[#7c3aed]/10 border border-[#7c3aed]/30 rounded-lg">
-            <FileText className="w-4 h-4 text-[#a78bfa]" />
-            <span className="text-sm text-[#a78bfa]">Using: {activePlan.name}</span>
-          </div>
+          <>
+            <div className="flex items-center gap-2 mb-4 p-3 bg-[#7c3aed]/10 border border-[#7c3aed]/30 rounded-lg">
+              <FileText className="w-4 h-4 text-[#a78bfa]" />
+              <span className="text-sm text-[#a78bfa]">Using: {activePlan.name}</span>
+            </div>
+
+            {/* Category Filter */}
+            <Card className="bg-[#0a0a10] border-[#1a1a28] mb-4">
+              <CardContent className="p-4">
+                <Label className="text-xs text-[#68687a] mb-2 block">Filter by Muscle Group</Label>
+                <div className="grid grid-cols-4 gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleCategoryChange("all")}
+                    className={`h-9 ${
+                      selectedCategory === "all"
+                        ? "bg-[#8b5cf6]/20 border-[#8b5cf6] text-[#a78bfa]"
+                        : "border-[#1a1a28] text-[#68687a] hover:border-[#8b5cf6]/50"
+                    }`}
+                  >
+                    All ({activePlan.exercises.length})
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleCategoryChange("push")}
+                    className={`h-9 ${
+                      selectedCategory === "push"
+                        ? "bg-[#ef4444]/20 border-[#ef4444] text-[#ef4444]"
+                        : "border-[#1a1a28] text-[#68687a] hover:border-[#ef4444]/50"
+                    }`}
+                    disabled={categoryCounts.push === 0}
+                  >
+                    Push ({categoryCounts.push})
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleCategoryChange("pull")}
+                    className={`h-9 ${
+                      selectedCategory === "pull"
+                        ? "bg-[#06b6d4]/20 border-[#06b6d4] text-[#06b6d4]"
+                        : "border-[#1a1a28] text-[#68687a] hover:border-[#06b6d4]/50"
+                    }`}
+                    disabled={categoryCounts.pull === 0}
+                  >
+                    Pull ({categoryCounts.pull})
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleCategoryChange("legs")}
+                    className={`h-9 ${
+                      selectedCategory === "legs"
+                        ? "bg-[#4ade80]/20 border-[#4ade80] text-[#4ade80]"
+                        : "border-[#1a1a28] text-[#68687a] hover:border-[#4ade80]/50"
+                    }`}
+                    disabled={categoryCounts.legs === 0}
+                  >
+                    Legs ({categoryCounts.legs})
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </>
         )}
+
+        <div className="mb-4">
+          <RestTimer onComplete={() => toast.info("Ready for next set!")} />
+        </div>
 
         <div className="mb-4">
           <TempoTracker onComplete={handleTempoComplete} />
