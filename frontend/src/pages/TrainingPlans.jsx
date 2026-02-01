@@ -318,44 +318,94 @@ export default function TrainingPlans() {
                       </div>
                     </div>
                     
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       {editingPlan.exercises.map((ex, i) => (
-                        <div key={i} className="flex items-center gap-2 p-2 bg-[#18181b] rounded-lg">
-                          <Input
-                            value={ex.name}
-                            onChange={(e) => updateExercise(i, 'name', e.target.value)}
-                            placeholder="Exercise name"
-                            className="bg-[#030304] border-[#1e1e2e] text-white flex-1 h-8 text-sm"
-                          />
-                          <Input
-                            type="number"
-                            value={ex.sets}
-                            onChange={(e) => updateExercise(i, 'sets', Number(e.target.value))}
-                            className="bg-[#030304] border-[#1e1e2e] text-white w-16 h-8 text-sm"
-                            placeholder="Sets"
-                          />
-                          <Input
-                            type="text"
-                            value={ex.reps}
-                            onChange={(e) => updateExercise(i, 'reps', e.target.value)}
-                            className="bg-[#030304] border-[#1e1e2e] text-white w-20 h-8 text-sm"
-                            placeholder="8-12"
-                          />
-                          <Input
-                            type="number"
-                            value={ex.weight || 0}
-                            onChange={(e) => updateExercise(i, 'weight', Number(e.target.value))}
-                            className="bg-[#030304] border-[#1e1e2e] text-white w-20 h-8 text-sm"
-                            placeholder="kg"
-                          />
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="h-8 w-8 p-0 text-[#ef4444]"
-                            onClick={() => removeExercise(i)}
-                          >
-                            <Trash2 className="w-3 h-3" />
-                          </Button>
+                        <div key={i} className="p-3 bg-[#18181b] rounded-lg space-y-3">
+                          <div className="flex items-center gap-2">
+                            <Input
+                              value={ex.name}
+                              onChange={(e) => updateExercise(i, 'name', e.target.value)}
+                              placeholder="Exercise name"
+                              className="bg-[#030304] border-[#1e1e2e] text-white flex-1 h-8 text-sm"
+                            />
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-8 w-8 p-0 text-[#ef4444]"
+                              onClick={() => removeExercise(i)}
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </Button>
+                          </div>
+                          
+                          <div className="flex items-center gap-2">
+                            <div className="flex-1">
+                              <Label className="text-xs text-[#71717a]">Sets</Label>
+                              <Input
+                                type="number"
+                                value={ex.sets}
+                                onChange={(e) => updateExercise(i, 'sets', Number(e.target.value))}
+                                className="bg-[#030304] border-[#1e1e2e] text-white h-8 text-sm"
+                              />
+                            </div>
+                            <div className="flex-1">
+                              <Label className="text-xs text-[#71717a]">Reps</Label>
+                              <Input
+                                type="text"
+                                value={ex.reps}
+                                onChange={(e) => updateExercise(i, 'reps', e.target.value)}
+                                className="bg-[#030304] border-[#1e1e2e] text-white h-8 text-sm"
+                                placeholder="8-12"
+                              />
+                            </div>
+                            <div className="flex-1">
+                              <Label className="text-xs text-[#71717a]">Weight (kg)</Label>
+                              <div className="flex gap-1">
+                                <Input
+                                  type="number"
+                                  value={ex.weight || 0}
+                                  onChange={(e) => updateExercise(i, 'weight', Number(e.target.value))}
+                                  className="bg-[#030304] border-[#1e1e2e] text-white h-8 text-sm"
+                                  disabled={!ex.useSameWeight}
+                                />
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={() => updateExercise(i, 'useSameWeight', !ex.useSameWeight)}
+                                  className={`h-8 w-8 p-0 ${
+                                    !ex.useSameWeight 
+                                      ? "text-[#a78bfa] bg-[#7c3aed]/10" 
+                                      : "text-[#71717a]"
+                                  }`}
+                                  title={ex.useSameWeight ? "Different weight per set" : "Same weight all sets"}
+                                >
+                                  <ChevronDown className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Per-set weights */}
+                          {!ex.useSameWeight && ex.sets > 0 && (
+                            <div className="pt-2 border-t border-[#2e2e33]">
+                              <Label className="text-xs text-[#71717a] mb-2 block">Weight per set (kg)</Label>
+                              <div className="grid grid-cols-4 gap-2">
+                                {Array.from({ length: ex.sets }).map((_, setIdx) => (
+                                  <div key={setIdx}>
+                                    <Label className="text-xs text-[#52525b] mb-1 block">Set {setIdx + 1}</Label>
+                                    <Input
+                                      type="number"
+                                      min="0"
+                                      step="2.5"
+                                      value={ex.weights?.[setIdx] || 0}
+                                      onChange={(e) => updateSetWeight(i, setIdx, e.target.value)}
+                                      className="bg-[#030304] border-[#1e1e2e] text-white h-8 text-sm"
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                         </div>
                       ))}
                       <Button
