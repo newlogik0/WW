@@ -415,6 +415,73 @@ async def register(user_data: UserCreate):
     
     return TokenResponse(access_token=token, token_type="bearer", user=user_response)
 
+@api_router.post("/auth/face/register")
+async def register_face(face_data: FaceRegister, current_user: dict = Depends(get_current_user)):
+    """Register face descriptor for a user"""
+    if face_data.user_id != current_user['id']:
+        raise HTTPException(status_code=403, detail="Can only register face for your own account")
+    
+    # Store face descriptor
+    await db.users.update_one(
+        {"id": current_user['id']},
+        {"$set": {"face_descriptor": face_data.face_descriptor}}
+    )
+    
+    return {"message": "Face registered successfully"}
+
+@api_router.post("/auth/face/login", response_model=TokenResponse)
+async def login_with_face(face_data: FaceLogin):
+    """Login using facial recognition"""
+    import numpy as np
+    
+    # Get all users with face descriptors
+    query = {"face_descriptor": {"$exists": True}}
+    if face_data.username:
+        query["username"] = face_data.username
+    
+    users = await db.users.find(query, {"_id": 0}).to_list(1000)
+    
+    if not users:
+        raise HTTPException(status_code=404, detail="No registered faces found")
+    
+    # Find best match using cosine similarity
+    input_descriptor = np.array(face_data.face_descriptor)
+    best_match = None
+    best_similarity = 0.6  # Threshold for matching
+    
+    for user in users:
+        stored_descriptor = np.array(user['face_descriptor'])
+        # Cosine similarity
+        similarity = np.dot(input_descriptor, stored_descriptor) / (
+            np.linalg.norm(input_descriptor) * np.linalg.norm(stored_descriptor)
+        )
+        
+        if similarity > best_similarity:
+            best_similarity = similarity
+            best_match = user
+    
+    if not best_match:
+        raise HTTPException(status_code=401, detail="Face not recognized")
+    
+    # Create token with extended expiry for face login
+    token = create_token(best_match['id'], expires_delta=timedelta(days=30))
+    
+    user_response = UserResponse(
+        id=best_match['id'],
+        email=best_match['email'],
+        username=best_match['username'],
+        level=best_match['level'],
+        xp=best_match['xp'],
+        xp_to_next_level=best_match['xp_to_next_level'],
+        strength=best_match['strength'],
+        endurance=best_match['endurance'],
+        agility=best_match['agility'],
+        total_workouts=best_match['total_workouts'],
+        created_at=best_match['created_at']
+    )
+    
+    return TokenResponse(access_token=token, token_type="bearer", user=user_response)
+
 @api_router.post("/auth/login", response_model=TokenResponse)
 async def login(credentials: UserLogin):
     # Try to find user by username or email
