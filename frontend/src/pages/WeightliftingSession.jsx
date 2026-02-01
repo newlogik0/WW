@@ -533,7 +533,7 @@ export default function WeightliftingSession() {
   const { refreshUser } = useAuth();
   const navigate = useNavigate();
   const [exercises, setExercises] = useState([
-    { name: "", sets: 3, reps: "10", weight: 0, tempo: "" }
+    { name: "", sets: 3, reps: "10", weight: 0, tempo: "", weights: [], useSameWeight: true }
   ]);
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
@@ -566,7 +566,9 @@ export default function WeightliftingSession() {
         reps: String(e.reps || "10"),
         weight: e.weight || 0,
         tempo: e.tempo || "",
-        category: e.category || ""
+        category: e.category || "",
+        weights: [],
+        useSameWeight: true
       })));
     } else {
       const filtered = source.filter(e => e.category === category);
@@ -577,11 +579,13 @@ export default function WeightliftingSession() {
           reps: String(e.reps || "10"),
           weight: e.weight || 0,
           tempo: e.tempo || "",
-          category: e.category || ""
+          category: e.category || "",
+          weights: [],
+          useSameWeight: true
         })));
       } else {
         // No exercises in this category, show empty state
-        setExercises([{ name: "", sets: 3, reps: "10", weight: 0, tempo: "" }]);
+        setExercises([{ name: "", sets: 3, reps: "10", weight: 0, tempo: "", weights: [], useSameWeight: true }]);
         toast.info(`No ${category} exercises in your plan`);
       }
     }
