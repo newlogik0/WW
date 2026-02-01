@@ -465,7 +465,8 @@ async def log_weightlifting(session: WeightliftingSession, current_user: dict = 
     
     details = {
         "exercises": [e.model_dump() for e in session.exercises],
-        "notes": session.notes
+        "notes": session.notes,
+        "session_category": session.session_category or "full"
     }
     
     xp_earned, stats_gained = calculate_workout_xp("weightlifting", details)
@@ -474,6 +475,7 @@ async def log_weightlifting(session: WeightliftingSession, current_user: dict = 
         "id": workout_id,
         "user_id": current_user['id'],
         "workout_type": "weightlifting",
+        "session_category": session.session_category or "full",
         "xp_earned": xp_earned,
         "stats_gained": stats_gained,
         "created_at": now,
