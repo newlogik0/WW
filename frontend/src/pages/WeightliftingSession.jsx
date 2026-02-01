@@ -536,6 +536,7 @@ export default function WeightliftingSession() {
     { name: "", sets: 3, reps: "10", weight: 0, tempo: "", weights: [], useSameWeight: true }
   ]);
   const [notes, setNotes] = useState("");
+  const [sessionCategory, setSessionCategory] = useState("full"); // push, pull, legs, full
   const [loading, setLoading] = useState(false);
   const [activePlan, setActivePlan] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("all"); // all, push, pull, legs
