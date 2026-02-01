@@ -37,11 +37,15 @@ const CardioAnimation = ({ activity, duration, isActive }) => {
   const [showAnimation, setShowAnimation] = useState("character"); // 'character' or 'progress'
   const [progress, setProgress] = useState(0);
   const [expanded, setExpanded] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(0); // in seconds
   const intervalRef = useRef(null);
 
   useEffect(() => {
     if (isActive && duration > 0) {
-      const increment = 100 / (duration * 60); // Update every second
+      const totalSeconds = duration * 60;
+      setTimeRemaining(totalSeconds);
+      
+      const increment = 100 / totalSeconds; // Update every second
       intervalRef.current = setInterval(() => {
         setProgress(prev => {
           if (prev >= 100) {
@@ -50,9 +54,18 @@ const CardioAnimation = ({ activity, duration, isActive }) => {
           }
           return prev + increment;
         });
+        
+        setTimeRemaining(prev => {
+          if (prev <= 1) {
+            clearInterval(intervalRef.current);
+            return 0;
+          }
+          return prev - 1;
+        });
       }, 1000);
     } else {
       setProgress(0);
+      setTimeRemaining(duration * 60);
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
@@ -64,6 +77,12 @@ const CardioAnimation = ({ activity, duration, isActive }) => {
       }
     };
   }, [isActive, duration]);
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
   const getAnimationClass = () => {
     if (!isActive) return "";
