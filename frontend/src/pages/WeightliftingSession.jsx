@@ -600,6 +600,10 @@ export default function WeightliftingSession() {
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
+    // Auto-set session category based on filter (unless it's "all")
+    if (category !== "all") {
+      setSessionCategory(category);
+    }
     if (activePlan) {
       loadExercisesByCategory(category);
     }
