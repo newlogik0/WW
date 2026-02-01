@@ -428,7 +428,9 @@ async def login(credentials: UserLogin):
     if not verify_password(credentials.password, user['password_hash']):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     
-    token = create_token(user['id'])
+    # Set token expiry based on remember_me
+    token_expiry_days = 30 if credentials.remember_me else 7
+    token = create_token(user['id'], expires_delta=timedelta(days=token_expiry_days))
     
     user_response = UserResponse(
         id=user['id'],
