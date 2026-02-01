@@ -34,6 +34,181 @@ const COMMON_EXERCISES = [
   "Incline Bench Press", "Cable Fly", "Leg Curl", "Leg Extension", "Calf Raise"
 ];
 
+// Rest Timer Component
+const RestTimer = ({ onComplete }) => {
+  const [isRunning, setIsRunning] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(90); // Default 90 seconds
+  const [restDuration, setRestDuration] = useState(90);
+  const [expanded, setExpanded] = useState(false);
+  const intervalRef = useRef(null);
+
+  useEffect(() => {
+    if (isRunning && timeLeft > 0) {
+      intervalRef.current = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            clearInterval(intervalRef.current);
+            setIsRunning(false);
+            if (onComplete) onComplete();
+            // Play notification sound
+            playTone(1200, 500, 0.4);
+            toast.success("Rest complete! Ready for next set");
+            return restDuration; // Reset to rest duration
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isRunning, timeLeft, restDuration, onComplete]);
+
+  const startRest = () => {
+    setTimeLeft(restDuration);
+    setIsRunning(true);
+    toast.info(`Rest timer started: ${restDuration}s`);
+  };
+
+  const stopRest = () => {
+    setIsRunning(false);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+  };
+
+  const resetRest = () => {
+    setIsRunning(false);
+    setTimeLeft(restDuration);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+  };
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const handleDurationChange = (newDuration) => {
+    setRestDuration(newDuration);
+    if (!isRunning) {
+      setTimeLeft(newDuration);
+    }
+  };
+
+  const progress = ((restDuration - timeLeft) / restDuration) * 100;
+
+  return (
+    <Card className="bg-[#0a0a10] border-[#1a1a28]">
+      <CardHeader className="pb-2 cursor-pointer" onClick={() => setExpanded(!expanded)}>
+        <CardTitle className="text-sm font-display text-white flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Timer className="w-4 h-4 text-[#ef4444]" />
+            Rest Timer Between Sets
+          </div>
+          {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+        </CardTitle>
+      </CardHeader>
+      
+      {expanded && (
+        <CardContent className="space-y-4">
+          {/* Rest Duration Selector */}
+          <div>
+            <Label className="text-xs text-[#68687a] mb-2 block">Rest Duration (seconds)</Label>
+            <div className="flex gap-2">
+              {[60, 90, 120, 180].map(duration => (
+                <Button
+                  key={duration}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDurationChange(duration)}
+                  disabled={isRunning}
+                  className={`h-8 ${
+                    restDuration === duration
+                      ? "bg-[#ef4444]/20 border-[#ef4444] text-[#ef4444]"
+                      : "border-[#1a1a28] text-[#68687a] hover:border-[#ef4444]/50"
+                  }`}
+                >
+                  {duration}s
+                </Button>
+              ))}
+              <Input
+                type="number"
+                min="10"
+                max="600"
+                value={restDuration}
+                onChange={(e) => handleDurationChange(Number(e.target.value))}
+                disabled={isRunning}
+                className="w-20 h-8 bg-[#06060a] border-[#1a1a28] text-white text-center"
+              />
+            </div>
+          </div>
+
+          {/* Timer Display */}
+          <div className="text-center">
+            <div className={`text-5xl font-display font-bold mb-2 ${
+              isRunning 
+                ? timeLeft <= 10 ? "text-[#ef4444] animate-pulse" : "text-[#ef4444]"
+                : "text-[#68687a]"
+            }`}>
+              {formatTime(timeLeft)}
+            </div>
+            
+            {/* Progress Bar */}
+            <div className="w-full h-2 bg-[#06060a] rounded-full overflow-hidden mb-4">
+              <div 
+                className="h-full bg-gradient-to-r from-[#ef4444] to-[#f87171] transition-all duration-1000"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+
+            <p className="text-xs text-[#68687a]">
+              {isRunning ? "Resting..." : "Click Start to begin rest timer"}
+            </p>
+          </div>
+
+          {/* Controls */}
+          <div className="flex justify-center gap-2">
+            {!isRunning ? (
+              <Button
+                onClick={startRest}
+                className="bg-[#ef4444] hover:bg-[#dc2626] text-white h-9"
+              >
+                <Play className="w-4 h-4 mr-2" />
+                Start Rest
+              </Button>
+            ) : (
+              <>
+                <Button 
+                  onClick={stopRest}
+                  variant="outline"
+                  className="border-[#1a1a28] text-[#a8a8b8] hover:bg-[#1a1a28] h-9"
+                >
+                  <Pause className="w-4 h-4 mr-2" />
+                  Pause
+                </Button>
+                <Button 
+                  onClick={resetRest}
+                  variant="outline"
+                  className="border-[#1a1a28] text-[#a8a8b8] hover:bg-[#1a1a28] h-9"
+                >
+                  <RotateCcw className="w-4 h-4 mr-2" />
+                  Reset
+                </Button>
+              </>
+            )}
+          </div>
+        </CardContent>
+      )}
+    </Card>
+  );
+};
+
 // Speech synthesis for voice guidance
 const speak = (text, rate = 1.2) => {
   if ('speechSynthesis' in window) {
