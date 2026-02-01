@@ -577,8 +577,6 @@ async def get_workout_stats(current_user: dict = Depends(get_current_user)):
         "full_count": full_count,
         "total_xp_earned": total_xp_earned
     }
-        "total_xp_earned": total_xp_earned
-    }
 
 # ==================== USER STATS HELPERS ====================
 
