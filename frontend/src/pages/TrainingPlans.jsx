@@ -16,7 +16,8 @@ import {
   Plus,
   Check,
   Edit2,
-  X
+  X,
+  ChevronDown
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 
