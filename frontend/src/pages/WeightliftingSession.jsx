@@ -991,7 +991,7 @@ export default function WeightliftingSession() {
                             min="0"
                             step="2.5"
                             value={exercise.weights?.[setIdx] || 0}
-                            onChange={(e) => updateSetWeight(index, setIdx, e.target.value)}
+                            onChange={(e) => updateSetWeight(index, setIdx, e.target.value === "" ? 0 : Number(e.target.value))}
                             className="bg-[#020204] border-[#1a1a28] text-white h-8 text-sm"
                             placeholder="0"
                           />
