@@ -783,6 +783,7 @@ class PlanExercise(BaseModel):
     reps: str = "10"  # String to support ranges like "8-12"
     weight: Optional[float] = 0
     notes: Optional[str] = None
+    category: Optional[str] = None  # push, pull, or legs
 
 class TrainingPlan(BaseModel):
     model_config = ConfigDict(extra="ignore")
