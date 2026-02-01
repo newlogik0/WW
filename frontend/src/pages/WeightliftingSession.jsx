@@ -553,7 +553,13 @@ export default function WeightliftingSession() {
         console.log("No active plan");
       }
     };
+    
     loadPlan();
+    
+    // Poll for plan updates every 3 seconds
+    const interval = setInterval(loadPlan, 3000);
+    
+    return () => clearInterval(interval);
   }, []);
 
   const loadExercisesByCategory = (category, planExercises = null) => {
