@@ -937,6 +937,12 @@ export default function WeightliftingSession() {
                       type="text"
                       value={exercise.reps}
                       onChange={(e) => updateExercise(index, "reps", e.target.value)}
+                      onBlur={(e) => {
+                        // Trim whitespace on blur
+                        if (e.target.value.trim() !== exercise.reps) {
+                          updateExercise(index, "reps", e.target.value.trim());
+                        }
+                      }}
                       placeholder="10 or 8-12"
                       className="bg-[#020204] border-[#1a1a28] text-white h-9"
                       data-testid={`exercise-reps-${index}`}
@@ -948,8 +954,9 @@ export default function WeightliftingSession() {
                       <Input
                         type="number"
                         min="0"
+                        step="0.5"
                         value={exercise.weight}
-                        onChange={(e) => updateExercise(index, "weight", Number(e.target.value))}
+                        onChange={(e) => updateExercise(index, "weight", e.target.value === "" ? 0 : Number(e.target.value))}
                         className="bg-[#020204] border-[#1a1a28] text-white h-9"
                         data-testid={`exercise-weight-${index}`}
                         disabled={!exercise.useSameWeight}
