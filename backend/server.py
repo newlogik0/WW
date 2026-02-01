@@ -53,6 +53,15 @@ class UserCreate(BaseModel):
 class UserLogin(BaseModel):
     email: str  # Can be username or email
     password: str
+    remember_me: Optional[bool] = False
+
+class FaceLogin(BaseModel):
+    face_descriptor: List[float]  # 128-dimensional face descriptor
+    username: Optional[str] = None  # Optional username hint
+
+class FaceRegister(BaseModel):
+    user_id: str
+    face_descriptor: List[float]
 
 class UserResponse(BaseModel):
     model_config = ConfigDict(extra="ignore")
