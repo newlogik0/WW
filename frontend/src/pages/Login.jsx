@@ -123,16 +123,16 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <Label htmlFor="email" className="text-[#a8a8b8] text-sm">Email</Label>
+              <Label htmlFor="username" className="text-[#a8a8b8] text-sm">Username</Label>
               <Input
-                id="email"
-                type="email"
-                placeholder="warrior@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                id="username"
+                type="text"
+                placeholder="warrior_name"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
                 className="bg-[#06060a] border-[#1a1a28] text-white placeholder:text-[#68687a] focus:border-[#7c3aed] h-11"
-                data-testid="login-email-input"
+                data-testid="login-username-input"
               />
             </div>
             
