@@ -23,7 +23,9 @@ import {
   Upload,
   FileText,
   Volume2,
-  VolumeX
+  VolumeX,
+  ArrowUp,
+  Activity
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 
