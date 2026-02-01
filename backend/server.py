@@ -150,10 +150,13 @@ def hash_password(password: str) -> str:
 def verify_password(password: str, hashed: str) -> bool:
     return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
 
-def create_token(user_id: str) -> str:
+def create_token(user_id: str, expires_delta: timedelta = None) -> str:
+    if expires_delta is None:
+        expires_delta = timedelta(hours=JWT_EXPIRATION_HOURS)
+    
     payload = {
         "sub": user_id,
-        "exp": datetime.now(timezone.utc) + timedelta(hours=JWT_EXPIRATION_HOURS)
+        "exp": datetime.now(timezone.utc) + expires_delta
     }
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
