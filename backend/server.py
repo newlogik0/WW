@@ -82,6 +82,8 @@ class Exercise(BaseModel):
     reps: str  # String to support ranges like "8-12"
     weight: float
     tempo: Optional[str] = None  # e.g., "3-1-2" (eccentric-hold-concentric)
+    weights: Optional[List[float]] = None  # Per-set weights (e.g., [60, 70, 80])
+    useSameWeight: Optional[bool] = True  # Whether to use single weight or per-set weights
 
 class WeightliftingSession(BaseModel):
     exercises: List[Exercise]
