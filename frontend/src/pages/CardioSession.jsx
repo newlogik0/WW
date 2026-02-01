@@ -142,13 +142,24 @@ const CardioAnimation = ({ activity, duration, isActive }) => {
             {showAnimation === "character" ? (
               <div className="cardio-animation">
                 <Icon className={`w-20 h-20 text-[#06b6d4] ${getAnimationClass()}`} />
+                {isActive && (
+                  <div className="text-center mt-4">
+                    <p className="text-3xl font-display font-bold text-[#06b6d4]">
+                      {formatTime(timeRemaining)}
+                    </p>
+                    <p className="text-xs text-[#68687a] mt-1">Time Remaining</p>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="w-full max-w-md">
                 <div className="mb-2 text-center">
                   <span className="text-3xl font-display font-bold text-[#06b6d4]">
-                    {Math.round(progress)}%
+                    {isActive ? formatTime(timeRemaining) : `${duration}:00`}
                   </span>
+                  <p className="text-xs text-[#68687a] mt-1">
+                    {isActive ? "Time Remaining" : "Duration"}
+                  </p>
                 </div>
                 <div className="h-6 bg-[#06060a] rounded-full overflow-hidden relative">
                   <div 
@@ -160,6 +171,7 @@ const CardioAnimation = ({ activity, duration, isActive }) => {
                 </div>
                 <div className="mt-2 flex justify-between text-xs text-[#68687a]">
                   <span>Start</span>
+                  <span>{Math.round(progress)}%</span>
                   <span>{duration} min</span>
                 </div>
               </div>
