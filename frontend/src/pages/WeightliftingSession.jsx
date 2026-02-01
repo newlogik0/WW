@@ -674,27 +674,28 @@ export default function WeightliftingSession() {
     const validExercises = exercises.filter(e => e.name && e.sets > 0 && e.reps);
     
     if (validExercises.length === 0) {
-      toast.error("Add at least one exercise");
+      toast.error("Please add at least one exercise");
       return;
     }
 
     setLoading(true);
-    
     try {
-      const response = await api.post("/workouts/weightlifting", {
+      await api.post("/workouts/weightlifting", {
         exercises: validExercises,
-        notes
+        notes,
+        session_category: sessionCategory
       });
-      
-      await refreshUser();
       
       toast.success(
         <div>
           <p className="font-semibold">Workout Complete!</p>
-          <p className="text-sm">+{response.data.xp_earned} XP earned</p>
+          <p className="text-sm capitalize">
+            {sessionCategory === "full" ? "Full body" : sessionCategory} session logged
+          </p>
         </div>
       );
       
+      await refreshUser();
       navigate("/");
     } catch (error) {
       toast.error(error.response?.data?.detail || "Failed to save workout");
