@@ -573,8 +573,8 @@ export default function WeightliftingSession() {
         weight: e.weight || 0,
         tempo: e.tempo || "",
         category: e.category || "",
-        weights: [],
-        useSameWeight: true
+        weights: e.weights || [],
+        useSameWeight: e.useSameWeight !== undefined ? e.useSameWeight : true
       })));
     } else {
       const filtered = source.filter(e => e.category === category);
@@ -586,8 +586,8 @@ export default function WeightliftingSession() {
           weight: e.weight || 0,
           tempo: e.tempo || "",
           category: e.category || "",
-          weights: [],
-          useSameWeight: true
+          weights: e.weights || [],
+          useSameWeight: e.useSameWeight !== undefined ? e.useSameWeight : true
         })));
       } else {
         // No exercises in this category, show empty state
