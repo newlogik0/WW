@@ -840,20 +840,6 @@ export default function WeightliftingSession() {
                     </select>
                   </div>
                   <div>
-                    <Label className="text-xs text-[#68687a]">Weight (kg)</Label>
-                    <Input
-                      type="number"
-                      min="0"
-                      value={exercise.weight}
-                      onChange={(e) => updateExercise(index, "weight", Number(e.target.value))}
-                      className="bg-[#020204] border-[#1a1a28] text-white h-9"
-                      data-testid={`exercise-weight-${index}`}
-                    />
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
                     <Label className="text-xs text-[#68687a]">Sets</Label>
                     <Input
                       type="number"
@@ -864,6 +850,9 @@ export default function WeightliftingSession() {
                       data-testid={`exercise-sets-${index}`}
                     />
                   </div>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-3">
                   <div>
                     <Label className="text-xs text-[#68687a]">Reps</Label>
                     <Input
@@ -875,7 +864,57 @@ export default function WeightliftingSession() {
                       data-testid={`exercise-reps-${index}`}
                     />
                   </div>
+                  <div className="flex items-end gap-2">
+                    <div className="flex-1">
+                      <Label className="text-xs text-[#68687a]">Weight (kg)</Label>
+                      <Input
+                        type="number"
+                        min="0"
+                        value={exercise.weight}
+                        onChange={(e) => updateExercise(index, "weight", Number(e.target.value))}
+                        className="bg-[#020204] border-[#1a1a28] text-white h-9"
+                        data-testid={`exercise-weight-${index}`}
+                        disabled={!exercise.useSameWeight}
+                      />
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => updateExercise(index, "useSameWeight", !exercise.useSameWeight)}
+                      className={`h-9 px-2 ${
+                        !exercise.useSameWeight 
+                          ? "text-[#a78bfa] bg-[#7c3aed]/10" 
+                          : "text-[#68687a]"
+                      }`}
+                      title={exercise.useSameWeight ? "Track different weight per set" : "Use same weight for all sets"}
+                    >
+                      <ChevronDown className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </div>
+
+                {/* Per-set weight inputs */}
+                {!exercise.useSameWeight && exercise.sets > 0 && (
+                  <div className="pt-2 border-t border-[#1a1a28]">
+                    <Label className="text-xs text-[#68687a] mb-2 block">Weight per set (kg)</Label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {Array.from({ length: exercise.sets }).map((_, setIdx) => (
+                        <div key={setIdx}>
+                          <Label className="text-xs text-[#52525b] mb-1 block">Set {setIdx + 1}</Label>
+                          <Input
+                            type="number"
+                            min="0"
+                            step="2.5"
+                            value={exercise.weights?.[setIdx] || 0}
+                            onChange={(e) => updateSetWeight(index, setIdx, e.target.value)}
+                            className="bg-[#020204] border-[#1a1a28] text-white h-8 text-sm"
+                            placeholder="0"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
             
