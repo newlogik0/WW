@@ -546,6 +546,12 @@ async def get_workout_stats(current_user: dict = Depends(get_current_user)):
     weightlifting_count = await db.workouts.count_documents({"user_id": current_user['id'], "workout_type": "weightlifting"})
     cardio_count = await db.workouts.count_documents({"user_id": current_user['id'], "workout_type": "cardio"})
     
+    # Count by session category
+    push_count = await db.workouts.count_documents({"user_id": current_user['id'], "session_category": "push"})
+    pull_count = await db.workouts.count_documents({"user_id": current_user['id'], "session_category": "pull"})
+    legs_count = await db.workouts.count_documents({"user_id": current_user['id'], "session_category": "legs"})
+    full_count = await db.workouts.count_documents({"user_id": current_user['id'], "session_category": "full"})
+    
     # Get total XP earned from workouts
     pipeline = [
         {"$match": {"user_id": current_user['id']}},
@@ -558,6 +564,12 @@ async def get_workout_stats(current_user: dict = Depends(get_current_user)):
         "total_workouts": total_workouts,
         "weightlifting_count": weightlifting_count,
         "cardio_count": cardio_count,
+        "push_count": push_count,
+        "pull_count": pull_count,
+        "legs_count": legs_count,
+        "full_count": full_count,
+        "total_xp_earned": total_xp_earned
+    }
         "total_xp_earned": total_xp_earned
     }
 
