@@ -313,13 +313,25 @@ export default function GymCalendar() {
             </div>
 
             {/* Legend */}
-            <div className="flex items-center justify-center gap-6 mt-6 pt-4 border-t border-[#1e1e2e]">
+            <div className="flex items-center justify-center gap-4 mt-6 pt-4 border-t border-[#1e1e2e] flex-wrap">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-[#ef4444]"></div>
-                <span className="text-xs text-[#a1a1aa]">Weightlifting</span>
+                <span className="text-xs text-[#a1a1aa]">Push</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-[#06b6d4]"></div>
+                <span className="text-xs text-[#a1a1aa]">Pull</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-[#4ade80]"></div>
+                <span className="text-xs text-[#a1a1aa]">Legs</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-[#8b5cf6]"></div>
+                <span className="text-xs text-[#a1a1aa]">Full Body</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-[#f59e0b]"></div>
                 <span className="text-xs text-[#a1a1aa]">Cardio</span>
               </div>
               <div className="flex items-center gap-2">
