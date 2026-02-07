@@ -387,9 +387,9 @@ const TempoTracker = ({ onComplete }) => {
       <CardHeader className="pb-2 cursor-pointer" onClick={() => setExpanded(!expanded)}>
         <CardTitle className="text-sm font-display text-white flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Timer className="w-4 h-4 text-[#a78bfa]" />
+            <Timer className="w-4 h-4 text-[#00d9ff]" />
             Sound-Guided Rep Counter
-            {soundEnabled && <Volume2 className="w-3 h-3 text-[#7c3aed]" />}
+            {soundEnabled && <Volume2 className="w-3 h-3 text-[#00d9ff]" />}
           </div>
           {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
         </CardTitle>
@@ -404,7 +404,7 @@ const TempoTracker = ({ onComplete }) => {
                 <Switch
                   checked={soundEnabled}
                   onCheckedChange={setSoundEnabled}
-                  className="data-[state=checked]:bg-[#7c3aed]"
+                  className="data-[state=checked]:bg-[#00d9ff]"
                 />
                 <Label className="text-xs text-[#a8a8b8]">Beeps</Label>
               </div>
@@ -412,7 +412,7 @@ const TempoTracker = ({ onComplete }) => {
                 <Switch
                   checked={voiceEnabled}
                   onCheckedChange={setVoiceEnabled}
-                  className="data-[state=checked]:bg-[#7c3aed]"
+                  className="data-[state=checked]:bg-[#00d9ff]"
                 />
                 <Label className="text-xs text-[#a8a8b8]">Voice</Label>
               </div>
@@ -434,7 +434,7 @@ const TempoTracker = ({ onComplete }) => {
                 step="0.1"
                 value={eccentricTime}
                 onChange={handleTimeChange(setEccentricTime)}
-                className="bg-[#06060a] border-[#7c3aed]/30 text-white text-center h-9 tempo-input"
+                className="bg-[#06060a] border-[#00d9ff]/30 text-white text-center h-9 tempo-input"
                 disabled={isRunning}
               />
             </div>
@@ -480,7 +480,7 @@ const TempoTracker = ({ onComplete }) => {
           {/* Phase & Reps */}
           <div className="text-center">
             <p className={`text-2xl font-display font-bold ${
-              phase === 'ready' ? 'text-[#68687a]' : 'text-[#a78bfa]'
+              phase === 'ready' ? 'text-[#68687a]' : 'text-[#00d9ff]'
             }`}>
               {phase === 'ready' ? 'READY' : phase === 'eccentric' ? 'LOWER' : phase === 'hold' ? 'HOLD' : 'LIFT'}
             </p>
@@ -494,7 +494,7 @@ const TempoTracker = ({ onComplete }) => {
             {!isRunning && phase === "ready" && (
               <Button
                 onClick={startTimer}
-                className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white"
+                className="bg-[#00d9ff] hover:bg-[#33e0ff] text-[#0d0d0d]"
                 data-testid="tempo-start-btn"
               >
                 <Play className="w-4 h-4 mr-2" />
@@ -502,7 +502,7 @@ const TempoTracker = ({ onComplete }) => {
               </Button>
             )}
             {isRunning && (
-              <Button onClick={pauseTimer} className="bg-[#5b21b6] hover:bg-[#4c1d95] text-white">
+              <Button onClick={pauseTimer} className="bg-[#00d9ff]/80 hover:bg-[#00d9ff] text-[#0d0d0d]">
                 <Pause className="w-4 h-4 mr-2" />
                 Pause
               </Button>
@@ -519,7 +519,7 @@ const TempoTracker = ({ onComplete }) => {
                   <RotateCcw className="w-4 h-4 mr-2" />
                   Reset
                 </Button>
-                <Button onClick={finishSet} className="bg-[#6d28d9] hover:bg-[#5b21b6] text-white" data-testid="tempo-finish-btn">
+                <Button onClick={finishSet} className="bg-[#00d9ff] hover:bg-[#33e0ff] text-[#0d0d0d]" data-testid="tempo-finish-btn">
                   <Check className="w-4 h-4 mr-2" />
                   Done ({repCount})
                 </Button>
@@ -722,8 +722,8 @@ export default function WeightliftingSession() {
         </Button>
         
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-11 h-11 rounded-xl bg-[#7c3aed]/20 flex items-center justify-center">
-            <Dumbbell className="w-5 h-5 text-[#a78bfa]" />
+          <div className="w-11 h-11 rounded-xl bg-[#00d9ff]/20 flex items-center justify-center">
+            <Dumbbell className="w-5 h-5 text-[#00d9ff]" />
           </div>
           <div>
             <h1 className="text-xl font-display font-bold text-white">Weightlifting</h1>
@@ -733,7 +733,7 @@ export default function WeightliftingSession() {
           <Button
             variant="outline"
             size="sm"
-            className="ml-auto border-[#7c3aed]/50 text-[#a78bfa] hover:bg-[#7c3aed]/10"
+            className="ml-auto border-[#00d9ff]/50 text-[#00d9ff] hover:bg-[#00d9ff]/10"
             onClick={() => navigate("/plans")}
           >
             <Upload className="w-4 h-4 mr-1" />
@@ -909,7 +909,7 @@ export default function WeightliftingSession() {
                     <select
                       value={exercise.name}
                       onChange={(e) => updateExercise(index, "name", e.target.value)}
-                      className="w-full h-9 px-3 bg-[#020204] border border-[#1a1a28] rounded-md text-white text-sm focus:outline-none focus:border-[#7c3aed]"
+                      className="w-full h-9 px-3 bg-[#020204] border border-[#1a1a28] rounded-md text-white text-sm focus:outline-none focus:border-[#00d9ff]"
                       data-testid={`exercise-select-${index}`}
                     >
                       <option value="">Select</option>
@@ -969,7 +969,7 @@ export default function WeightliftingSession() {
                       onClick={() => updateExercise(index, "useSameWeight", !exercise.useSameWeight)}
                       className={`h-9 px-2 ${
                         !exercise.useSameWeight 
-                          ? "text-[#a78bfa] bg-[#7c3aed]/10" 
+                          ? "text-[#00d9ff] bg-[#00d9ff]/10" 
                           : "text-[#68687a]"
                       }`}
                       title={exercise.useSameWeight ? "Track different weight per set" : "Use same weight for all sets"}
@@ -1006,7 +1006,7 @@ export default function WeightliftingSession() {
             
             <Button
               variant="outline"
-              className="w-full border-dashed border-[#1a1a28] text-[#68687a] hover:text-white hover:border-[#7c3aed] h-9"
+              className="w-full border-dashed border-[#1a1a28] text-[#68687a] hover:text-white hover:border-[#00d9ff] h-9"
               onClick={addExercise}
               data-testid="add-exercise-btn"
             >
