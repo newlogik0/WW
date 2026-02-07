@@ -628,6 +628,39 @@ async def get_workouts(limit: int = 20, current_user: dict = Depends(get_current
     ).sort("created_at", -1).limit(limit).to_list(limit)
     return workouts
 
+@api_router.get("/workouts/{workout_id}", response_model=WorkoutResponse)
+async def get_workout(workout_id: str, current_user: dict = Depends(get_current_user)):
+    workout = await db.workouts.find_one(
+        {"id": workout_id, "user_id": current_user['id']},
+        {"_id": 0}
+    )
+    if not workout:
+        raise HTTPException(status_code=404, detail="Workout not found")
+    return workout
+
+@api_router.put("/workouts/{workout_id}")
+async def update_workout(workout_id: str, update_data: dict, current_user: dict = Depends(get_current_user)):
+    """Update workout details (notes, exercises, etc)"""
+    workout = await db.workouts.find_one(
+        {"id": workout_id, "user_id": current_user['id']},
+        {"_id": 0}
+    )
+    if not workout:
+        raise HTTPException(status_code=404, detail="Workout not found")
+    
+    # Update allowed fields
+    allowed_fields = ["details", "notes"]
+    update_fields = {k: v for k, v in update_data.items() if k in allowed_fields}
+    
+    if update_fields:
+        await db.workouts.update_one(
+            {"id": workout_id},
+            {"$set": update_fields}
+        )
+    
+    updated_workout = await db.workouts.find_one({"id": workout_id}, {"_id": 0})
+    return updated_workout
+
 @api_router.get("/workouts/stats")
 async def get_workout_stats(current_user: dict = Depends(get_current_user)):
     total_workouts = await db.workouts.count_documents({"user_id": current_user['id']})
