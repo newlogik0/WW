@@ -1,37 +1,47 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-    --purple-50: #f5f3ff;
-    --purple-100: #ede9fe;
-    --purple-200: #ddd6fe;
-    --purple-300: #c4b5fd;
-    --purple-400: #a78bfa;
-    --purple-500: #8b5cf6;
-    --purple-600: #7c3aed;
-    --purple-700: #6d28d9;
-    --purple-800: #5b21b6;
-    --purple-900: #4c1d95;
-    --purple-950: #2e1065;
-    
-    --accent-red: #f87171;
-    --accent-cyan: #22d3ee;
-    --accent-green: #4ade80;
-    
-    --bg-void: #020204;
-    --bg-deep: #06060a;
-    --bg-dark: #0a0a10;
-    --bg-card: #0e0e16;
-    --bg-elevated: #14141e;
-    --bg-hover: #1a1a28;
-    --border-dim: #1a1a28;
-    --border-subtle: #252538;
-    --text-primary: #f8f8fc;
-    --text-secondary: #a8a8b8;
-    --text-muted: #68687a;
+  /* RPG Gaming Color Palette */
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #121826;
+  --bg-tertiary: #1a2332;
+  
+  /* Vibrant RPG Colors */
+  --gold: #ffd700;
+  --gold-light: #ffe44d;
+  --gold-dark: #b8860b;
+  
+  --strength-red: #ff4444;
+  --strength-light: #ff6b6b;
+  --strength-dark: #cc0000;
+  
+  --endurance-blue: #00d4ff;
+  --endurance-light: #5ce1ff;
+  --endurance-dark: #0099cc;
+  
+  --agility-green: #00ff88;
+  --agility-light: #5affb8;
+  --agility-dark: #00cc66;
+  
+  --magic-purple: #a855f7;
+  --magic-light: #c084fc;
+  --magic-dark: #7c3aed;
+  
+  --legendary-orange: #ff8800;
+  --epic-cyan: #00ffff;
+  --rare-blue: #4169e1;
+  
+  /* UI Elements */
+  --border-glow: rgba(255, 215, 0, 0.3);
+  --shadow-strong: 0 10px 40px rgba(0, 0, 0, 0.5);
+  --glow-gold: 0 0 20px rgba(255, 215, 0, 0.4);
+  --glow-red: 0 0 20px rgba(255, 68, 68, 0.4);
+  --glow-blue: 0 0 20px rgba(0, 212, 255, 0.4);
+  --glow-green: 0 0 20px rgba(0, 255, 136, 0.4);
 }
 
 body {
