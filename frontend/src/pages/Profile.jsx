@@ -24,11 +24,26 @@ import FaceAuth from "@/components/FaceAuth";
 
 export default function Profile() {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user, logout, registerFace } = useAuth();
+  const [showFaceRegister, setShowFaceRegister] = useState(false);
+  const [registeringFace, setRegisteringFace] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate("/login");
+  };
+
+  const handleFaceRegister = async (faceDescriptor) => {
+    setRegisteringFace(true);
+    try {
+      await registerFace(faceDescriptor);
+      toast.success("Face registered successfully! You can now login with your face.");
+      setShowFaceRegister(false);
+    } catch (error) {
+      toast.error(error.response?.data?.detail || "Failed to register face");
+    } finally {
+      setRegisteringFace(false);
+    }
   };
 
   const xpProgress = user ? (user.xp / user.xp_to_next_level) * 100 : 0;
