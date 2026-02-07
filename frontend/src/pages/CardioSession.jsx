@@ -241,7 +241,7 @@ export default function CardioSession() {
   };
 
   return (
-    <div className="min-h-screen bg-[#020204]" data-testid="cardio-session-page">
+    <div className="min-h-screen bg-[#0d0d0d]" data-testid="cardio-session-page">
       <Navbar />
       
       <main className="max-w-3xl mx-auto px-4 py-6">

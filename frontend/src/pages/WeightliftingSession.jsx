@@ -708,7 +708,7 @@ export default function WeightliftingSession() {
   };
 
   return (
-    <div className="min-h-screen bg-[#020204]" data-testid="weightlifting-session-page">
+    <div className="min-h-screen bg-[#0d0d0d]" data-testid="weightlifting-session-page">
       <Navbar />
       
       <main className="max-w-3xl mx-auto px-4 py-6">

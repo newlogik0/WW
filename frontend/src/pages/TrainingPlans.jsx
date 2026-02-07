@@ -205,17 +205,17 @@ export default function TrainingPlans() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#09090b]">
+      <div className="min-h-screen bg-[#0d0d0d]">
         <Navbar />
         <div className="flex items-center justify-center h-[80vh]">
-          <div className="w-10 h-10 border-2 border-[#d4af37] border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-10 h-10 border-2 border-[#00d9ff] border-t-transparent rounded-full animate-spin"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#09090b]" data-testid="plans-page">
+    <div className="min-h-screen bg-[#0d0d0d]" data-testid="plans-page">
       <Navbar />
       
       <main className="max-w-4xl mx-auto px-4 py-6">
