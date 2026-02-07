@@ -72,34 +72,24 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0e1a] via-[#1a1f35] to-[#0f1420] flex items-center justify-center p-4 relative overflow-hidden" data-testid="login-page">
-      {/* Animated Background Effects */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-[#ffd700]/10 rounded-full blur-[150px] animate-pulse"></div>
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#a855f7]/10 rounded-full blur-[150px] animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#00d4ff]/10 rounded-full blur-[150px] animate-pulse" style={{ animationDelay: '2s' }}></div>
-      </div>
-
-      <div className="w-full max-w-md relative z-10">
+    <div className="min-h-screen bg-[#0f0f14] flex items-center justify-center p-4" data-testid="login-page">
+      <div className="w-full max-w-md">
         {/* Logo & Title */}
         <div className="text-center mb-8">
-          <div className="w-24 h-24 mx-auto mb-4 rounded-3xl bg-gradient-to-br from-[#ffd700] via-[#ff8800] to-[#ffd700] flex items-center justify-center shadow-2xl relative" style={{ boxShadow: '0 0 50px rgba(255, 215, 0, 0.5)' }}>
-            <Dumbbell className="w-12 h-12 text-[#0a0e1a]" />
-            <div className="absolute -top-2 -right-2 w-8 h-8 bg-[#00ff88] rounded-full flex items-center justify-center animate-pulse">
-              <Zap className="w-5 h-5 text-[#0a0e1a]" />
-            </div>
+          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-[#e5a855] to-[#d89644] flex items-center justify-center shadow-elevated-lg">
+            <Dumbbell className="w-8 h-8 text-[#0f0f14]" />
           </div>
-          <h1 className="text-4xl font-display font-black bg-gradient-to-r from-[#ffd700] via-[#ffe44d] to-[#ffd700] bg-clip-text text-transparent mb-2">
+          <h1 className="text-3xl font-display font-bold text-white mb-2">
             Warrior's Way
           </h1>
-          <p className="text-[#a0aec0] font-medium">Level up your fitness journey</p>
+          <p className="text-[#a1a1aa]">Track your fitness journey</p>
         </div>
 
         {/* Login Card */}
-        <Card className="bg-gradient-to-br from-[#1a2332]/95 to-[#121826]/95 border-2 border-[#ffd700]/30 backdrop-blur-xl shadow-2xl" style={{ boxShadow: '0 20px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(255, 215, 0, 0.15)' }}>
+        <Card className="card-elevated shadow-elevated-lg">
           <CardHeader className="pb-4">
-            <CardTitle className="text-2xl font-display font-bold text-center bg-gradient-to-r from-[#ffffff] to-[#a0aec0] bg-clip-text text-transparent">
-              Enter the Arena
+            <CardTitle className="text-xl font-display font-semibold text-center text-white">
+              Sign In
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -107,14 +97,13 @@ export default function Login() {
           <Button
             type="button"
             variant="outline"
-            className="w-full h-12 border-2 border-[#00d4ff]/30 bg-[#00d4ff]/10 text-white hover:bg-[#00d4ff]/20 hover:border-[#00d4ff]/50 transition-all font-semibold"
+            className="w-full h-11 border-[#ffffff]/10 bg-[#18181f] text-white hover:bg-[#25252e] hover:border-[#ffffff]/20 transition-all"
             onClick={handleGoogleLogin}
             disabled={googleLoading}
-            style={{ boxShadow: '0 4px 20px rgba(0, 212, 255, 0.2)' }}
           >
             {googleLoading ? (
               <>
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                 Connecting...
               </>
             ) : (
@@ -131,14 +120,14 @@ export default function Login() {
           </Button>
 
           <div className="flex items-center gap-4">
-            <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-[#2a3442] to-transparent"></div>
-            <span className="text-[#68687a] text-sm font-medium">or</span>
-            <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-[#2a3442] to-transparent"></div>
+            <div className="flex-1 h-[1px] bg-[#ffffff]/10"></div>
+            <span className="text-[#71717a] text-sm">or</span>
+            <div className="flex-1 h-[1px] bg-[#ffffff]/10"></div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-1.5">
-              <Label htmlFor="username" className="text-[#a0aec0] text-sm font-semibold">Username</Label>
+            <div className="space-y-2">
+              <Label htmlFor="username" className="text-sm text-[#a1a1aa] font-medium">Username</Label>
               <Input
                 id="username"
                 type="text"
@@ -146,13 +135,13 @@ export default function Login() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                className="bg-[#0a0e1a]/50 border-[#2a3442] text-white placeholder:text-[#68687a] focus:border-[#ffd700] focus:ring-2 focus:ring-[#ffd700]/20 h-12 font-medium"
+                className="bg-[#18181f] border-[#ffffff]/10 text-white placeholder:text-[#71717a] focus:border-[#e5a855] focus:ring-1 focus:ring-[#e5a855] h-11"
                 data-testid="login-username-input"
               />
             </div>
 
-            <div className="space-y-1.5">
-              <Label htmlFor="password" className="text-[#a0aec0] text-sm font-semibold">Password</Label>
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-sm text-[#a1a1aa] font-medium">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -160,7 +149,7 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="bg-[#0a0e1a]/50 border-[#2a3442] text-white placeholder:text-[#68687a] focus:border-[#ffd700] focus:ring-2 focus:ring-[#ffd700]/20 h-12 font-medium"
+                className="bg-[#18181f] border-[#ffffff]/10 text-white placeholder:text-[#71717a] focus:border-[#e5a855] focus:ring-1 focus:ring-[#e5a855] h-11"
                 data-testid="login-password-input"
               />
             </div>
@@ -168,41 +157,40 @@ export default function Login() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-12 bg-gradient-to-r from-[#ffd700] via-[#ff8800] to-[#ffd700] hover:from-[#ffe44d] hover:via-[#ffa500] hover:to-[#ffe44d] text-[#0a0e1a] font-display font-black text-base shadow-lg transition-all"
-              style={{ boxShadow: '0 4px 25px rgba(255, 215, 0, 0.4)' }}
+              className="w-full h-11 bg-gradient-to-r from-[#e5a855] to-[#d89644] hover:from-[#f0b968] hover:to-[#e5a855] text-[#0f0f14] font-semibold shadow-elevated transition-all"
               data-testid="login-submit-btn"
             >
               {loading ? (
                 <>
-                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                  Entering...
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Signing in...
                 </>
               ) : (
                 <>
-                  <Shield className="w-5 h-5 mr-2" />
-                  Enter the Arena
+                  <Shield className="w-4 h-4 mr-2" />
+                  Sign In
                 </>
               )}
             </Button>
           </form>
 
-          <div className="text-center pt-4 border-t border-[#2a3442]">
-            <p className="text-[#a0aec0] text-sm">
-              New warrior?{" "}
+          <div className="text-center pt-4 border-t border-[#ffffff]/10">
+            <p className="text-sm text-[#a1a1aa]">
+              Don't have an account?{" "}
               <button
                 onClick={() => navigate("/register")}
-                className="text-[#ffd700] hover:text-[#ffe44d] font-bold transition-colors"
+                className="text-[#e5a855] hover:text-[#f0b968] font-semibold transition-colors"
                 data-testid="register-link"
               >
-                Join the Quest
+                Sign Up
               </button>
             </p>
           </div>
           </CardContent>
         </Card>
 
-        <p className="text-center text-[#68687a] text-xs mt-6">
-          © 2024 Warrior's Way. Train hard, level up.
+        <p className="text-center text-[#71717a] text-xs mt-6">
+          © 2024 Warrior's Way
         </p>
       </div>
     </div>
