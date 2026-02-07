@@ -78,75 +78,75 @@ body {
   font-weight: 600;
 }
 
-@layer base {
-    :root {
-        --background: 260 40% 2%;
-        --foreground: 260 20% 98%;
-        --card: 260 30% 5%;
-        --card-foreground: 260 20% 98%;
-        --popover: 260 30% 5%;
-        --popover-foreground: 260 20% 98%;
-        --primary: 263 70% 50%;
-        --primary-foreground: 0 0% 100%;
-        --secondary: 260 30% 10%;
-        --secondary-foreground: 260 20% 98%;
-        --muted: 260 30% 10%;
-        --muted-foreground: 260 10% 50%;
-        --accent: 263 70% 50%;
-        --accent-foreground: 0 0% 100%;
-        --destructive: 0 72% 65%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 260 30% 12%;
-        --input: 260 30% 12%;
-        --ring: 263 70% 50%;
-        --radius: 0.75rem;
-    }
-}
-
-@layer base {
-    * { @apply border-border; }
-    body { @apply bg-background text-foreground; }
-}
-
-/* RPG Card Styling */
-.card-elevated {
-  background: linear-gradient(135deg, rgba(26, 35, 50, 0.9) 0%, rgba(18, 24, 38, 0.95) 100%);
-  border: 1px solid rgba(255, 215, 0, 0.15);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 215, 0, 0.1);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(10px);
-}
-
-.card-elevated:hover {
-  border-color: rgba(255, 215, 0, 0.4);
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.2);
-  transform: translateY(-4px);
-}
-
-/* XP Bar with Gold Gradient */
+/* XP Bar - Professional */
 .xp-bar {
-  height: 12px;
-  background: linear-gradient(90deg, #1a2332 0%, #2a3442 100%);
-  border-radius: 12px;
+  height: 8px;
+  background: var(--bg-tertiary);
+  border-radius: 8px;
   overflow: hidden;
   position: relative;
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 215, 0, 0.2);
 }
 
 .xp-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  background: linear-gradient(90deg, var(--accent-gold) 0%, #f0b968 100%);
   transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  animation: shimmerXP 2s infinite;
 }
 
-@keyframes shimmerXP {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
+/* Stat Colors - Professional */
+.stat-strength {
+  color: var(--accent-red);
+}
+
+.stat-endurance {
+  color: var(--accent-blue);
+}
+
+.stat-agility {
+  color: var(--accent-green);
+}
+
+/* Professional Card Styling */
+.card-elevated {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.card-elevated:hover {
+  border-color: var(--border-accent);
+  transform: translateY(-1px);
+}
+
+/* Quest Progress Bar */
+.quest-progress-bar {
+  height: 6px;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* Import Zone - Professional */
+.import-zone {
+  background: var(--bg-secondary);
+  border: 2px dashed var(--border-primary);
+  border-radius: 16px;
+  padding: 48px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.import-zone:hover {
+  border-color: var(--border-accent);
+  background: var(--bg-tertiary);
+}
+
+.import-zone.dragging {
+  border-color: var(--accent-gold);
+  background: rgba(229, 168, 85, 0.05);
 }
 
 @keyframes shimmer {
