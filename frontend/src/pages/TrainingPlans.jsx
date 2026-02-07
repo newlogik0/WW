@@ -307,10 +307,10 @@ export default function TrainingPlans() {
                       <Input
                         value={editingPlan.name}
                         onChange={(e) => setEditingPlan({ ...editingPlan, name: e.target.value })}
-                        className="bg-[#18181b] border-[#2e2e33] text-white max-w-xs"
+                        className="bg-[#0d0d0d] border-[#333333] text-white max-w-xs"
                       />
                       <div className="flex gap-2">
-                        <Button size="sm" onClick={saveEdit} className="bg-[#10b981] hover:bg-[#059669]">
+                        <Button size="sm" onClick={saveEdit} className="bg-[#00d9ff] hover:bg-[#33e0ff] text-[#0d0d0d]">
                           <Check className="w-4 h-4" />
                         </Button>
                         <Button size="sm" variant="ghost" onClick={() => setEditingPlan(null)}>
@@ -321,13 +321,13 @@ export default function TrainingPlans() {
                     
                     <div className="space-y-3">
                       {editingPlan.exercises.map((ex, i) => (
-                        <div key={i} className="p-3 bg-[#18181b] rounded-lg space-y-3">
+                        <div key={i} className="p-3 bg-[#0d0d0d] border border-[#333333] rounded-lg space-y-3">
                           <div className="flex items-center gap-2">
                             <Input
                               value={ex.name}
                               onChange={(e) => updateExercise(i, 'name', e.target.value)}
                               placeholder="Exercise name"
-                              className="bg-[#030304] border-[#1e1e2e] text-white flex-1 h-8 text-sm"
+                              className="bg-[#1a1a1a] border-[#333333] text-white flex-1 h-8 text-sm"
                             />
                             <Button
                               size="sm"
@@ -341,32 +341,32 @@ export default function TrainingPlans() {
                           
                           <div className="flex items-center gap-2">
                             <div className="flex-1">
-                              <Label className="text-xs text-[#71717a]">Sets</Label>
+                              <Label className="text-xs text-[#808080]">Sets</Label>
                               <Input
                                 type="number"
                                 value={ex.sets}
                                 onChange={(e) => updateExercise(i, 'sets', Number(e.target.value))}
-                                className="bg-[#030304] border-[#1e1e2e] text-white h-8 text-sm"
+                                className="bg-[#1a1a1a] border-[#333333] text-white h-8 text-sm"
                               />
                             </div>
                             <div className="flex-1">
-                              <Label className="text-xs text-[#71717a]">Reps</Label>
+                              <Label className="text-xs text-[#808080]">Reps</Label>
                               <Input
                                 type="text"
                                 value={ex.reps}
                                 onChange={(e) => updateExercise(i, 'reps', e.target.value)}
-                                className="bg-[#030304] border-[#1e1e2e] text-white h-8 text-sm"
+                                className="bg-[#1a1a1a] border-[#333333] text-white h-8 text-sm"
                                 placeholder="8-12"
                               />
                             </div>
                             <div className="flex-1">
-                              <Label className="text-xs text-[#71717a]">Weight (kg)</Label>
+                              <Label className="text-xs text-[#808080]">Weight (kg)</Label>
                               <div className="flex gap-1">
                                 <Input
                                   type="number"
                                   value={ex.weight || 0}
                                   onChange={(e) => updateExercise(i, 'weight', Number(e.target.value))}
-                                  className="bg-[#030304] border-[#1e1e2e] text-white h-8 text-sm"
+                                  className="bg-[#1a1a1a] border-[#333333] text-white h-8 text-sm"
                                   disabled={!ex.useSameWeight}
                                 />
                                 <Button
@@ -375,8 +375,8 @@ export default function TrainingPlans() {
                                   onClick={() => updateExercise(i, 'useSameWeight', !ex.useSameWeight)}
                                   className={`h-8 w-8 p-0 ${
                                     !ex.useSameWeight 
-                                      ? "text-[#a78bfa] bg-[#7c3aed]/10" 
-                                      : "text-[#71717a]"
+                                      ? "text-[#00d9ff] bg-[#00d9ff]/10" 
+                                      : "text-[#808080]"
                                   }`}
                                   title={ex.useSameWeight ? "Different weight per set" : "Same weight all sets"}
                                 >
@@ -388,19 +388,19 @@ export default function TrainingPlans() {
 
                           {/* Per-set weights */}
                           {!ex.useSameWeight && ex.sets > 0 && (
-                            <div className="pt-2 border-t border-[#2e2e33]">
-                              <Label className="text-xs text-[#71717a] mb-2 block">Weight per set (kg)</Label>
+                            <div className="pt-2 border-t border-[#333333]">
+                              <Label className="text-xs text-[#808080] mb-2 block">Weight per set (kg)</Label>
                               <div className="grid grid-cols-4 gap-2">
                                 {Array.from({ length: ex.sets }).map((_, setIdx) => (
                                   <div key={setIdx}>
-                                    <Label className="text-xs text-[#52525b] mb-1 block">Set {setIdx + 1}</Label>
+                                    <Label className="text-xs text-[#808080] mb-1 block">Set {setIdx + 1}</Label>
                                     <Input
                                       type="number"
                                       min="0"
                                       step="2.5"
                                       value={ex.weights?.[setIdx] || 0}
                                       onChange={(e) => updateSetWeight(i, setIdx, e.target.value)}
-                                      className="bg-[#030304] border-[#1e1e2e] text-white h-8 text-sm"
+                                      className="bg-[#1a1a1a] border-[#333333] text-white h-8 text-sm"
                                     />
                                   </div>
                                 ))}
@@ -412,7 +412,7 @@ export default function TrainingPlans() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="w-full border-dashed border-[#2e2e33] text-[#71717a]"
+                        className="w-full border-dashed border-[#333333] text-[#808080]"
                         onClick={addExercise}
                       >
                         <Plus className="w-3 h-3 mr-1" />
@@ -428,19 +428,19 @@ export default function TrainingPlans() {
                         <div className="flex items-center gap-2">
                           <h3 className="text-white font-medium">{plan.name}</h3>
                           {plan.is_active && (
-                            <span className="text-xs px-2 py-0.5 rounded bg-[#d4af37]/20 text-[#d4af37]">
+                            <span className="text-xs px-2 py-0.5 rounded bg-[#00d9ff]/10 text-[#00d9ff]">
                               Active
                             </span>
                           )}
                         </div>
-                        <p className="text-[#71717a] text-sm">{plan.exercises?.length || 0} exercises</p>
+                        <p className="text-[#808080] text-sm">{plan.exercises?.length || 0} exercises</p>
                       </div>
                       <div className="flex gap-2">
                         {!plan.is_active && (
                           <Button 
                             size="sm" 
                             variant="outline"
-                            className="border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37]/10 h-8"
+                            className="border-[#00d9ff]/30 text-[#00d9ff] hover:bg-[#00d9ff]/10 h-8"
                             onClick={() => setActivePlan(plan.id)}
                           >
                             <Check className="w-3 h-3 mr-1" />
@@ -468,14 +468,14 @@ export default function TrainingPlans() {
                     
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                       {plan.exercises?.slice(0, 6).map((ex, i) => (
-                        <div key={i} className="p-2 bg-[#18181b] rounded text-sm">
+                        <div key={i} className="p-2 bg-[#0d0d0d] border border-[#333333] rounded text-sm">
                           <p className="text-white truncate">{ex.name}</p>
-                          <p className="text-[#71717a] text-xs">{ex.sets}×{ex.reps} {ex.weight ? `@ ${ex.weight}kg` : ''}</p>
+                          <p className="text-[#808080] text-xs">{ex.sets}×{ex.reps} {ex.weight ? `@ ${ex.weight}kg` : ''}</p>
                         </div>
                       ))}
                       {plan.exercises?.length > 6 && (
-                        <div className="p-2 bg-[#18181b] rounded text-sm flex items-center justify-center">
-                          <p className="text-[#71717a]">+{plan.exercises.length - 6} more</p>
+                        <div className="p-2 bg-[#0d0d0d] border border-[#333333] rounded text-sm flex items-center justify-center">
+                          <p className="text-[#808080]">+{plan.exercises.length - 6} more</p>
                         </div>
                       )}
                     </div>
