@@ -180,10 +180,21 @@ body::before {
     animation: animate-shimmer 2s infinite;
 }
 
-/* Stat Colors - Keep distinct for clarity */
-.stat-strength { color: var(--accent-red); }
-.stat-endurance { color: var(--accent-cyan); }
-.stat-agility { color: var(--accent-green); }
+/* Stat Colors with Glows */
+.stat-strength {
+  color: var(--strength-red);
+  text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+}
+
+.stat-endurance {
+  color: var(--endurance-blue);
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.stat-agility {
+  color: var(--agility-green);
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
 
 .stat-card {
     background: linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, transparent 100%);
