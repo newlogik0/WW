@@ -25,7 +25,8 @@ import {
   Volume2,
   VolumeX,
   ArrowUp,
-  Activity
+  Activity,
+  Target
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 
