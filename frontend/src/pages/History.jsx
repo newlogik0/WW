@@ -196,43 +196,109 @@ export default function History() {
                         {/* Expanded Details */}
                         {expandedId === workout.id && (
                           <div className="mt-4 pt-4 border-t border-[#1e1e2e]">
+                            {/* Session Category Badge */}
+                            {workout.session_category && (
+                              <div className="mb-3">
+                                <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium ${
+                                  workout.session_category === 'push' ? 'bg-[#ef4444]/20 text-[#ef4444]' :
+                                  workout.session_category === 'pull' ? 'bg-[#06b6d4]/20 text-[#06b6d4]' :
+                                  workout.session_category === 'legs' ? 'bg-[#4ade80]/20 text-[#4ade80]' :
+                                  'bg-[#8b5cf6]/20 text-[#a78bfa]'
+                                }`}>
+                                  {workout.session_category.charAt(0).toUpperCase() + workout.session_category.slice(1)} Day
+                                </span>
+                              </div>
+                            )}
+                            
                             {workout.workout_type === 'weightlifting' && workout.details?.exercises && (
-                              <div className="space-y-2">
+                              <div className="space-y-2 mb-4">
                                 <p className="text-[#a1a1aa] text-sm font-medium">Exercises:</p>
                                 {workout.details.exercises.map((ex, i) => (
-                                  <div key={i} className="flex justify-between text-sm bg-[#08080c] p-2 rounded">
-                                    <span className="text-white">{ex.name}</span>
-                                    <span className="text-[#a1a1aa]">
-                                      {ex.sets} × {ex.reps} @ {ex.weight}kg
-                                    </span>
+                                  <div key={i} className="flex justify-between text-sm bg-[#08080c] p-3 rounded">
+                                    <span className="text-white font-medium">{ex.name}</span>
+                                    <div className="text-[#a1a1aa] space-x-3">
+                                      <span>{ex.sets} sets</span>
+                                      <span>{ex.reps} reps</span>
+                                      {ex.useSameWeight ? (
+                                        <span className="text-[#8b5cf6]">@ {ex.weight}kg</span>
+                                      ) : (
+                                        <span className="text-[#8b5cf6]">@ {ex.weights?.join(', ')}kg</span>
+                                      )}
+                                    </div>
                                   </div>
                                 ))}
                               </div>
                             )}
                             {workout.workout_type === 'cardio' && workout.details && (
-                              <div className="space-y-2 text-sm">
-                                <div className="flex justify-between">
+                              <div className="space-y-2 text-sm mb-4">
+                                <div className="flex justify-between bg-[#08080c] p-2 rounded">
                                   <span className="text-[#a1a1aa]">Activity:</span>
                                   <span className="text-white capitalize">{workout.details.activity}</span>
                                 </div>
-                                <div className="flex justify-between">
+                                <div className="flex justify-between bg-[#08080c] p-2 rounded">
                                   <span className="text-[#a1a1aa]">Duration:</span>
                                   <span className="text-white">{workout.details.duration_minutes} minutes</span>
                                 </div>
                                 {workout.details.distance_km && (
-                                  <div className="flex justify-between">
+                                  <div className="flex justify-between bg-[#08080c] p-2 rounded">
                                     <span className="text-[#a1a1aa]">Distance:</span>
                                     <span className="text-white">{workout.details.distance_km} km</span>
                                   </div>
                                 )}
                               </div>
                             )}
-                            {workout.details?.notes && (
-                              <div className="mt-3 p-2 bg-[#08080c] rounded text-sm">
-                                <p className="text-[#a1a1aa]">Notes:</p>
-                                <p className="text-[#d4d4d8]">{workout.details.notes}</p>
+                            
+                            {/* Session Notes */}
+                            <div className="mt-3 p-3 bg-[#08080c] rounded">
+                              <div className="flex items-center justify-between mb-2">
+                                <p className="text-[#a1a1aa] text-sm font-medium">Session Notes:</p>
+                                {editingId !== workout.id && (
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    onClick={() => startEditing(workout)}
+                                    className="h-7 text-xs text-[#8b5cf6] hover:text-[#a78bfa]"
+                                  >
+                                    <Edit2 className="w-3 h-3 mr-1" />
+                                    Edit
+                                  </Button>
+                                )}
                               </div>
-                            )}
+                              
+                              {editingId === workout.id ? (
+                                <div className="space-y-2">
+                                  <textarea
+                                    value={editNotes}
+                                    onChange={(e) => setEditNotes(e.target.value)}
+                                    placeholder="Add notes about this session..."
+                                    className="w-full p-2 bg-[#06060a] border border-[#1a1a28] rounded text-white text-sm min-h-[80px] resize-none focus:outline-none focus:border-[#8b5cf6]"
+                                  />
+                                  <div className="flex gap-2">
+                                    <Button
+                                      size="sm"
+                                      onClick={() => saveEdit(workout.id)}
+                                      className="h-8 bg-[#8b5cf6] hover:bg-[#7c3aed] text-white"
+                                    >
+                                      <Save className="w-3 h-3 mr-1" />
+                                      Save
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={cancelEdit}
+                                      className="h-8 border-[#1a1a28] text-[#a1a1aa]"
+                                    >
+                                      <X className="w-3 h-3 mr-1" />
+                                      Cancel
+                                    </Button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <p className="text-[#d4d4d8] text-sm">
+                                  {workout.details?.notes || "No notes added"}
+                                </p>
+                              )}
+                            </div>
                           </div>
                         )}
                       </CardContent>
