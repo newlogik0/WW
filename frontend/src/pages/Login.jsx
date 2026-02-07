@@ -78,12 +78,40 @@ export default function Login() {
     window.location.href = `${GOOGLE_OAUTH_URL}?redirect_uri=${encodeURIComponent(currentUrl)}`;
   };
 
-  if (googleLoading) {
+  if (googleLoading || faceLoginLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#020204]">
         <div className="text-center">
-          <div className="w-12 h-12 border-2 border-[#7c3aed] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-[#a78bfa]">Signing in with Google...</p>
+          <div className="w-12 h-12 border-2 border-[#00d9ff] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-[#00d9ff]">
+            {faceLoginLoading ? "Authenticating with face..." : "Signing in with Google..."}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show Face Login UI
+  if (showFaceLogin) {
+    return (
+      <div className="min-h-screen bg-[#0d0d0d] flex items-center justify-center p-4" data-testid="login-page">
+        <div className="w-full max-w-md">
+          <div className="text-center mb-6">
+            <div className="w-14 h-14 mx-auto mb-4 rounded-xl bg-[#00d9ff]/10 border border-[#00d9ff]/20 flex items-center justify-center">
+              <Dumbbell className="w-7 h-7 text-[#00d9ff]" />
+            </div>
+            <h1 className="text-2xl font-semibold text-white mb-2">Warrior's Way</h1>
+          </div>
+          
+          <FaceAuth 
+            mode="login"
+            onSuccess={handleFaceLogin}
+            onCancel={() => setShowFaceLogin(false)}
+          />
+          
+          <p className="text-center text-[#808080] text-xs mt-6">
+            © 2024 Warrior's Way
+          </p>
         </div>
       </div>
     );
