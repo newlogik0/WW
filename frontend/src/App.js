@@ -79,12 +79,35 @@ const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = async (email, password) => {
-    const res = await api.post("/auth/login", { email, password });
+  const login = async (email, password, rememberMe = false) => {
+    const res = await api.post("/auth/login", { email, password, remember_me: rememberMe });
     localStorage.setItem("token", res.data.access_token);
     localStorage.setItem("user", JSON.stringify(res.data.user));
     setUser(res.data.user);
     return res.data;
+  };
+
+  const loginWithFace = async (faceDescriptor, username = null) => {
+    const res = await api.post("/auth/face/login", { 
+      face_descriptor: faceDescriptor,
+      username: username || undefined
+    });
+    localStorage.setItem("token", res.data.access_token);
+    localStorage.setItem("user", JSON.stringify(res.data.user));
+    setUser(res.data.user);
+    return res.data;
+  };
+
+  const registerFace = async (faceDescriptor) => {
+    if (!user) throw new Error("Must be logged in to register face");
+    await api.post("/auth/face/register", {
+      user_id: user.id,
+      face_descriptor: faceDescriptor
+    });
+    // Update local user to indicate face is registered
+    const updatedUser = { ...user, hasFaceRegistered: true };
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    setUser(updatedUser);
   };
 
   const loginWithGoogle = async (sessionId) => {
