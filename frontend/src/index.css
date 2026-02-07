@@ -236,56 +236,60 @@ body::before {
   to { transform: rotate(360deg); }
 }
 
-/* Buttons - Purple Theme */
-.btn-primary {
-    background: linear-gradient(135deg, var(--purple-600), var(--purple-800));
-    color: white;
-    font-weight: 600;
-    border-radius: 12px;
-    transition: all 0.3s ease;
-    border: none;
+/* Level Up Animation */
+@keyframes levelUp {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); color: var(--gold-light); }
+  100% { transform: scale(1); }
 }
 
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(124, 58, 237, 0.4);
-}
-
-/* Cardio Animation Container */
+/* Cardio Animation Effects */
 .cardio-animation {
-    width: 120px;
-    height: 120px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: relative;
 }
 
 .cardio-runner {
-    animation: runner 0.5s steps(2) infinite;
-}
-
-@keyframes runner {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+  animation: run 1s ease-in-out infinite;
 }
 
 .cardio-cyclist {
-    animation: cyclist 0.8s ease-in-out infinite;
-}
-
-@keyframes cyclist {
-    0%, 100% { transform: rotate(-3deg); }
-    50% { transform: rotate(3deg); }
+  animation: cycle 0.8s ease-in-out infinite;
 }
 
 .cardio-swimmer {
-    animation: swimmer 1.2s ease-in-out infinite;
+  animation: swim 1.2s ease-in-out infinite;
 }
 
-@keyframes swimmer {
-    0%, 100% { transform: translateX(0) scaleX(1); }
-    50% { transform: translateX(10px) scaleX(0.95); }
+@keyframes run {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50% { transform: translateY(-8px) rotate(5deg); }
+}
+
+@keyframes cycle {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(360deg); }
+}
+
+@keyframes swim {
+  0%, 100% { transform: translateX(0) scaleX(1); }
+  50% { transform: translateX(10px) scaleX(-1); }
+}
+
+/* Button Glow Effects */
+button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.btn-legendary {
+  background: linear-gradient(135deg, var(--legendary-orange) 0%, var(--gold) 100%);
+  box-shadow: 0 4px 15px rgba(255, 136, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn-legendary:hover {
+  box-shadow: 0 6px 25px rgba(255, 136, 0, 0.6);
+  transform: translateY(-2px);
 }
 
 /* Scrollbar */
