@@ -1,38 +1,33 @@
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  /* RPG Gaming Color Palette */
-  --bg-primary: #0a0e1a;
-  --bg-secondary: #121826;
-  --bg-tertiary: #1a2332;
+  /* Professional Color Palette */
+  --bg-primary: #0f0f14;
+  --bg-secondary: #18181f;
+  --bg-tertiary: #1f1f28;
+  --bg-elevated: #25252e;
   
-  /* Vibrant RPG Colors */
-  --gold: #ffd700;
-  --gold-light: #ffe44d;
-  --gold-dark: #b8860b;
+  /* Accent Colors - Refined */
+  --accent-gold: #e5a855;
+  --accent-red: #ef4444;
+  --accent-blue: #3b82f6;
+  --accent-green: #10b981;
+  --accent-purple: #8b5cf6;
   
-  --strength-red: #ff4444;
-  --strength-light: #ff6b6b;
-  --strength-dark: #cc0000;
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-tertiary: #71717a;
   
-  --endurance-blue: #00d4ff;
-  --endurance-light: #5ce1ff;
-  --endurance-dark: #0099cc;
-  
-  --agility-green: #00ff88;
-  --agility-light: #5affb8;
-  --agility-dark: #00cc66;
-  
-  --magic-purple: #a855f7;
-  --magic-light: #c084fc;
-  --magic-dark: #7c3aed;
-  
-  --legendary-orange: #ff8800;
-  --epic-cyan: #00ffff;
+  /* Border & Dividers */
+  --border-primary: rgba(255, 255, 255, 0.08);
+  --border-accent: rgba(229, 168, 85, 0.15);
+}
+
 @layer base {
     :root {
         --background: 260 40% 2%;
@@ -61,16 +56,6 @@
 @layer base {
     * { @apply border-border; }
     body { @apply bg-background text-foreground; }
-}
-  --rare-blue: #4169e1;
-  
-  /* UI Elements */
-  --border-glow: rgba(255, 215, 0, 0.3);
-  --shadow-strong: 0 10px 40px rgba(0, 0, 0, 0.5);
-  --glow-gold: 0 0 20px rgba(255, 215, 0, 0.4);
-  --glow-red: 0 0 20px rgba(255, 68, 68, 0.4);
-  --glow-blue: 0 0 20px rgba(0, 212, 255, 0.4);
-  --glow-green: 0 0 20px rgba(0, 255, 136, 0.4);
 }
 
 * {
