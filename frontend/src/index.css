@@ -33,6 +33,35 @@
   
   --legendary-orange: #ff8800;
   --epic-cyan: #00ffff;
+@layer base {
+    :root {
+        --background: 260 40% 2%;
+        --foreground: 260 20% 98%;
+        --card: 260 30% 5%;
+        --card-foreground: 260 20% 98%;
+        --popover: 260 30% 5%;
+        --popover-foreground: 260 20% 98%;
+        --primary: 263 70% 50%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 260 30% 10%;
+        --secondary-foreground: 260 20% 98%;
+        --muted: 260 30% 10%;
+        --muted-foreground: 260 10% 50%;
+        --accent: 263 70% 50%;
+        --accent-foreground: 0 0% 100%;
+        --destructive: 0 72% 65%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 260 30% 12%;
+        --input: 260 30% 12%;
+        --ring: 263 70% 50%;
+        --radius: 0.75rem;
+    }
+}
+
+@layer base {
+    * { @apply border-border; }
+    body { @apply bg-background text-foreground; }
+}
   --rare-blue: #4169e1;
   
   /* UI Elements */
