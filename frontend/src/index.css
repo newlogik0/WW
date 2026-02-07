@@ -185,134 +185,55 @@ body::before {
   text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
 }
 
-.stat-card {
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, transparent 100%);
-    border: 1px solid rgba(124, 58, 237, 0.2);
-    border-radius: 14px;
-    transition: all 0.3s ease;
+/* Quest Progress Bar */
+.quest-progress-bar {
+  height: 10px;
+  background: linear-gradient(90deg, #1a2332 0%, #2a3442 100%);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
-.stat-card:hover {
-    border-color: rgba(124, 58, 237, 0.4);
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.12) 0%, transparent 100%);
-}
-
-.stat-card-strength {
-    background: linear-gradient(135deg, rgba(248, 113, 113, 0.08) 0%, transparent 100%);
-    border: 1px solid rgba(248, 113, 113, 0.2);
-}
-
-.stat-card-endurance {
-    background: linear-gradient(135deg, rgba(34, 211, 238, 0.08) 0%, transparent 100%);
-    border: 1px solid rgba(34, 211, 238, 0.2);
-}
-
-.stat-card-agility {
-    background: linear-gradient(135deg, rgba(74, 222, 128, 0.08) 0%, transparent 100%);
-    border: 1px solid rgba(74, 222, 128, 0.2);
-}
-
-/* Tempo Tracker - All Purple */
-.tempo-ring {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    font-weight: 600;
-    font-family: 'Space Grotesk', sans-serif;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    background: var(--bg-elevated);
-    border: 2px solid var(--border-subtle);
-    color: var(--text-muted);
-}
-
-.tempo-ring.active {
-    transform: scale(1.15);
-    box-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
-}
-
-.tempo-ring.tempo-lower {
-    border-color: var(--purple-600);
-    color: var(--purple-400);
-    background: rgba(124, 58, 237, 0.15);
-}
-
-.tempo-ring.tempo-hold {
-    border-color: var(--purple-500);
-    color: var(--purple-300);
-    background: rgba(139, 92, 246, 0.15);
-}
-
-.tempo-ring.tempo-lift {
-    border-color: var(--purple-400);
-    color: var(--purple-200);
-    background: rgba(167, 139, 250, 0.15);
-}
-
-.tempo-ring.active.tempo-lower,
-.tempo-ring.active.tempo-hold,
-.tempo-ring.active.tempo-lift {
-    animation: pulse-glow 1s infinite;
-}
-
-@keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 20px rgba(124, 58, 237, 0.4); }
-    50% { box-shadow: 0 0 40px rgba(124, 58, 237, 0.7); }
-}
-
-/* Quest Progress - Purple */
-.quest-progress {
-    background: var(--bg-elevated);
-    border-radius: 6px;
-    height: 6px;
-    overflow: hidden;
-}
-
-.quest-progress-fill {
-    height: 100%;
-    border-radius: 6px;
-    background: linear-gradient(90deg, var(--purple-800), var(--purple-500));
-    transition: width 0.5s ease;
-}
-
-/* Level Badge */
-.level-badge {
-    background: linear-gradient(135deg, var(--purple-600), var(--purple-800));
-    color: white;
-    font-weight: 700;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
-}
-
-/* Import Zone */
+/* Import Zone with Energy Effect */
 .import-zone {
-    border: 2px dashed var(--border-subtle);
-    border-radius: 20px;
-    padding: 48px;
-    text-align: center;
-    transition: all 0.4s ease;
-    cursor: pointer;
-    background: var(--bg-card);
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.6) 0%, rgba(18, 24, 38, 0.8) 100%);
+  border: 2px dashed rgba(0, 212, 255, 0.3);
+  border-radius: 20px;
+  padding: 48px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.import-zone::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+  animation: rotate 10s linear infinite;
 }
 
 .import-zone:hover {
-    border-color: var(--purple-600);
-    background: rgba(124, 58, 237, 0.05);
-    transform: scale(1.01);
+  border-color: rgba(0, 212, 255, 0.6);
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.8) 0%, rgba(18, 24, 38, 0.95) 100%);
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
 }
 
 .import-zone.dragging {
-    border-color: var(--purple-500);
-    background: rgba(124, 58, 237, 0.1);
-    transform: scale(1.02);
-    box-shadow: 0 0 40px rgba(124, 58, 237, 0.2);
+  border-color: var(--gold);
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 215, 0, 0.05) 100%);
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* Buttons - Purple Theme */
