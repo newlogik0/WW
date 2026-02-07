@@ -15,9 +15,12 @@ const GOOGLE_OAUTH_URL = "https://demobackend.emergentagent.com/auth/v1/env/oaut
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  const { login, loginWithGoogle } = useAuth();
+  const [showFaceLogin, setShowFaceLogin] = useState(false);
+  const [faceLoginLoading, setFaceLoginLoading] = useState(false);
+  const { login, loginWithGoogle, loginWithFace } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
