@@ -5,16 +5,16 @@
 
 /* Navigation */
 .nav-link {
-    @apply px-4 py-2 text-gray-400 hover:text-[#a78bfa] transition-colors duration-200;
+    @apply px-4 py-2 text-gray-400 hover:text-[#00d9ff] transition-colors duration-200;
 }
 
 .nav-link.active {
-    @apply text-[#a78bfa] border-b-2 border-[#a78bfa];
+    @apply text-[#00d9ff] border-b-2 border-[#00d9ff];
 }
 
 /* Form styles */
 .rpg-input {
-    @apply w-full px-4 py-3 bg-[#12121a] border border-[#2a2a3a] rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-[#a78bfa] transition-colors;
+    @apply w-full px-4 py-3 bg-[#12121a] border border-[#2a2a3a] rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-[#00d9ff] transition-colors;
 }
 
 .rpg-label {
@@ -27,12 +27,12 @@
     border: 1px solid #2a2a3a;
     border-radius: 12px;
     backdrop-filter: blur(10px);
-    @apply p-6 cursor-pointer hover:border-[#a78bfa] transition-all duration-300;
+    @apply p-6 cursor-pointer hover:border-[#00d9ff] transition-all duration-300;
 }
 
 .workout-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 30px rgba(167, 139, 250, 0.15);
+    box-shadow: 0 10px 30px rgba(0, 217, 255, 0.15);
 }
 
 /* Stat displays */
@@ -42,7 +42,7 @@
 
 /* Level badge */
 .level-badge {
-    @apply inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-[#8b5cf6] to-[#6d28d9] text-white font-bold text-lg;
+    @apply inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#00d9ff]/10 border-2 border-[#00d9ff] text-[#00d9ff] font-bold text-lg;
 }
 
 /* Achievement grid */
@@ -56,7 +56,7 @@
     border: 1px solid #2a2a3a;
     border-radius: 12px;
     backdrop-filter: blur(10px);
-    @apply p-4 hover:border-[#a855f7] transition-all duration-300;
+    @apply p-4 hover:border-[#00d9ff] transition-all duration-300;
 }
 
 /* Tempo tracker circles */
