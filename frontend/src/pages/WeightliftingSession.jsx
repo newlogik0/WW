@@ -446,7 +446,7 @@ const TempoTracker = ({ onComplete }) => {
                 step="0.1"
                 value={holdTime}
                 onChange={handleTimeChange(setHoldTime)}
-                className="bg-[#06060a] border-[#8b5cf6]/30 text-white text-center h-9 tempo-input"
+                className="bg-[#06060a] border-[#00d9ff]/30 text-white text-center h-9 tempo-input"
                 disabled={isRunning}
               />
             </div>
@@ -458,7 +458,7 @@ const TempoTracker = ({ onComplete }) => {
                 step="0.1"
                 value={concentricTime}
                 onChange={handleTimeChange(setConcentricTime)}
-                className="bg-[#06060a] border-[#a78bfa]/30 text-white text-center h-9 tempo-input"
+                className="bg-[#06060a] border-[#00d9ff]/30 text-white text-center h-9 tempo-input"
                 disabled={isRunning}
               />
             </div>
@@ -791,8 +791,8 @@ export default function WeightliftingSession() {
                 onClick={() => setSessionCategory("full")}
                 className={`h-10 ${
                   sessionCategory === "full"
-                    ? "bg-[#8b5cf6]/20 border-[#8b5cf6] text-[#a78bfa]"
-                    : "border-[#1a1a28] text-[#68687a] hover:border-[#8b5cf6]/50"
+                    ? "bg-[#00d9ff]/20 border-[#00d9ff] text-[#00d9ff]"
+                    : "border-[#1a1a28] text-[#68687a] hover:border-[#00d9ff]/50"
                 }`}
               >
                 <Target className="w-4 h-4 mr-1" />
@@ -807,9 +807,9 @@ export default function WeightliftingSession() {
 
         {activePlan && (
           <>
-            <div className="flex items-center gap-2 mb-4 p-3 bg-[#7c3aed]/10 border border-[#7c3aed]/30 rounded-lg">
-              <FileText className="w-4 h-4 text-[#a78bfa]" />
-              <span className="text-sm text-[#a78bfa]">Using: {activePlan.name}</span>
+            <div className="flex items-center gap-2 mb-4 p-3 bg-[#00d9ff]/10 border border-[#00d9ff]/30 rounded-lg">
+              <FileText className="w-4 h-4 text-[#00d9ff]" />
+              <span className="text-sm text-[#00d9ff]">Using: {activePlan.name}</span>
             </div>
 
             {/* Category Filter */}
@@ -823,8 +823,8 @@ export default function WeightliftingSession() {
                     onClick={() => handleCategoryChange("all")}
                     className={`h-9 ${
                       selectedCategory === "all"
-                        ? "bg-[#8b5cf6]/20 border-[#8b5cf6] text-[#a78bfa]"
-                        : "border-[#1a1a28] text-[#68687a] hover:border-[#8b5cf6]/50"
+                        ? "bg-[#00d9ff]/20 border-[#00d9ff] text-[#00d9ff]"
+                        : "border-[#1a1a28] text-[#68687a] hover:border-[#00d9ff]/50"
                     }`}
                   >
                     All ({activePlan.exercises.length})
@@ -1023,7 +1023,7 @@ export default function WeightliftingSession() {
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="How did the workout feel?"
-              className="w-full mt-1.5 p-3 bg-[#06060a] border border-[#1a1a28] rounded-lg text-white placeholder:text-[#68687a] text-sm focus:outline-none focus:border-[#7c3aed] min-h-[80px] resize-none"
+              className="w-full mt-1.5 p-3 bg-[#06060a] border border-[#1a1a28] rounded-lg text-white placeholder:text-[#68687a] text-sm focus:outline-none focus:border-[#00d9ff] min-h-[80px] resize-none"
               data-testid="workout-notes"
             />
           </CardContent>
@@ -1032,7 +1032,7 @@ export default function WeightliftingSession() {
         <Button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full bg-gradient-to-r from-[#7c3aed] to-[#5b21b6] hover:from-[#8b5cf6] hover:to-[#6d28d9] text-white font-semibold h-12"
+          className="w-full bg-[#00d9ff] hover:bg-[#33e0ff] text-[#0d0d0d] font-semibold h-12"
           data-testid="complete-workout-btn"
         >
           {loading ? (
