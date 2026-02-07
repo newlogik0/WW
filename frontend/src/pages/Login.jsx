@@ -6,7 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Loader2, Dumbbell, Zap } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Shield, Loader2, Dumbbell, Zap, ScanFace } from "lucide-react";
+import FaceAuth from "@/components/FaceAuth";
 
 const GOOGLE_OAUTH_URL = "https://demobackend.emergentagent.com/auth/v1/env/oauth/login";
 
