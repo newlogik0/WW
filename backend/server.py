@@ -434,6 +434,13 @@ async def login_with_face(face_data: FaceLogin):
     """Login using facial recognition"""
     import numpy as np
     
+    # Validate face descriptor length (should be 128-dimensional)
+    if len(face_data.face_descriptor) != 128:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Invalid face descriptor: expected 128 dimensions, got {len(face_data.face_descriptor)}"
+        )
+    
     # Get all users with face descriptors
     query = {"face_descriptor": {"$exists": True}}
     if face_data.username:
@@ -451,6 +458,9 @@ async def login_with_face(face_data: FaceLogin):
     
     for user in users:
         stored_descriptor = np.array(user['face_descriptor'])
+        # Skip if stored descriptor has wrong dimensions
+        if len(stored_descriptor) != 128:
+            continue
         # Cosine similarity
         similarity = np.dot(input_descriptor, stored_descriptor) / (
             np.linalg.norm(input_descriptor) * np.linalg.norm(stored_descriptor)
