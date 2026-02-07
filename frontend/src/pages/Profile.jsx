@@ -195,6 +195,50 @@ export default function Profile() {
           </CardContent>
         </Card>
 
+        {/* Face Registration Section */}
+        <Card className="bg-[#0c0c12] border-[#1e1e2e] mb-8">
+          <CardHeader>
+            <CardTitle className="text-lg font-display text-white flex items-center gap-2">
+              <ScanFace className="w-5 h-5 text-[#8b5cf6]" />
+              Face Recognition
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {showFaceRegister ? (
+              <FaceAuth 
+                mode="register"
+                onSuccess={handleFaceRegister}
+                onCancel={() => setShowFaceRegister(false)}
+              />
+            ) : (
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                <div className="flex-1">
+                  <p className="text-[#a1a1aa] text-sm mb-2">
+                    {user?.hasFaceRegistered 
+                      ? "Your face is registered. You can update it anytime."
+                      : "Register your face to enable quick login without password."
+                    }
+                  </p>
+                  {user?.hasFaceRegistered && (
+                    <div className="flex items-center gap-2 text-green-400 text-sm">
+                      <Check className="w-4 h-4" />
+                      Face ID Enabled
+                    </div>
+                  )}
+                </div>
+                <Button
+                  onClick={() => setShowFaceRegister(true)}
+                  className="bg-[#8b5cf6] hover:bg-[#7c3aed] text-white"
+                  data-testid="register-face-btn"
+                >
+                  <ScanFace className="w-4 h-4 mr-2" />
+                  {user?.hasFaceRegistered ? "Update Face ID" : "Register Face ID"}
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
         {/* Actions */}
         <div className="flex justify-center">
           <Button
