@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "@/App";
+import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
@@ -10,7 +11,10 @@ import {
   Flame,
   Calendar,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Edit2,
+  Save,
+  X
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 
