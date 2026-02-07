@@ -149,178 +149,7 @@ body {
   background: rgba(229, 168, 85, 0.05);
 }
 
-@keyframes shimmer {
-    100% { left: 100%; }
-}
-
-@keyframes animate-shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-}
-
-.animate-shimmer {
-    animation: animate-shimmer 2s infinite;
-}
-
-@keyframes shimmer {
-    100% { left: 100%; }
-}
-
-@keyframes animate-shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-}
-
-.animate-shimmer {
-    animation: animate-shimmer 2s infinite;
-}
-
-/* Animations */
-@keyframes fade-up {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-up {
-    animation: fade-up 0.5s ease forwards;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
-}
-
-.animate-float {
-    animation: float 3s ease-in-out infinite;
-}
-
-/* Number input cleanup */
-input[type="number"].tempo-input {
-    -moz-appearance: textfield;
-}
-input[type="number"].tempo-input::-webkit-outer-spin-button,
-input[type="number"].tempo-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-/* Sound indicator */
-.sound-wave {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    height: 20px;
-}
-
-.sound-wave span {
-    width: 3px;
-    background: var(--magic-purple);
-    border-radius: 2px;
-    animation: wave 0.8s ease-in-out infinite;
-}
-
-.sound-wave span:nth-child(2) { animation-delay: 0.1s; }
-.sound-wave span:nth-child(3) { animation-delay: 0.2s; }
-.sound-wave span:nth-child(4) { animation-delay: 0.3s; }
-
-@keyframes wave {
-    0%, 100% { height: 8px; }
-    50% { height: 20px; }
-}
-
-/* Google button */
-.google-btn {
-    background: white;
-    color: #333;
-    border: 1px solid #ddd;
-    transition: all 0.3s ease;
-}
-
-.google-btn:hover {
-    background: #f8f8f8;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-@layer base {
-    [data-debug-wrapper="true"] {
-        display: contents !important;
-    }
-}
-/* Stat Colors with Glows */
-.stat-strength {
-  color: var(--strength-red);
-  text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
-}
-
-.stat-endurance {
-  color: var(--endurance-blue);
-  text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
-}
-
-.stat-agility {
-  color: var(--agility-green);
-  text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-}
-
-/* Quest Progress Bar */
-.quest-progress-bar {
-  height: 10px;
-  background: linear-gradient(90deg, #1a2332 0%, #2a3442 100%);
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid rgba(168, 85, 247, 0.3);
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
-}
-
-/* Import Zone with Energy Effect */
-.import-zone {
-  background: linear-gradient(135deg, rgba(26, 35, 50, 0.6) 0%, rgba(18, 24, 38, 0.8) 100%);
-  border: 2px dashed rgba(0, 212, 255, 0.3);
-  border-radius: 20px;
-  padding: 48px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.import-zone::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
-  animation: rotate 10s linear infinite;
-}
-
-.import-zone:hover {
-  border-color: rgba(0, 212, 255, 0.6);
-  background: linear-gradient(135deg, rgba(26, 35, 50, 0.8) 0%, rgba(18, 24, 38, 0.95) 100%);
-  box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
-}
-
-.import-zone.dragging {
-  border-color: var(--gold);
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 215, 0, 0.05) 100%);
-  box-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
-}
-
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* Level Up Animation */
-@keyframes levelUp {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); color: var(--gold-light); }
-  100% { transform: scale(1); }
-}
-
-/* Cardio Animation Effects */
+/* Cardio Animations - Subtle */
 .cardio-animation {
   position: relative;
 }
@@ -338,70 +167,29 @@ input[type="number"].tempo-input::-webkit-inner-spin-button {
 }
 
 @keyframes run {
-  0%, 100% { transform: translateY(0) rotate(-5deg); }
-  50% { transform: translateY(-8px) rotate(5deg); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
 }
 
 @keyframes cycle {
   0%, 100% { transform: rotate(0deg); }
-  50% { transform: rotate(360deg); }
+  50% { transform: rotate(180deg); }
 }
 
 @keyframes swim {
-  0%, 100% { transform: translateX(0) scaleX(1); }
-  50% { transform: translateX(10px) scaleX(-1); }
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(6px); }
 }
 
-/* Button Glow Effects */
-button:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 2px;
+/* Professional Buttons */
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-gold) 0%, #f0b968 100%);
+  transition: all 0.2s ease;
 }
 
-.btn-legendary {
-  background: linear-gradient(135deg, var(--legendary-orange) 0%, var(--gold) 100%);
-  box-shadow: 0 4px 15px rgba(255, 136, 0, 0.4);
-  transition: all 0.3s ease;
-}
-
-.btn-legendary:hover {
-  box-shadow: 0 6px 25px rgba(255, 136, 0, 0.6);
-  transform: translateY(-2px);
-}
-
-/* Scrollbar Styling */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--gold) 0%, var(--gold-dark) 100%);
-  border-radius: 10px;
-  border: 2px solid var(--bg-secondary);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 100%);
-}
-
-/* Energy Pulse Animation */
-@keyframes energyPulse {
-  0%, 100% {
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6), 0 0 50px rgba(255, 215, 0, 0.3);
-  }
-}
-
-.energy-pulse {
-  animation: energyPulse 2s ease-in-out infinite;
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(229, 168, 85, 0.25);
 }
 
 /* Responsive Typography */
