@@ -50,13 +50,26 @@ export default function Login() {
     setLoading(true);
     
     try {
-      await login(username, password);
+      await login(username, password, rememberMe);
       toast.success("Welcome back, warrior!");
       navigate("/");
     } catch (error) {
       toast.error(error.response?.data?.detail || "Failed to login");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleFaceLogin = async (faceDescriptor) => {
+    setFaceLoginLoading(true);
+    try {
+      await loginWithFace(faceDescriptor);
+      toast.success("Welcome back, warrior!");
+      navigate("/");
+    } catch (error) {
+      toast.error(error.response?.data?.detail || "Face not recognized. Please try password login.");
+    } finally {
+      setFaceLoginLoading(false);
     }
   };
 
