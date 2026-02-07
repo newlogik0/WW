@@ -115,31 +115,20 @@ body::before {
     body { @apply bg-background text-foreground; }
 }
 
-/* Glassmorphism Cards */
-.card-glass {
-    background: linear-gradient(135deg, rgba(14, 14, 22, 0.95) 0%, rgba(10, 10, 16, 0.98) 100%);
-    backdrop-filter: blur(24px);
-    border: 1px solid var(--border-dim);
-    border-radius: 20px;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.card-glass:hover {
-    border-color: var(--purple-700);
-    box-shadow: 0 0 40px -10px rgba(124, 58, 237, 0.3);
-}
-
+/* RPG Card Styling */
 .card-elevated {
-    background: var(--bg-card);
-    border: 1px solid var(--border-dim);
-    border-radius: 16px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.9) 0%, rgba(18, 24, 38, 0.95) 100%);
+  border: 1px solid rgba(255, 215, 0, 0.15);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 215, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
 }
 
 .card-elevated:hover {
-    border-color: var(--purple-600);
-    transform: translateY(-4px);
-    box-shadow: 0 24px 48px -12px rgba(124, 58, 237, 0.25);
+  border-color: rgba(255, 215, 0, 0.4);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.2);
+  transform: translateY(-4px);
 }
 
 /* XP Bar with Gold Gradient */
