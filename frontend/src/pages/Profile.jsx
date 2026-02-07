@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/App";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { toast } from "sonner";
 import { 
   User, 
   ArrowLeft, 
@@ -13,9 +15,12 @@ import {
   Dumbbell,
   Flame,
   Calendar,
-  LogOut
+  LogOut,
+  ScanFace,
+  Check
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import FaceAuth from "@/components/FaceAuth";
 
 export default function Profile() {
   const navigate = useNavigate();
