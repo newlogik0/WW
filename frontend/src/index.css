@@ -292,80 +292,56 @@ button:focus-visible {
   transform: translateY(-2px);
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-void); }
-::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--purple-700); }
-
-/* Animations */
-@keyframes fade-up {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
 }
 
-.animate-fade-up {
-    animation: fade-up 0.5s ease forwards;
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 10px;
 }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--gold) 0%, var(--gold-dark) 100%);
+  border-radius: 10px;
+  border: 2px solid var(--bg-secondary);
 }
 
-.animate-float {
-    animation: float 3s ease-in-out infinite;
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 100%);
 }
 
-/* Number input cleanup */
-input[type="number"].tempo-input {
-    -moz-appearance: textfield;
-}
-input[type="number"].tempo-input::-webkit-outer-spin-button,
-input[type="number"].tempo-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-/* Sound indicator */
-.sound-wave {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    height: 20px;
+/* Energy Pulse Animation */
+@keyframes energyPulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6), 0 0 50px rgba(255, 215, 0, 0.3);
+  }
 }
 
-.sound-wave span {
-    width: 3px;
-    background: var(--purple-500);
-    border-radius: 2px;
-    animation: wave 0.8s ease-in-out infinite;
+.energy-pulse {
+  animation: energyPulse 2s ease-in-out infinite;
 }
 
-.sound-wave span:nth-child(2) { animation-delay: 0.1s; }
-.sound-wave span:nth-child(3) { animation-delay: 0.2s; }
-.sound-wave span:nth-child(4) { animation-delay: 0.3s; }
-
-@keyframes wave {
-    0%, 100% { height: 8px; }
-    50% { height: 20px; }
+/* Responsive Typography */
+@media (max-width: 640px) {
+  body {
+    font-size: 14px;
+  }
 }
 
-/* Google button */
-.google-btn {
+/* Print Styles */
+@media print {
+  body {
     background: white;
-    color: #333;
-    border: 1px solid #ddd;
-    transition: all 0.3s ease;
-}
-
-.google-btn:hover {
-    background: #f8f8f8;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-@layer base {
-    [data-debug-wrapper="true"] {
-        display: contents !important;
-    }
+    color: black;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
 }
