@@ -173,11 +173,11 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <Label htmlFor="username" className="text-sm text-[#b3b3b3] font-medium">Username</Label>
+              <Label htmlFor="username" className="text-sm text-[#b3b3b3] font-medium">Username or Email</Label>
               <Input
                 id="username"
                 type="text"
-                placeholder="warrior_name"
+                placeholder="warrior_name or email"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
@@ -200,6 +200,23 @@ export default function Login() {
               />
             </div>
 
+            {/* Remember Me Checkbox */}
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="rememberMe"
+                checked={rememberMe}
+                onCheckedChange={(checked) => setRememberMe(checked)}
+                className="border-[#333333] data-[state=checked]:bg-[#00d9ff] data-[state=checked]:border-[#00d9ff]"
+                data-testid="remember-me-checkbox"
+              />
+              <Label 
+                htmlFor="rememberMe" 
+                className="text-sm text-[#b3b3b3] cursor-pointer"
+              >
+                Remember me for 30 days
+              </Label>
+            </div>
+
             <Button
               type="submit"
               disabled={loading}
@@ -219,6 +236,24 @@ export default function Login() {
               )}
             </Button>
           </form>
+
+          {/* Face Login Option */}
+          <div className="flex items-center gap-4">
+            <div className="flex-1 h-[1px] bg-[#333333]"></div>
+            <span className="text-[#808080] text-xs">or</span>
+            <div className="flex-1 h-[1px] bg-[#333333]"></div>
+          </div>
+
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full h-10 border-[#333333] bg-[#1a1a1a] text-white hover:bg-[#262626] hover:border-[#00d9ff]/30 transition-all text-sm"
+            onClick={() => setShowFaceLogin(true)}
+            data-testid="face-login-btn"
+          >
+            <ScanFace className="w-4 h-4 mr-2" />
+            Login with Face Recognition
+          </Button>
 
           <div className="text-center pt-4 border-t border-[#333333]">
             <p className="text-sm text-[#b3b3b3]">
