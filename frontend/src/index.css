@@ -192,11 +192,155 @@ body {
   box-shadow: 0 4px 12px rgba(229, 168, 85, 0.25);
 }
 
+/* Professional Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-elevated);
+}
+
+/* Focus States */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 2px;
+}
+
+/* Loading Spinner */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Animations */
+@keyframes fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-up {
+    animation: fade-up 0.5s ease forwards;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    100% { left: 100%; }
+}
+
+@keyframes animate-shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+    animation: animate-shimmer 2s infinite;
+}
+
+/* Number input cleanup */
+input[type="number"].tempo-input {
+    -moz-appearance: textfield;
+}
+input[type="number"].tempo-input::-webkit-outer-spin-button,
+input[type="number"].tempo-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Sound indicator */
+.sound-wave {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: 20px;
+}
+
+.sound-wave span {
+    width: 3px;
+    background: var(--accent-purple);
+    border-radius: 2px;
+    animation: wave 0.8s ease-in-out infinite;
+}
+
+.sound-wave span:nth-child(2) { animation-delay: 0.1s; }
+.sound-wave span:nth-child(3) { animation-delay: 0.2s; }
+.sound-wave span:nth-child(4) { animation-delay: 0.3s; }
+
+@keyframes wave {
+    0%, 100% { height: 8px; }
+    50% { height: 20px; }
+}
+
+/* Google button */
+.google-btn {
+    background: white;
+    color: #333;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease;
+}
+
+.google-btn:hover {
+    background: #f8f8f8;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+@layer base {
+    [data-debug-wrapper="true"] {
+        display: contents !important;
+    }
+}
+
 /* Responsive Typography */
 @media (max-width: 640px) {
   body {
     font-size: 14px;
   }
+}
+
+/* Utility Classes */
+.text-gradient-gold {
+  background: linear-gradient(135deg, var(--accent-gold) 0%, #f0b968 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.shadow-elevated {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.shadow-elevated-lg {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+}
+
+/* Smooth Transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
 /* Print Styles */
