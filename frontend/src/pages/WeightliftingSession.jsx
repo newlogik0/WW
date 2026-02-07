@@ -508,7 +508,7 @@ const TempoTracker = ({ onComplete }) => {
               </Button>
             )}
             {!isRunning && phase !== "ready" && (
-              <Button onClick={resumeTimer} className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white">
+              <Button onClick={resumeTimer} className="bg-[#00d9ff] hover:bg-[#33e0ff] text-[#0d0d0d]">
                 <Play className="w-4 h-4 mr-2" />
                 Resume
               </Button>
