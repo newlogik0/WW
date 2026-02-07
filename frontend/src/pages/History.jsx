@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "@/App";
 import { toast } from "sonner";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
   History as HistoryIcon, 
@@ -83,23 +83,23 @@ export default function History() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#030304]">
+      <div className="min-h-screen bg-[#0d0d0d]">
         <Navbar />
         <div className="flex items-center justify-center h-[80vh]">
-          <div className="w-12 h-12 border-4 border-[#8b5cf6] border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-10 h-10 border-2 border-[#00d9ff] border-t-transparent rounded-full animate-spin"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#030304]" data-testid="history-page">
+    <div className="min-h-screen bg-[#0d0d0d]" data-testid="history-page">
       <Navbar />
       
       <main className="max-w-4xl mx-auto px-4 py-8">
         <Button 
           variant="ghost" 
-          className="text-[#a1a1aa] hover:text-white mb-6"
+          className="text-[#b3b3b3] hover:text-white mb-6"
           onClick={() => navigate("/")}
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
@@ -107,56 +107,56 @@ export default function History() {
         </Button>
         
         <div className="flex items-center gap-4 mb-8">
-          <div className="w-14 h-14 rounded-xl bg-[#8b5cf6]/20 flex items-center justify-center">
-            <HistoryIcon className="w-7 h-7 text-[#8b5cf6]" />
+          <div className="w-12 h-12 rounded-xl bg-[#00d9ff]/10 border border-[#00d9ff]/20 flex items-center justify-center">
+            <HistoryIcon className="w-6 h-6 text-[#00d9ff]" />
           </div>
           <div>
-            <h1 className="text-2xl font-display text-[#a78bfa]">Workout History</h1>
-            <p className="text-[#a1a1aa]">Your training journal</p>
+            <h1 className="text-xl font-semibold text-white">Workout History</h1>
+            <p className="text-[#b3b3b3] text-sm">Your training journal</p>
           </div>
         </div>
 
         {workouts.length === 0 ? (
-          <Card className="bg-[#0c0c12] border-[#1e1e2e]">
+          <Card className="bg-[#1a1a1a] border-[#333333]">
             <CardContent className="p-12 text-center">
-              <Dumbbell className="w-16 h-16 text-[#52525b] mx-auto mb-4" />
-              <p className="text-[#a1a1aa] text-lg mb-4">No workouts logged yet</p>
+              <Dumbbell className="w-16 h-16 text-[#808080] mx-auto mb-4" />
+              <p className="text-[#b3b3b3] text-lg mb-4">No workouts logged yet</p>
               <Button
                 onClick={() => navigate("/workout")}
-                className="bg-gradient-to-r from-[#8b5cf6] to-[#6d28d9] text-white"
+                className="bg-[#00d9ff] hover:bg-[#33e0ff] text-[#0d0d0d] font-semibold"
               >
                 Start Your First Workout
               </Button>
             </CardContent>
           </Card>
         ) : (
-          <div className="space-y-8">
+          <div className="space-y-6">
             {Object.entries(groupedWorkouts).map(([date, dayWorkouts]) => (
               <div key={date}>
-                <div className="flex items-center gap-2 mb-4">
-                  <Calendar className="w-4 h-4 text-[#71717a]" />
-                  <h2 className="text-[#a1a1aa] font-medium">{date}</h2>
+                <div className="flex items-center gap-2 mb-3">
+                  <Calendar className="w-4 h-4 text-[#808080]" />
+                  <h2 className="text-[#b3b3b3] font-medium text-sm">{date}</h2>
                 </div>
                 
                 <div className="space-y-3">
                   {dayWorkouts.map((workout) => (
                     <Card 
                       key={workout.id}
-                      className="bg-[#0c0c12] border-[#1e1e2e] hover:border-[#8b5cf6]/30 transition-colors cursor-pointer"
+                      className="bg-[#1a1a1a] border-[#333333] hover:border-[#00d9ff]/30 transition-colors cursor-pointer"
                       onClick={() => toggleExpand(workout.id)}
                       data-testid={`workout-${workout.id}`}
                     >
                       <CardContent className="p-4">
                         <div className="flex items-center gap-4">
-                          <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
+                          <div className={`w-11 h-11 rounded-lg flex items-center justify-center ${
                             workout.workout_type === 'weightlifting' 
-                              ? 'bg-[#ef4444]/20' 
-                              : 'bg-[#06b6d4]/20'
+                              ? 'bg-[#ff4444]/10' 
+                              : 'bg-[#4d94ff]/10'
                           }`}>
                             {workout.workout_type === 'weightlifting' ? (
-                              <Dumbbell className="w-6 h-6 text-[#ef4444]" />
+                              <Dumbbell className="w-5 h-5 text-[#ff4444]" />
                             ) : (
-                              <Flame className="w-6 h-6 text-[#06b6d4]" />
+                              <Flame className="w-5 h-5 text-[#4d94ff]" />
                             )}
                           </div>
                           
@@ -165,7 +165,7 @@ export default function History() {
                               <h3 className="text-white font-medium capitalize">
                                 {workout.workout_type}
                               </h3>
-                              <span className="text-xs text-[#71717a]">
+                              <span className="text-xs text-[#808080]">
                                 {new Date(workout.created_at).toLocaleTimeString([], { 
                                   hour: '2-digit', 
                                   minute: '2-digit' 
@@ -173,37 +173,37 @@ export default function History() {
                               </span>
                             </div>
                             <div className="flex gap-3 text-sm mt-1">
-                              <span className="text-[#a78bfa]">+{workout.xp_earned} XP</span>
+                              <span className="text-[#00d9ff]">+{workout.xp_earned} XP</span>
                               {workout.stats_gained?.strength > 0 && (
-                                <span className="text-[#ef4444]">+{workout.stats_gained.strength} STR</span>
+                                <span className="text-[#ff4444]">+{workout.stats_gained.strength} STR</span>
                               )}
                               {workout.stats_gained?.endurance > 0 && (
-                                <span className="text-[#06b6d4]">+{workout.stats_gained.endurance} END</span>
+                                <span className="text-[#4d94ff]">+{workout.stats_gained.endurance} END</span>
                               )}
                               {workout.stats_gained?.agility > 0 && (
-                                <span className="text-[#4ade80]">+{workout.stats_gained.agility} AGI</span>
+                                <span className="text-[#00ff88]">+{workout.stats_gained.agility} AGI</span>
                               )}
                             </div>
                           </div>
                           
                           {expandedId === workout.id ? (
-                            <ChevronUp className="w-5 h-5 text-[#71717a]" />
+                            <ChevronUp className="w-5 h-5 text-[#808080]" />
                           ) : (
-                            <ChevronDown className="w-5 h-5 text-[#71717a]" />
+                            <ChevronDown className="w-5 h-5 text-[#808080]" />
                           )}
                         </div>
                         
                         {/* Expanded Details */}
                         {expandedId === workout.id && (
-                          <div className="mt-4 pt-4 border-t border-[#1e1e2e]">
+                          <div className="mt-4 pt-4 border-t border-[#333333]">
                             {/* Session Category Badge */}
                             {workout.session_category && (
                               <div className="mb-3">
                                 <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium ${
-                                  workout.session_category === 'push' ? 'bg-[#ef4444]/20 text-[#ef4444]' :
-                                  workout.session_category === 'pull' ? 'bg-[#06b6d4]/20 text-[#06b6d4]' :
-                                  workout.session_category === 'legs' ? 'bg-[#4ade80]/20 text-[#4ade80]' :
-                                  'bg-[#8b5cf6]/20 text-[#a78bfa]'
+                                  workout.session_category === 'push' ? 'bg-[#ff4444]/10 text-[#ff4444]' :
+                                  workout.session_category === 'pull' ? 'bg-[#4d94ff]/10 text-[#4d94ff]' :
+                                  workout.session_category === 'legs' ? 'bg-[#00ff88]/10 text-[#00ff88]' :
+                                  'bg-[#00d9ff]/10 text-[#00d9ff]'
                                 }`}>
                                   {workout.session_category.charAt(0).toUpperCase() + workout.session_category.slice(1)} Day
                                 </span>
@@ -212,17 +212,17 @@ export default function History() {
                             
                             {workout.workout_type === 'weightlifting' && workout.details?.exercises && (
                               <div className="space-y-2 mb-4">
-                                <p className="text-[#a1a1aa] text-sm font-medium">Exercises:</p>
+                                <p className="text-[#b3b3b3] text-sm font-medium">Exercises:</p>
                                 {workout.details.exercises.map((ex, i) => (
-                                  <div key={i} className="flex justify-between text-sm bg-[#08080c] p-3 rounded">
+                                  <div key={i} className="flex justify-between text-sm bg-[#0d0d0d] p-3 rounded border border-[#333333]">
                                     <span className="text-white font-medium">{ex.name}</span>
-                                    <div className="text-[#a1a1aa] space-x-3">
+                                    <div className="text-[#b3b3b3] space-x-3">
                                       <span>{ex.sets} sets</span>
                                       <span>{ex.reps} reps</span>
                                       {ex.useSameWeight ? (
-                                        <span className="text-[#8b5cf6]">@ {ex.weight}kg</span>
+                                        <span className="text-[#00d9ff]">@ {ex.weight}kg</span>
                                       ) : (
-                                        <span className="text-[#8b5cf6]">@ {ex.weights?.join(', ')}kg</span>
+                                        <span className="text-[#00d9ff]">@ {ex.weights?.join(', ')}kg</span>
                                       )}
                                     </div>
                                   </div>
@@ -231,17 +231,17 @@ export default function History() {
                             )}
                             {workout.workout_type === 'cardio' && workout.details && (
                               <div className="space-y-2 text-sm mb-4">
-                                <div className="flex justify-between bg-[#08080c] p-2 rounded">
-                                  <span className="text-[#a1a1aa]">Activity:</span>
+                                <div className="flex justify-between bg-[#0d0d0d] p-3 rounded border border-[#333333]">
+                                  <span className="text-[#b3b3b3]">Activity:</span>
                                   <span className="text-white capitalize">{workout.details.activity}</span>
                                 </div>
-                                <div className="flex justify-between bg-[#08080c] p-2 rounded">
-                                  <span className="text-[#a1a1aa]">Duration:</span>
+                                <div className="flex justify-between bg-[#0d0d0d] p-3 rounded border border-[#333333]">
+                                  <span className="text-[#b3b3b3]">Duration:</span>
                                   <span className="text-white">{workout.details.duration_minutes} minutes</span>
                                 </div>
                                 {workout.details.distance_km && (
-                                  <div className="flex justify-between bg-[#08080c] p-2 rounded">
-                                    <span className="text-[#a1a1aa]">Distance:</span>
+                                  <div className="flex justify-between bg-[#0d0d0d] p-3 rounded border border-[#333333]">
+                                    <span className="text-[#b3b3b3]">Distance:</span>
                                     <span className="text-white">{workout.details.distance_km} km</span>
                                   </div>
                                 )}
@@ -249,15 +249,15 @@ export default function History() {
                             )}
                             
                             {/* Session Notes */}
-                            <div className="mt-3 p-3 bg-[#08080c] rounded">
+                            <div className="mt-3 p-3 bg-[#0d0d0d] rounded border border-[#333333]">
                               <div className="flex items-center justify-between mb-2">
-                                <p className="text-[#a1a1aa] text-sm font-medium">Session Notes:</p>
+                                <p className="text-[#b3b3b3] text-sm font-medium">Session Notes:</p>
                                 {editingId !== workout.id && (
                                   <Button
                                     size="sm"
                                     variant="ghost"
                                     onClick={() => startEditing(workout)}
-                                    className="h-7 text-xs text-[#8b5cf6] hover:text-[#a78bfa]"
+                                    className="h-7 text-xs text-[#00d9ff] hover:text-[#33e0ff]"
                                   >
                                     <Edit2 className="w-3 h-3 mr-1" />
                                     Edit
@@ -271,13 +271,13 @@ export default function History() {
                                     value={editNotes}
                                     onChange={(e) => setEditNotes(e.target.value)}
                                     placeholder="Add notes about this session..."
-                                    className="w-full p-2 bg-[#06060a] border border-[#1a1a28] rounded text-white text-sm min-h-[80px] resize-none focus:outline-none focus:border-[#8b5cf6]"
+                                    className="w-full p-2 bg-[#1a1a1a] border border-[#333333] rounded text-white text-sm min-h-[80px] resize-none focus:outline-none focus:border-[#00d9ff]"
                                   />
                                   <div className="flex gap-2">
                                     <Button
                                       size="sm"
                                       onClick={() => saveEdit(workout.id)}
-                                      className="h-8 bg-[#8b5cf6] hover:bg-[#7c3aed] text-white"
+                                      className="h-8 bg-[#00d9ff] hover:bg-[#33e0ff] text-[#0d0d0d] font-semibold"
                                     >
                                       <Save className="w-3 h-3 mr-1" />
                                       Save
@@ -286,7 +286,7 @@ export default function History() {
                                       size="sm"
                                       variant="outline"
                                       onClick={cancelEdit}
-                                      className="h-8 border-[#1a1a28] text-[#a1a1aa]"
+                                      className="h-8 border-[#333333] text-[#b3b3b3]"
                                     >
                                       <X className="w-3 h-3 mr-1" />
                                       Cancel
@@ -294,7 +294,7 @@ export default function History() {
                                   </div>
                                 </div>
                               ) : (
-                                <p className="text-[#d4d4d8] text-sm">
+                                <p className="text-white text-sm">
                                   {workout.details?.notes || "No notes added"}
                                 </p>
                               )}

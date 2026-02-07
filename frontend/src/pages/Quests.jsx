@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "@/App";
 import { toast } from "sonner";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { 
   Target, 
   ArrowLeft, 
@@ -69,10 +68,10 @@ export default function Quests() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#030304]">
+      <div className="min-h-screen bg-[#0d0d0d]">
         <Navbar />
         <div className="flex items-center justify-center h-[80vh]">
-          <div className="w-12 h-12 border-4 border-[#8b5cf6] border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-10 h-10 border-2 border-[#00d9ff] border-t-transparent rounded-full animate-spin"></div>
         </div>
       </div>
     );
@@ -85,30 +84,30 @@ export default function Quests() {
       <Card 
         className={`transition-all ${
           quest.completed 
-            ? "bg-gradient-to-br from-[#4ade80]/20 to-[#0c0c12] border-[#4ade80]/50" 
-            : "bg-[#0c0c12] border-[#1e1e2e] hover:border-[#8b5cf6]/50"
+            ? "bg-[#1a1a1a] border-[#00ff88]/30" 
+            : "bg-[#1a1a1a] border-[#333333] hover:border-[#00d9ff]/30"
         }`}
         data-testid={`quest-${quest.id}`}
       >
-        <CardContent className="p-6">
+        <CardContent className="p-5">
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
                 {quest.completed && (
-                  <div className="w-5 h-5 bg-[#4ade80] rounded-full flex items-center justify-center">
+                  <div className="w-5 h-5 bg-[#00ff88] rounded-full flex items-center justify-center">
                     <Check className="w-3 h-3 text-white" />
                   </div>
                 )}
-                <h3 className={`font-display text-lg ${
-                  quest.completed ? "text-[#4ade80]" : "text-white"
+                <h3 className={`font-semibold ${
+                  quest.completed ? "text-[#00ff88]" : "text-white"
                 }`}>
                   {quest.name}
                 </h3>
               </div>
-              <p className="text-[#a1a1aa] text-sm">{quest.description}</p>
+              <p className="text-[#b3b3b3] text-sm">{quest.description}</p>
             </div>
             <div className="text-right">
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-[#8b5cf6]/20 text-[#a78bfa] text-sm font-medium">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[#00d9ff]/10 text-[#00d9ff] text-sm font-medium">
                 +{quest.xp_reward} XP
               </span>
             </div>
@@ -116,8 +115,8 @@ export default function Quests() {
           
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-[#a1a1aa]\">Progress</span>
-              <span className={quest.completed ? "text-[#4ade80]" : "text-white"}>
+              <span className="text-[#b3b3b3]">Progress</span>
+              <span className={quest.completed ? "text-[#00ff88]" : "text-white"}>
                 {quest.progress}/{quest.target}
               </span>
             </div>
@@ -125,8 +124,8 @@ export default function Quests() {
               <div 
                 className={`h-full rounded transition-all ${
                   quest.completed 
-                    ? "bg-gradient-to-r from-[#4ade80] to-[#22c55e]" 
-                    : "bg-gradient-to-r from-[#8b5cf6] to-[#6d28d9]"
+                    ? "bg-[#00ff88]" 
+                    : "bg-[#00d9ff]"
                 }`}
                 style={{ width: `${Math.min(progress, 100)}%` }}
               ></div>
@@ -134,7 +133,7 @@ export default function Quests() {
           </div>
           
           {!quest.completed && (
-            <div className="flex items-center gap-2 mt-4 text-xs text-[#71717a]">
+            <div className="flex items-center gap-2 mt-3 text-xs text-[#808080]">
               <Clock className="w-3 h-3" />
               <span>Expires in {getTimeRemaining(quest.expires_at)}</span>
             </div>
@@ -145,13 +144,13 @@ export default function Quests() {
   };
 
   return (
-    <div className="min-h-screen bg-[#030304]" data-testid="quests-page">
+    <div className="min-h-screen bg-[#0d0d0d]" data-testid="quests-page">
       <Navbar />
       
       <main className="max-w-6xl mx-auto px-4 py-8">
         <Button 
           variant="ghost" 
-          className="text-[#a1a1aa] hover:text-white mb-6"
+          className="text-[#b3b3b3] hover:text-white mb-6"
           onClick={() => navigate("/")}
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
@@ -160,17 +159,17 @@ export default function Quests() {
         
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-xl bg-[#8b5cf6]/20 flex items-center justify-center">
-              <Target className="w-7 h-7 text-[#8b5cf6]" />
+            <div className="w-12 h-12 rounded-xl bg-[#00d9ff]/10 border border-[#00d9ff]/20 flex items-center justify-center">
+              <Target className="w-6 h-6 text-[#00d9ff]" />
             </div>
             <div>
-              <h1 className="text-2xl font-display text-[#a78bfa]\">Quests</h1>
-              <p className="text-[#a1a1aa]\">Complete challenges for bonus XP</p>
+              <h1 className="text-xl font-semibold text-white">Quests</h1>
+              <p className="text-[#b3b3b3] text-sm">Complete challenges for bonus XP</p>
             </div>
           </div>
           <Button
             variant="outline"
-            className="border-[#8b5cf6] text-[#8b5cf6] hover:bg-[#8b5cf6]/10"
+            className="border-[#00d9ff]/30 text-[#00d9ff] hover:bg-[#00d9ff]/10 hover:border-[#00d9ff]"
             onClick={refreshQuests}
             disabled={refreshing}
             data-testid="refresh-quests-btn"
@@ -187,12 +186,12 @@ export default function Quests() {
         {/* Daily Quests */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-4">
-            <Clock className="w-5 h-5 text-[#8b5cf6]" />
-            <h2 className="text-xl font-display text-white">Daily Quests</h2>
+            <Clock className="w-5 h-5 text-[#00d9ff]" />
+            <h2 className="text-lg font-semibold text-white">Daily Quests</h2>
           </div>
           {dailyQuests.length === 0 ? (
-            <Card className="bg-[#0c0c12] border-[#1e1e2e]">
-              <CardContent className="p-6 text-center text-[#71717a]">
+            <Card className="bg-[#1a1a1a] border-[#333333]">
+              <CardContent className="p-6 text-center text-[#808080]">
                 No daily quests available. Click refresh to get new quests!
               </CardContent>
             </Card>
@@ -208,12 +207,12 @@ export default function Quests() {
         {/* Weekly Quests */}
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <Calendar className="w-5 h-5 text-[#8b5cf6]" />
-            <h2 className="text-xl font-display text-white">Weekly Quests</h2>
+            <Calendar className="w-5 h-5 text-[#00d9ff]" />
+            <h2 className="text-lg font-semibold text-white">Weekly Quests</h2>
           </div>
           {weeklyQuests.length === 0 ? (
-            <Card className="bg-[#0c0c12] border-[#1e1e2e]">
-              <CardContent className="p-6 text-center text-[#71717a]">
+            <Card className="bg-[#1a1a1a] border-[#333333]">
+              <CardContent className="p-6 text-center text-[#808080]">
                 No weekly quests available. Click refresh to get new quests!
               </CardContent>
             </Card>
