@@ -229,12 +229,12 @@ export default function TrainingPlans() {
         </Button>
         
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-11 h-11 rounded-xl bg-[#8b5cf6]/15 flex items-center justify-center">
-            <FileText className="w-5 h-5 text-[#8b5cf6]" />
+          <div className="w-11 h-11 rounded-xl bg-[#00d9ff]/10 border border-[#00d9ff]/20 flex items-center justify-center">
+            <FileText className="w-5 h-5 text-[#00d9ff]" />
           </div>
           <div>
-            <h1 className="text-xl font-display font-bold text-white">Training Plans</h1>
-            <p className="text-[#71717a] text-sm">Import and manage your workout plans</p>
+            <h1 className="text-xl font-semibold text-white">Training Plans</h1>
+            <p className="text-[#808080] text-sm">Import and manage your workout plans</p>
           </div>
         </div>
 
@@ -258,46 +258,46 @@ export default function TrainingPlans() {
           
           {uploading ? (
             <div className="flex flex-col items-center">
-              <Loader2 className="w-10 h-10 text-[#6d28d9] animate-spin mb-3" />
+              <Loader2 className="w-10 h-10 text-[#00d9ff] animate-spin mb-3" />
               <p className="text-white font-medium">Analyzing your plan...</p>
-              <p className="text-[#71717a] text-sm">AI is extracting exercises</p>
+              <p className="text-[#808080] text-sm">AI is extracting exercises</p>
             </div>
           ) : (
             <>
               <div className="flex justify-center gap-4 mb-4">
-                <div className="w-14 h-14 rounded-xl bg-[#6d28d9]/15 flex items-center justify-center">
-                  <Upload className="w-7 h-7 text-[#8b5cf6]" />
+                <div className="w-14 h-14 rounded-xl bg-[#00d9ff]/10 border border-[#00d9ff]/20 flex items-center justify-center">
+                  <Upload className="w-7 h-7 text-[#00d9ff]" />
                 </div>
-                <div className="w-14 h-14 rounded-xl bg-[#6d28d9]/15 flex items-center justify-center">
-                  <Image className="w-7 h-7 text-[#8b5cf6]" />
+                <div className="w-14 h-14 rounded-xl bg-[#00d9ff]/10 border border-[#00d9ff]/20 flex items-center justify-center">
+                  <Image className="w-7 h-7 text-[#00d9ff]" />
                 </div>
-                <div className="w-14 h-14 rounded-xl bg-[#6d28d9]/15 flex items-center justify-center">
-                  <FileText className="w-7 h-7 text-[#8b5cf6]" />
+                <div className="w-14 h-14 rounded-xl bg-[#00d9ff]/10 border border-[#00d9ff]/20 flex items-center justify-center">
+                  <FileText className="w-7 h-7 text-[#00d9ff]" />
                 </div>
               </div>
               <p className="text-white font-medium mb-1">Drop your training plan here</p>
-              <p className="text-[#71717a] text-sm">PDF, Images, or Text files supported</p>
+              <p className="text-[#808080] text-sm">PDF, Images, or Text files supported</p>
             </>
           )}
         </div>
 
         {/* Plans List */}
         <div className="space-y-4">
-          <h2 className="text-sm font-display text-[#a1a1aa]">Your Plans ({plans.length})</h2>
+          <h2 className="text-sm font-semibold text-[#b3b3b3]">Your Plans ({plans.length})</h2>
           
           {plans.length === 0 ? (
-            <Card className="bg-[#1c1c21] border-[#2e2e33]">
+            <Card className="bg-[#1a1a1a] border-[#333333]">
               <CardContent className="py-12 text-center">
-                <FileText className="w-12 h-12 text-[#71717a] mx-auto mb-3" />
-                <p className="text-[#a1a1aa]">No training plans yet</p>
-                <p className="text-[#71717a] text-sm">Upload a PDF or photo of your workout plan</p>
+                <FileText className="w-12 h-12 text-[#808080] mx-auto mb-3" />
+                <p className="text-[#b3b3b3]">No training plans yet</p>
+                <p className="text-[#808080] text-sm">Upload a PDF or photo of your workout plan</p>
               </CardContent>
             </Card>
           ) : (
             plans.map((plan) => (
               <Card 
                 key={plan.id} 
-                className={`bg-[#1c1c21] border-[#2e2e33] ${plan.is_active ? 'border-[#d4af37]/50' : ''}`}
+                className={`bg-[#1a1a1a] border-[#333333] ${plan.is_active ? 'border-[#00d9ff]/50' : ''}`}
                 data-testid={`plan-${plan.id}`}
               >
                 {editingPlan?.id === plan.id ? (
