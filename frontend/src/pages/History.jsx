@@ -19,6 +19,8 @@ export default function History() {
   const [workouts, setWorkouts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState(null);
+  const [editingId, setEditingId] = useState(null);
+  const [editNotes, setEditNotes] = useState("");
 
   useEffect(() => {
     loadWorkouts();
@@ -37,6 +39,32 @@ export default function History() {
 
   const toggleExpand = (id) => {
     setExpandedId(expandedId === id ? null : id);
+  };
+
+  const startEditing = (workout) => {
+    setEditingId(workout.id);
+    setEditNotes(workout.details?.notes || "");
+  };
+
+  const saveEdit = async (workoutId) => {
+    try {
+      await api.put(`/workouts/${workoutId}`, {
+        details: {
+          ...workouts.find(w => w.id === workoutId)?.details,
+          notes: editNotes
+        }
+      });
+      toast.success("Session notes updated!");
+      setEditingId(null);
+      await loadWorkouts();
+    } catch (error) {
+      toast.error("Failed to update notes");
+    }
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditNotes("");
   };
 
   // Group workouts by date
